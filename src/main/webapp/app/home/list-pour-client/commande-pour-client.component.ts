@@ -30,7 +30,10 @@ export class CommandePourClientComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.commandeService.query({}).subscribe({
+    this.commandeService.query({
+      'clientId.equals': this.client.id,
+      size: 500,
+    }).subscribe({
       next: (res: HttpResponse<ICommande[]>) => {
         this.isLoading = false;
         this.commandes = res.body ?? [];
@@ -44,5 +47,6 @@ export class CommandePourClientComponent implements OnInit {
     this.modalRef = this.modalService.open(listDetailsCommandeComponent as Component, { size: 'lg' });
     this.modalRef.componentInstance.parent = this;
     this.modalRef.componentInstance.commande = commande!;
+    this.modalRef.componentInstance.disableRoleEdit = true;
   }
 }

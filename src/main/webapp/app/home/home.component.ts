@@ -140,7 +140,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.linesCmd!.forEach(lineC => {
-      this.totalCommande += lineC.prix!;
+      this.totalCommande += lineC.prix! * lineC.qte!;
     });
   }
 
@@ -152,7 +152,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.linesCmd!.forEach(lineC => {
-      this.totalCommande += lineC.prix!;
+      this.totalCommande += lineC.prix! * lineC.qte!;
     });
   }
 

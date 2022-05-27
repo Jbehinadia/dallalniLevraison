@@ -109,7 +109,7 @@
       <ul class="restaurant-list">
         <li class="restaurant-list item" *ngFor="let plat of Plats" (click)="addLineCmd(plat)">
           <a href="#">
-            <div class="col-md-2 restaurant-image" [style.backgroundImage]="'url(' + plat.imagePath + ')'"></div>
+            <div class="restaurant-image" [style.backgroundImage]="'url(' + plat.imagePath + ')'"></div>
           </a>
           <div class="restaurant-name">{{ plat.nomRestau! }}</div>
           <div class="restaurant-info">
