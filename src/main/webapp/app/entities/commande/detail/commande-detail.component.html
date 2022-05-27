@@ -1,0 +1,72 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="commande">
+      <h2 data-cy="commandeDetailsHeading"><span>Commande</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ commande.id }}</span>
+        </dd>
+        <dt><span>Adresse Commande</span></dt>
+        <dd>
+          <span>{{ commande.adresseCommande }}</span>
+        </dd>
+        <dt><span>Etat</span></dt>
+        <dd>
+          <span>{{ commande.etat }}</span>
+        </dd>
+        <dt><span>Date Commande</span></dt>
+        <dd>
+          <span>{{ commande.dateCommande | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Prix Total</span></dt>
+        <dd>
+          <span>{{ commande.prixTotal }}</span>
+        </dd>
+        <dt><span>Remise Perc</span></dt>
+        <dd>
+          <span>{{ commande.remisePerc }}</span>
+        </dd>
+        <dt><span>Remice Val</span></dt>
+        <dd>
+          <span>{{ commande.remiceVal }}</span>
+        </dd>
+        <dt><span>Prix Livreson</span></dt>
+        <dd>
+          <span>{{ commande.prixLivreson }}</span>
+        </dd>
+        <dt><span>Date Sortie</span></dt>
+        <dd>
+          <span>{{ commande.dateSortie | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Livreur</span></dt>
+        <dd>
+          <div *ngIf="commande.livreur">
+            <a [routerLink]="['/livreur', commande.livreur?.id, 'view']">{{ commande.livreur?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Client</span></dt>
+        <dd>
+          <div *ngIf="commande.client">
+            <a [routerLink]="['/client', commande.client?.id, 'view']">{{ commande.client?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/commande', commande.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

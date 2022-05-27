@@ -1,0 +1,56 @@
+{
+  "name": "Plat",
+  "fields": [
+    {
+      "fieldName": "nomPlat",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "imagePath",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "prix",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "remisePerc",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "remiceVal",
+      "fieldType": "Double"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "commandeDetails",
+      "otherEntityRelationshipName": "plat",
+      "relationshipName": "commandeDetails"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "menu",
+      "otherEntityRelationshipName": "plat",
+      "relationshipName": "menu"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "typePlat",
+      "otherEntityRelationshipName": "plat",
+      "relationshipName": "typePlat"
+    }
+  ],
+  "entityTableName": "plat",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220527094038"
+}

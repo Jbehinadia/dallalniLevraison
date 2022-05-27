@@ -1,0 +1,96 @@
+
+entity Client {
+    nomClient String,
+    prenomClient String,
+    adresseClient String,
+    numClient String
+}
+
+entity ResponsableRestaurant {
+    nomResponsable String,
+    prenomResponsable String,
+    adresseResponsable String,
+    numResponsable String
+}
+
+entity Restaurant { 
+    nomRestaurant String,
+    adresseRestaurant String,
+    numRestaurant String
+}
+
+entity Livreur {
+    nomLivreur String,
+    prenomLivreur String,
+    adresseLivreur String,
+    numLivreur String
+}
+
+entity Menu {
+    nomMenu String
+}
+
+entity Plat {
+    nomPlat String,
+    imagePath TextBlob,
+    prix Double,
+    remisePerc Double, 
+    remiceVal Double
+}
+
+entity TypePlat {
+    type String,
+    imagePath TextBlob
+}
+
+entity Commande {
+    adresseCommande String,
+    etat String,
+    dateCommande Instant
+    prixTotal Double
+    remisePerc Double, 
+    remiceVal Double,
+    prixLivreson Double,
+    dateSortie Instant
+}
+
+entity CommandeDetails {
+    prix Double,
+    qty Integer,
+    etat String,
+}
+
+relationship OneToOne{
+ResponsableRestaurant{Restaurant} to Restaurant
+}
+
+relationship OneToMany {
+    Menu{Plat} to Plat 
+}
+
+relationship OneToMany {
+    TypePlat{Plat} to Plat 
+}
+
+relationship OneToMany {
+    Restaurant{Menu} to Menu
+}
+
+relationship OneToMany {
+    Livreur{Commande} to Commande
+}
+relationship OneToMany{
+ 	Client{Commande} to Commande
+}
+
+relationship OneToMany{
+ 	Commande{CommandeDetails} to CommandeDetails
+}
+
+relationship OneToMany{
+    Plat{CommandeDetails} to CommandeDetails
+}
+
+dto Client, ResponsableRestaurant, Restaurant, Livreur, Menu, Plat, TypePlat, Commande, CommandeDetails with mapstruct
+paginate Client, ResponsableRestaurant, Restaurant, Livreur, Menu, Plat, TypePlat, Commande, CommandeDetails with pagination
+service Client, ResponsableRestaurant, Restaurant, Livreur, Menu, Plat, TypePlat, Commande, CommandeDetails with serviceImpl

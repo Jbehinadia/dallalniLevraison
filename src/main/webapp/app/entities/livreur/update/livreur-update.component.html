@@ -1,0 +1,80 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-livreur-heading" data-cy="LivreurCreateUpdateHeading">Create or edit a Livreur</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_nomLivreur">Nom Livreur</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nomLivreur"
+            id="field_nomLivreur"
+            data-cy="nomLivreur"
+            formControlName="nomLivreur"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_prenomLivreur">Prenom Livreur</label>
+          <input
+            type="text"
+            class="form-control"
+            name="prenomLivreur"
+            id="field_prenomLivreur"
+            data-cy="prenomLivreur"
+            formControlName="prenomLivreur"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_adresseLivreur">Adresse Livreur</label>
+          <input
+            type="text"
+            class="form-control"
+            name="adresseLivreur"
+            id="field_adresseLivreur"
+            data-cy="adresseLivreur"
+            formControlName="adresseLivreur"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_numLivreur">Num Livreur</label>
+          <input
+            type="text"
+            class="form-control"
+            name="numLivreur"
+            id="field_numLivreur"
+            data-cy="numLivreur"
+            formControlName="numLivreur"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

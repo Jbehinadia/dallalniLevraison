@@ -1,0 +1,39 @@
+{
+  "name": "Livreur",
+  "fields": [
+    {
+      "fieldName": "nomLivreur",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "prenomLivreur",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "adresseLivreur",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numLivreur",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "livreur",
+      "relationshipName": "commande"
+    }
+  ],
+  "entityTableName": "livreur",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220527094036"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "ResponsableRestaurant",
+  "fields": [
+    {
+      "fieldName": "nomResponsable",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "prenomResponsable",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "adresseResponsable",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numResponsable",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "restaurant",
+      "otherEntityRelationshipName": "responsableRestaurant",
+      "relationshipName": "restaurant",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "responsable_restaurant",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220527094034"
+}
