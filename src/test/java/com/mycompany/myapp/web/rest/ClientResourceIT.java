@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.Client;
 import com.mycompany.myapp.repository.ClientRepository;
+import com.mycompany.myapp.service.criteria.ClientCriteria;
 import com.mycompany.myapp.service.dto.ClientDTO;
 import com.mycompany.myapp.service.mapper.ClientMapper;
 import java.util.List;
@@ -182,6 +183,377 @@ class ClientResourceIT {
             .andExpect(jsonPath("$.prenomClient").value(DEFAULT_PRENOM_CLIENT))
             .andExpect(jsonPath("$.adresseClient").value(DEFAULT_ADRESSE_CLIENT))
             .andExpect(jsonPath("$.numClient").value(DEFAULT_NUM_CLIENT));
+    }
+
+    @Test
+    @Transactional
+    void getClientsByIdFiltering() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        Long id = client.getId();
+
+        defaultClientShouldBeFound("id.equals=" + id);
+        defaultClientShouldNotBeFound("id.notEquals=" + id);
+
+        defaultClientShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultClientShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultClientShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultClientShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNomClientIsEqualToSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where nomClient equals to DEFAULT_NOM_CLIENT
+        defaultClientShouldBeFound("nomClient.equals=" + DEFAULT_NOM_CLIENT);
+
+        // Get all the clientList where nomClient equals to UPDATED_NOM_CLIENT
+        defaultClientShouldNotBeFound("nomClient.equals=" + UPDATED_NOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNomClientIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where nomClient not equals to DEFAULT_NOM_CLIENT
+        defaultClientShouldNotBeFound("nomClient.notEquals=" + DEFAULT_NOM_CLIENT);
+
+        // Get all the clientList where nomClient not equals to UPDATED_NOM_CLIENT
+        defaultClientShouldBeFound("nomClient.notEquals=" + UPDATED_NOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNomClientIsInShouldWork() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where nomClient in DEFAULT_NOM_CLIENT or UPDATED_NOM_CLIENT
+        defaultClientShouldBeFound("nomClient.in=" + DEFAULT_NOM_CLIENT + "," + UPDATED_NOM_CLIENT);
+
+        // Get all the clientList where nomClient equals to UPDATED_NOM_CLIENT
+        defaultClientShouldNotBeFound("nomClient.in=" + UPDATED_NOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNomClientIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where nomClient is not null
+        defaultClientShouldBeFound("nomClient.specified=true");
+
+        // Get all the clientList where nomClient is null
+        defaultClientShouldNotBeFound("nomClient.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNomClientContainsSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where nomClient contains DEFAULT_NOM_CLIENT
+        defaultClientShouldBeFound("nomClient.contains=" + DEFAULT_NOM_CLIENT);
+
+        // Get all the clientList where nomClient contains UPDATED_NOM_CLIENT
+        defaultClientShouldNotBeFound("nomClient.contains=" + UPDATED_NOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNomClientNotContainsSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where nomClient does not contain DEFAULT_NOM_CLIENT
+        defaultClientShouldNotBeFound("nomClient.doesNotContain=" + DEFAULT_NOM_CLIENT);
+
+        // Get all the clientList where nomClient does not contain UPDATED_NOM_CLIENT
+        defaultClientShouldBeFound("nomClient.doesNotContain=" + UPDATED_NOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByPrenomClientIsEqualToSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where prenomClient equals to DEFAULT_PRENOM_CLIENT
+        defaultClientShouldBeFound("prenomClient.equals=" + DEFAULT_PRENOM_CLIENT);
+
+        // Get all the clientList where prenomClient equals to UPDATED_PRENOM_CLIENT
+        defaultClientShouldNotBeFound("prenomClient.equals=" + UPDATED_PRENOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByPrenomClientIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where prenomClient not equals to DEFAULT_PRENOM_CLIENT
+        defaultClientShouldNotBeFound("prenomClient.notEquals=" + DEFAULT_PRENOM_CLIENT);
+
+        // Get all the clientList where prenomClient not equals to UPDATED_PRENOM_CLIENT
+        defaultClientShouldBeFound("prenomClient.notEquals=" + UPDATED_PRENOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByPrenomClientIsInShouldWork() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where prenomClient in DEFAULT_PRENOM_CLIENT or UPDATED_PRENOM_CLIENT
+        defaultClientShouldBeFound("prenomClient.in=" + DEFAULT_PRENOM_CLIENT + "," + UPDATED_PRENOM_CLIENT);
+
+        // Get all the clientList where prenomClient equals to UPDATED_PRENOM_CLIENT
+        defaultClientShouldNotBeFound("prenomClient.in=" + UPDATED_PRENOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByPrenomClientIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where prenomClient is not null
+        defaultClientShouldBeFound("prenomClient.specified=true");
+
+        // Get all the clientList where prenomClient is null
+        defaultClientShouldNotBeFound("prenomClient.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByPrenomClientContainsSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where prenomClient contains DEFAULT_PRENOM_CLIENT
+        defaultClientShouldBeFound("prenomClient.contains=" + DEFAULT_PRENOM_CLIENT);
+
+        // Get all the clientList where prenomClient contains UPDATED_PRENOM_CLIENT
+        defaultClientShouldNotBeFound("prenomClient.contains=" + UPDATED_PRENOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByPrenomClientNotContainsSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where prenomClient does not contain DEFAULT_PRENOM_CLIENT
+        defaultClientShouldNotBeFound("prenomClient.doesNotContain=" + DEFAULT_PRENOM_CLIENT);
+
+        // Get all the clientList where prenomClient does not contain UPDATED_PRENOM_CLIENT
+        defaultClientShouldBeFound("prenomClient.doesNotContain=" + UPDATED_PRENOM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByAdresseClientIsEqualToSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where adresseClient equals to DEFAULT_ADRESSE_CLIENT
+        defaultClientShouldBeFound("adresseClient.equals=" + DEFAULT_ADRESSE_CLIENT);
+
+        // Get all the clientList where adresseClient equals to UPDATED_ADRESSE_CLIENT
+        defaultClientShouldNotBeFound("adresseClient.equals=" + UPDATED_ADRESSE_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByAdresseClientIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where adresseClient not equals to DEFAULT_ADRESSE_CLIENT
+        defaultClientShouldNotBeFound("adresseClient.notEquals=" + DEFAULT_ADRESSE_CLIENT);
+
+        // Get all the clientList where adresseClient not equals to UPDATED_ADRESSE_CLIENT
+        defaultClientShouldBeFound("adresseClient.notEquals=" + UPDATED_ADRESSE_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByAdresseClientIsInShouldWork() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where adresseClient in DEFAULT_ADRESSE_CLIENT or UPDATED_ADRESSE_CLIENT
+        defaultClientShouldBeFound("adresseClient.in=" + DEFAULT_ADRESSE_CLIENT + "," + UPDATED_ADRESSE_CLIENT);
+
+        // Get all the clientList where adresseClient equals to UPDATED_ADRESSE_CLIENT
+        defaultClientShouldNotBeFound("adresseClient.in=" + UPDATED_ADRESSE_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByAdresseClientIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where adresseClient is not null
+        defaultClientShouldBeFound("adresseClient.specified=true");
+
+        // Get all the clientList where adresseClient is null
+        defaultClientShouldNotBeFound("adresseClient.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByAdresseClientContainsSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where adresseClient contains DEFAULT_ADRESSE_CLIENT
+        defaultClientShouldBeFound("adresseClient.contains=" + DEFAULT_ADRESSE_CLIENT);
+
+        // Get all the clientList where adresseClient contains UPDATED_ADRESSE_CLIENT
+        defaultClientShouldNotBeFound("adresseClient.contains=" + UPDATED_ADRESSE_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByAdresseClientNotContainsSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where adresseClient does not contain DEFAULT_ADRESSE_CLIENT
+        defaultClientShouldNotBeFound("adresseClient.doesNotContain=" + DEFAULT_ADRESSE_CLIENT);
+
+        // Get all the clientList where adresseClient does not contain UPDATED_ADRESSE_CLIENT
+        defaultClientShouldBeFound("adresseClient.doesNotContain=" + UPDATED_ADRESSE_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNumClientIsEqualToSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where numClient equals to DEFAULT_NUM_CLIENT
+        defaultClientShouldBeFound("numClient.equals=" + DEFAULT_NUM_CLIENT);
+
+        // Get all the clientList where numClient equals to UPDATED_NUM_CLIENT
+        defaultClientShouldNotBeFound("numClient.equals=" + UPDATED_NUM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNumClientIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where numClient not equals to DEFAULT_NUM_CLIENT
+        defaultClientShouldNotBeFound("numClient.notEquals=" + DEFAULT_NUM_CLIENT);
+
+        // Get all the clientList where numClient not equals to UPDATED_NUM_CLIENT
+        defaultClientShouldBeFound("numClient.notEquals=" + UPDATED_NUM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNumClientIsInShouldWork() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where numClient in DEFAULT_NUM_CLIENT or UPDATED_NUM_CLIENT
+        defaultClientShouldBeFound("numClient.in=" + DEFAULT_NUM_CLIENT + "," + UPDATED_NUM_CLIENT);
+
+        // Get all the clientList where numClient equals to UPDATED_NUM_CLIENT
+        defaultClientShouldNotBeFound("numClient.in=" + UPDATED_NUM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNumClientIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where numClient is not null
+        defaultClientShouldBeFound("numClient.specified=true");
+
+        // Get all the clientList where numClient is null
+        defaultClientShouldNotBeFound("numClient.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNumClientContainsSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where numClient contains DEFAULT_NUM_CLIENT
+        defaultClientShouldBeFound("numClient.contains=" + DEFAULT_NUM_CLIENT);
+
+        // Get all the clientList where numClient contains UPDATED_NUM_CLIENT
+        defaultClientShouldNotBeFound("numClient.contains=" + UPDATED_NUM_CLIENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientsByNumClientNotContainsSomething() throws Exception {
+        // Initialize the database
+        clientRepository.saveAndFlush(client);
+
+        // Get all the clientList where numClient does not contain DEFAULT_NUM_CLIENT
+        defaultClientShouldNotBeFound("numClient.doesNotContain=" + DEFAULT_NUM_CLIENT);
+
+        // Get all the clientList where numClient does not contain UPDATED_NUM_CLIENT
+        defaultClientShouldBeFound("numClient.doesNotContain=" + UPDATED_NUM_CLIENT);
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultClientShouldBeFound(String filter) throws Exception {
+        restClientMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(client.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nomClient").value(hasItem(DEFAULT_NOM_CLIENT)))
+            .andExpect(jsonPath("$.[*].prenomClient").value(hasItem(DEFAULT_PRENOM_CLIENT)))
+            .andExpect(jsonPath("$.[*].adresseClient").value(hasItem(DEFAULT_ADRESSE_CLIENT)))
+            .andExpect(jsonPath("$.[*].numClient").value(hasItem(DEFAULT_NUM_CLIENT)));
+
+        // Check, that the count call also returns 1
+        restClientMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultClientShouldNotBeFound(String filter) throws Exception {
+        restClientMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restClientMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

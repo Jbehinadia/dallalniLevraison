@@ -18,8 +18,6 @@ public class ResponsableRestaurantDTO implements Serializable {
 
     private String numResponsable;
 
-    private RestaurantDTO restaurant;
-
     public Long getId() {
         return id;
     }
@@ -60,14 +58,6 @@ public class ResponsableRestaurantDTO implements Serializable {
         this.numResponsable = numResponsable;
     }
 
-    public RestaurantDTO getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(RestaurantDTO restaurant) {
-        this.restaurant = restaurant;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -98,7 +88,6 @@ public class ResponsableRestaurantDTO implements Serializable {
             ", prenomResponsable='" + getPrenomResponsable() + "'" +
             ", adresseResponsable='" + getAdresseResponsable() + "'" +
             ", numResponsable='" + getNumResponsable() + "'" +
-            ", restaurant=" + getRestaurant() +
             "}";
     }
 }

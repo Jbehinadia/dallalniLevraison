@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.MenuRepository;
+import com.mycompany.myapp.service.MenuQueryService;
 import com.mycompany.myapp.service.MenuService;
+import com.mycompany.myapp.service.criteria.MenuCriteria;
 import com.mycompany.myapp.service.dto.MenuDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,9 +43,12 @@ public class MenuResource {
 
     private final MenuRepository menuRepository;
 
-    public MenuResource(MenuService menuService, MenuRepository menuRepository) {
+    private final MenuQueryService menuQueryService;
+
+    public MenuResource(MenuService menuService, MenuRepository menuRepository, MenuQueryService menuQueryService) {
         this.menuService = menuService;
         this.menuRepository = menuRepository;
+        this.menuQueryService = menuQueryService;
     }
 
     /**
@@ -138,14 +143,27 @@ public class MenuResource {
      * {@code GET  /menus} : get all the menus.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of menus in body.
      */
     @GetMapping("/menus")
-    public ResponseEntity<List<MenuDTO>> getAllMenus(Pageable pageable) {
-        log.debug("REST request to get a page of Menus");
-        Page<MenuDTO> page = menuService.findAll(pageable);
+    public ResponseEntity<List<MenuDTO>> getAllMenus(MenuCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Menus by criteria: {}", criteria);
+        Page<MenuDTO> page = menuQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /menus/count} : count all the menus.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/menus/count")
+    public ResponseEntity<Long> countMenus(MenuCriteria criteria) {
+        log.debug("REST request to count Menus by criteria: {}", criteria);
+        return ResponseEntity.ok().body(menuQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.CommandeDetailsRepository;
+import com.mycompany.myapp.service.CommandeDetailsQueryService;
 import com.mycompany.myapp.service.CommandeDetailsService;
+import com.mycompany.myapp.service.criteria.CommandeDetailsCriteria;
 import com.mycompany.myapp.service.dto.CommandeDetailsDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,9 +43,16 @@ public class CommandeDetailsResource {
 
     private final CommandeDetailsRepository commandeDetailsRepository;
 
-    public CommandeDetailsResource(CommandeDetailsService commandeDetailsService, CommandeDetailsRepository commandeDetailsRepository) {
+    private final CommandeDetailsQueryService commandeDetailsQueryService;
+
+    public CommandeDetailsResource(
+        CommandeDetailsService commandeDetailsService,
+        CommandeDetailsRepository commandeDetailsRepository,
+        CommandeDetailsQueryService commandeDetailsQueryService
+    ) {
         this.commandeDetailsService = commandeDetailsService;
         this.commandeDetailsRepository = commandeDetailsRepository;
+        this.commandeDetailsQueryService = commandeDetailsQueryService;
     }
 
     /**
@@ -141,14 +150,27 @@ public class CommandeDetailsResource {
      * {@code GET  /commande-details} : get all the commandeDetails.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of commandeDetails in body.
      */
     @GetMapping("/commande-details")
-    public ResponseEntity<List<CommandeDetailsDTO>> getAllCommandeDetails(Pageable pageable) {
-        log.debug("REST request to get a page of CommandeDetails");
-        Page<CommandeDetailsDTO> page = commandeDetailsService.findAll(pageable);
+    public ResponseEntity<List<CommandeDetailsDTO>> getAllCommandeDetails(CommandeDetailsCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get CommandeDetails by criteria: {}", criteria);
+        Page<CommandeDetailsDTO> page = commandeDetailsQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /commande-details/count} : count all the commandeDetails.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/commande-details/count")
+    public ResponseEntity<Long> countCommandeDetails(CommandeDetailsCriteria criteria) {
+        log.debug("REST request to count CommandeDetails by criteria: {}", criteria);
+        return ResponseEntity.ok().body(commandeDetailsQueryService.countByCriteria(criteria));
     }
 
     /**

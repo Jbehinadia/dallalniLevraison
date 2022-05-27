@@ -21,18 +21,18 @@ public class CommandeDetails implements Serializable {
     @Column(name = "prix")
     private Double prix;
 
-    @Column(name = "qty")
-    private Integer qty;
-
     @Column(name = "etat")
     private String etat;
 
+    @Column(name = "qte")
+    private Double qte;
+
     @ManyToOne
-    @JsonIgnoreProperties(value = { "commandeDetails", "livreur", "client" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "livreur", "client" }, allowSetters = true)
     private Commande commande;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "commandeDetails", "menu", "typePlat" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "menu", "typePlat" }, allowSetters = true)
     private Plat plat;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -63,19 +63,6 @@ public class CommandeDetails implements Serializable {
         this.prix = prix;
     }
 
-    public Integer getQty() {
-        return this.qty;
-    }
-
-    public CommandeDetails qty(Integer qty) {
-        this.setQty(qty);
-        return this;
-    }
-
-    public void setQty(Integer qty) {
-        this.qty = qty;
-    }
-
     public String getEtat() {
         return this.etat;
     }
@@ -87,6 +74,19 @@ public class CommandeDetails implements Serializable {
 
     public void setEtat(String etat) {
         this.etat = etat;
+    }
+
+    public Double getQte() {
+        return this.qte;
+    }
+
+    public CommandeDetails qte(Double qte) {
+        this.setQte(qte);
+        return this;
+    }
+
+    public void setQte(Double qte) {
+        this.qte = qte;
     }
 
     public Commande getCommande() {
@@ -140,8 +140,8 @@ public class CommandeDetails implements Serializable {
         return "CommandeDetails{" +
             "id=" + getId() +
             ", prix=" + getPrix() +
-            ", qty=" + getQty() +
             ", etat='" + getEtat() + "'" +
+            ", qte=" + getQte() +
             "}";
     }
 }

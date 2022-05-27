@@ -25,32 +25,28 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "commandeDetails",
-      "otherEntityRelationshipName": "plat",
-      "relationshipName": "commandeDetails"
-    },
-    {
-      "relationshipType": "many-to-one",
+      "otherEntityField": "nomMenu",
       "otherEntityName": "menu",
       "otherEntityRelationshipName": "plat",
-      "relationshipName": "menu"
+      "relationshipName": "menu",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
+      "otherEntityField": "type",
       "otherEntityName": "typePlat",
       "otherEntityRelationshipName": "plat",
-      "relationshipName": "typePlat"
+      "relationshipName": "typePlat",
+      "relationshipType": "many-to-one"
     }
   ],
+  "changelogDate": "20220516214143",
   "entityTableName": "plat",
-  "dto": "mapstruct",
+  "applications": "*",
   "pagination": "pagination",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "dto": "mapstruct",
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": "*",
-  "changelogDate": "20220527094038"
+  "jpaMetamodelFiltering": true
 }

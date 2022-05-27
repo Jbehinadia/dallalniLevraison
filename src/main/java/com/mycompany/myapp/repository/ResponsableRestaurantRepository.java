@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ResponsableRestaurantRepository extends JpaRepository<ResponsableRestaurant, Long> {}
+public interface ResponsableRestaurantRepository
+    extends JpaRepository<ResponsableRestaurant, Long>, JpaSpecificationExecutor<ResponsableRestaurant> {}

@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.TypePlatRepository;
+import com.mycompany.myapp.service.TypePlatQueryService;
 import com.mycompany.myapp.service.TypePlatService;
+import com.mycompany.myapp.service.criteria.TypePlatCriteria;
 import com.mycompany.myapp.service.dto.TypePlatDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,9 +43,16 @@ public class TypePlatResource {
 
     private final TypePlatRepository typePlatRepository;
 
-    public TypePlatResource(TypePlatService typePlatService, TypePlatRepository typePlatRepository) {
+    private final TypePlatQueryService typePlatQueryService;
+
+    public TypePlatResource(
+        TypePlatService typePlatService,
+        TypePlatRepository typePlatRepository,
+        TypePlatQueryService typePlatQueryService
+    ) {
         this.typePlatService = typePlatService;
         this.typePlatRepository = typePlatRepository;
+        this.typePlatQueryService = typePlatQueryService;
     }
 
     /**
@@ -140,14 +149,27 @@ public class TypePlatResource {
      * {@code GET  /type-plats} : get all the typePlats.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of typePlats in body.
      */
     @GetMapping("/type-plats")
-    public ResponseEntity<List<TypePlatDTO>> getAllTypePlats(Pageable pageable) {
-        log.debug("REST request to get a page of TypePlats");
-        Page<TypePlatDTO> page = typePlatService.findAll(pageable);
+    public ResponseEntity<List<TypePlatDTO>> getAllTypePlats(TypePlatCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get TypePlats by criteria: {}", criteria);
+        Page<TypePlatDTO> page = typePlatQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /type-plats/count} : count all the typePlats.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/type-plats/count")
+    public ResponseEntity<Long> countTypePlats(TypePlatCriteria criteria) {
+        log.debug("REST request to count TypePlats by criteria: {}", criteria);
+        return ResponseEntity.ok().body(typePlatQueryService.countByCriteria(criteria));
     }
 
     /**

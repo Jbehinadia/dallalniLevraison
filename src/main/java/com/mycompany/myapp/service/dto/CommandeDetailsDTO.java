@@ -12,9 +12,9 @@ public class CommandeDetailsDTO implements Serializable {
 
     private Double prix;
 
-    private Integer qty;
-
     private String etat;
+
+    private Double qte;
 
     private CommandeDTO commande;
 
@@ -36,20 +36,20 @@ public class CommandeDetailsDTO implements Serializable {
         this.prix = prix;
     }
 
-    public Integer getQty() {
-        return qty;
-    }
-
-    public void setQty(Integer qty) {
-        this.qty = qty;
-    }
-
     public String getEtat() {
         return etat;
     }
 
     public void setEtat(String etat) {
         this.etat = etat;
+    }
+
+    public Double getQte() {
+        return qte;
+    }
+
+    public void setQte(Double qte) {
+        this.qte = qte;
     }
 
     public CommandeDTO getCommande() {
@@ -95,8 +95,8 @@ public class CommandeDetailsDTO implements Serializable {
         return "CommandeDetailsDTO{" +
             "id=" + getId() +
             ", prix=" + getPrix() +
-            ", qty=" + getQty() +
             ", etat='" + getEtat() + "'" +
+            ", qte=" + getQte() +
             ", commande=" + getCommande() +
             ", plat=" + getPlat() +
             "}";

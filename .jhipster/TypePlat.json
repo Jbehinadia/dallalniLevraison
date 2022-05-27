@@ -11,22 +11,15 @@
       "fieldTypeBlobContent": "text"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "plat",
-      "otherEntityRelationshipName": "typePlat",
-      "relationshipName": "plat"
-    }
-  ],
+  "changelogDate": "20220516214144",
   "entityTableName": "type_plat",
-  "dto": "mapstruct",
+  "applications": "*",
   "pagination": "pagination",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "dto": "mapstruct",
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": "*",
-  "changelogDate": "20220527094039"
+  "jpaMetamodelFiltering": true,
+  "relationships": []
 }

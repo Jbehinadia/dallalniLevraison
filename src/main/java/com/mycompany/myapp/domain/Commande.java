@@ -1,10 +1,7 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -45,16 +42,10 @@ public class Commande implements Serializable {
     @Column(name = "date_sortie")
     private Instant dateSortie;
 
-    @OneToMany(mappedBy = "commande")
-    @JsonIgnoreProperties(value = { "commande", "plat" }, allowSetters = true)
-    private Set<CommandeDetails> commandeDetails = new HashSet<>();
-
     @ManyToOne
-    @JsonIgnoreProperties(value = { "commandes" }, allowSetters = true)
     private Livreur livreur;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "commandes" }, allowSetters = true)
     private Client client;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -174,37 +165,6 @@ public class Commande implements Serializable {
 
     public void setDateSortie(Instant dateSortie) {
         this.dateSortie = dateSortie;
-    }
-
-    public Set<CommandeDetails> getCommandeDetails() {
-        return this.commandeDetails;
-    }
-
-    public void setCommandeDetails(Set<CommandeDetails> commandeDetails) {
-        if (this.commandeDetails != null) {
-            this.commandeDetails.forEach(i -> i.setCommande(null));
-        }
-        if (commandeDetails != null) {
-            commandeDetails.forEach(i -> i.setCommande(this));
-        }
-        this.commandeDetails = commandeDetails;
-    }
-
-    public Commande commandeDetails(Set<CommandeDetails> commandeDetails) {
-        this.setCommandeDetails(commandeDetails);
-        return this;
-    }
-
-    public Commande addCommandeDetails(CommandeDetails commandeDetails) {
-        this.commandeDetails.add(commandeDetails);
-        commandeDetails.setCommande(this);
-        return this;
-    }
-
-    public Commande removeCommandeDetails(CommandeDetails commandeDetails) {
-        this.commandeDetails.remove(commandeDetails);
-        commandeDetails.setCommande(null);
-        return this;
     }
 
     public Livreur getLivreur() {

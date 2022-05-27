@@ -51,7 +51,7 @@
               [ngValue]="menuOption.id === editForm.get('menu')!.value?.id ? editForm.get('menu')!.value : menuOption"
               *ngFor="let menuOption of menusSharedCollection; trackBy: trackMenuById"
             >
-              {{ menuOption.id }}
+              {{ menuOption.nomMenu }}
             </option>
           </select>
         </div>
@@ -64,7 +64,7 @@
               [ngValue]="typePlatOption.id === editForm.get('typePlat')!.value?.id ? editForm.get('typePlat')!.value : typePlatOption"
               *ngFor="let typePlatOption of typePlatsSharedCollection; trackBy: trackTypePlatById"
             >
-              {{ typePlatOption.id }}
+              {{ typePlatOption.type }}
             </option>
           </select>
         </div>

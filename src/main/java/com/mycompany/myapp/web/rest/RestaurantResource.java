@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.RestaurantRepository;
+import com.mycompany.myapp.service.RestaurantQueryService;
 import com.mycompany.myapp.service.RestaurantService;
+import com.mycompany.myapp.service.criteria.RestaurantCriteria;
 import com.mycompany.myapp.service.dto.RestaurantDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,9 +43,16 @@ public class RestaurantResource {
 
     private final RestaurantRepository restaurantRepository;
 
-    public RestaurantResource(RestaurantService restaurantService, RestaurantRepository restaurantRepository) {
+    private final RestaurantQueryService restaurantQueryService;
+
+    public RestaurantResource(
+        RestaurantService restaurantService,
+        RestaurantRepository restaurantRepository,
+        RestaurantQueryService restaurantQueryService
+    ) {
         this.restaurantService = restaurantService;
         this.restaurantRepository = restaurantRepository;
+        this.restaurantQueryService = restaurantQueryService;
     }
 
     /**
@@ -140,14 +149,27 @@ public class RestaurantResource {
      * {@code GET  /restaurants} : get all the restaurants.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of restaurants in body.
      */
     @GetMapping("/restaurants")
-    public ResponseEntity<List<RestaurantDTO>> getAllRestaurants(Pageable pageable) {
-        log.debug("REST request to get a page of Restaurants");
-        Page<RestaurantDTO> page = restaurantService.findAll(pageable);
+    public ResponseEntity<List<RestaurantDTO>> getAllRestaurants(RestaurantCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Restaurants by criteria: {}", criteria);
+        Page<RestaurantDTO> page = restaurantQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /restaurants/count} : count all the restaurants.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/restaurants/count")
+    public ResponseEntity<Long> countRestaurants(RestaurantCriteria criteria) {
+        log.debug("REST request to count Restaurants by criteria: {}", criteria);
+        return ResponseEntity.ok().body(restaurantQueryService.countByCriteria(criteria));
     }
 
     /**

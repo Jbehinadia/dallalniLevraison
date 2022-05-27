@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.TypePlat;
 import com.mycompany.myapp.repository.TypePlatRepository;
+import com.mycompany.myapp.service.criteria.TypePlatCriteria;
 import com.mycompany.myapp.service.dto.TypePlatDTO;
 import com.mycompany.myapp.service.mapper.TypePlatMapper;
 import java.util.List;
@@ -163,6 +164,141 @@ class TypePlatResourceIT {
             .andExpect(jsonPath("$.id").value(typePlat.getId().intValue()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
             .andExpect(jsonPath("$.imagePath").value(DEFAULT_IMAGE_PATH.toString()));
+    }
+
+    @Test
+    @Transactional
+    void getTypePlatsByIdFiltering() throws Exception {
+        // Initialize the database
+        typePlatRepository.saveAndFlush(typePlat);
+
+        Long id = typePlat.getId();
+
+        defaultTypePlatShouldBeFound("id.equals=" + id);
+        defaultTypePlatShouldNotBeFound("id.notEquals=" + id);
+
+        defaultTypePlatShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultTypePlatShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultTypePlatShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultTypePlatShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypePlatsByTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        typePlatRepository.saveAndFlush(typePlat);
+
+        // Get all the typePlatList where type equals to DEFAULT_TYPE
+        defaultTypePlatShouldBeFound("type.equals=" + DEFAULT_TYPE);
+
+        // Get all the typePlatList where type equals to UPDATED_TYPE
+        defaultTypePlatShouldNotBeFound("type.equals=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypePlatsByTypeIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        typePlatRepository.saveAndFlush(typePlat);
+
+        // Get all the typePlatList where type not equals to DEFAULT_TYPE
+        defaultTypePlatShouldNotBeFound("type.notEquals=" + DEFAULT_TYPE);
+
+        // Get all the typePlatList where type not equals to UPDATED_TYPE
+        defaultTypePlatShouldBeFound("type.notEquals=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypePlatsByTypeIsInShouldWork() throws Exception {
+        // Initialize the database
+        typePlatRepository.saveAndFlush(typePlat);
+
+        // Get all the typePlatList where type in DEFAULT_TYPE or UPDATED_TYPE
+        defaultTypePlatShouldBeFound("type.in=" + DEFAULT_TYPE + "," + UPDATED_TYPE);
+
+        // Get all the typePlatList where type equals to UPDATED_TYPE
+        defaultTypePlatShouldNotBeFound("type.in=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypePlatsByTypeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        typePlatRepository.saveAndFlush(typePlat);
+
+        // Get all the typePlatList where type is not null
+        defaultTypePlatShouldBeFound("type.specified=true");
+
+        // Get all the typePlatList where type is null
+        defaultTypePlatShouldNotBeFound("type.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTypePlatsByTypeContainsSomething() throws Exception {
+        // Initialize the database
+        typePlatRepository.saveAndFlush(typePlat);
+
+        // Get all the typePlatList where type contains DEFAULT_TYPE
+        defaultTypePlatShouldBeFound("type.contains=" + DEFAULT_TYPE);
+
+        // Get all the typePlatList where type contains UPDATED_TYPE
+        defaultTypePlatShouldNotBeFound("type.contains=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypePlatsByTypeNotContainsSomething() throws Exception {
+        // Initialize the database
+        typePlatRepository.saveAndFlush(typePlat);
+
+        // Get all the typePlatList where type does not contain DEFAULT_TYPE
+        defaultTypePlatShouldNotBeFound("type.doesNotContain=" + DEFAULT_TYPE);
+
+        // Get all the typePlatList where type does not contain UPDATED_TYPE
+        defaultTypePlatShouldBeFound("type.doesNotContain=" + UPDATED_TYPE);
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultTypePlatShouldBeFound(String filter) throws Exception {
+        restTypePlatMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(typePlat.getId().intValue())))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
+            .andExpect(jsonPath("$.[*].imagePath").value(hasItem(DEFAULT_IMAGE_PATH.toString())));
+
+        // Check, that the count call also returns 1
+        restTypePlatMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultTypePlatShouldNotBeFound(String filter) throws Exception {
+        restTypePlatMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restTypePlatMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

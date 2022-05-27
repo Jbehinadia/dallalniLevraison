@@ -37,13 +37,13 @@
         <dt><span>Menu</span></dt>
         <dd>
           <div *ngIf="plat.menu">
-            <a [routerLink]="['/menu', plat.menu?.id, 'view']">{{ plat.menu?.id }}</a>
+            <a [routerLink]="['/menu', plat.menu?.id, 'view']">{{ plat.menu?.nomMenu }}</a>
           </div>
         </dd>
         <dt><span>Type Plat</span></dt>
         <dd>
           <div *ngIf="plat.typePlat">
-            <a [routerLink]="['/type-plat', plat.typePlat?.id, 'view']">{{ plat.typePlat?.id }}</a>
+            <a [routerLink]="['/type-plat', plat.typePlat?.id, 'view']">{{ plat.typePlat?.type }}</a>
           </div>
         </dd>
       </dl>

@@ -49,7 +49,7 @@
         <dt><span>Livreur</span></dt>
         <dd>
           <div *ngIf="commande.livreur">
-            <a [routerLink]="['/livreur', commande.livreur?.id, 'view']">{{ commande.livreur?.id }}</a>
+            <a [routerLink]="['/livreur', commande.livreur?.id, 'view']">{{ commande.livreur?.nomLivreur }}</a>
           </div>
         </dd>
         <dt><span>Client</span></dt>

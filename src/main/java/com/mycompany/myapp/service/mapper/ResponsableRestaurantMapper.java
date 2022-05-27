@@ -7,8 +7,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ResponsableRestaurant} and its DTO {@link ResponsableRestaurantDTO}.
  */
-@Mapper(componentModel = "spring", uses = { RestaurantMapper.class })
+@Mapper(componentModel = "spring", uses = {})
 public interface ResponsableRestaurantMapper extends EntityMapper<ResponsableRestaurantDTO, ResponsableRestaurant> {
-    @Mapping(target = "restaurant", source = "restaurant", qualifiedByName = "id")
-    ResponsableRestaurantDTO toDto(ResponsableRestaurant s);
+    @Named("nomResponsable")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "nomResponsable", source = "nomResponsable")
+    ResponsableRestaurantDTO toDtoNomResponsable(ResponsableRestaurant responsableRestaurant);
 }

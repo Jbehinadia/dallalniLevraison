@@ -18,13 +18,13 @@
         <dd>
           <span>{{ commandeDetails.prix }}</span>
         </dd>
-        <dt><span>Qty</span></dt>
-        <dd>
-          <span>{{ commandeDetails.qty }}</span>
-        </dd>
         <dt><span>Etat</span></dt>
         <dd>
           <span>{{ commandeDetails.etat }}</span>
+        </dd>
+        <dt><span>Qte</span></dt>
+        <dd>
+          <span>{{ commandeDetails.qte }}</span>
         </dd>
         <dt><span>Commande</span></dt>
         <dd>
@@ -35,7 +35,7 @@
         <dt><span>Plat</span></dt>
         <dd>
           <div *ngIf="commandeDetails.plat">
-            <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.id }}</a>
+            <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.nomPlat }}</a>
           </div>
         </dd>
       </dl>

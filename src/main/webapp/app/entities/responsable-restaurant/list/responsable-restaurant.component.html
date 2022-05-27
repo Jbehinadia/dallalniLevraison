@@ -37,7 +37,6 @@
           <th scope="col" jhiSortBy="prenomResponsable"><span>Prenom Responsable</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="adresseResponsable"><span>Adresse Responsable</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="numResponsable"><span>Num Responsable</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="restaurant.id"><span>Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -50,11 +49,6 @@
           <td>{{ responsableRestaurant.prenomResponsable }}</td>
           <td>{{ responsableRestaurant.adresseResponsable }}</td>
           <td>{{ responsableRestaurant.numResponsable }}</td>
-          <td>
-            <div *ngIf="responsableRestaurant.restaurant">
-              <a [routerLink]="['/restaurant', responsableRestaurant.restaurant?.id, 'view']">{{ responsableRestaurant.restaurant?.id }}</a>
-            </div>
-          </td>
           <td class="text-right">
             <div class="btn-group">
               <button

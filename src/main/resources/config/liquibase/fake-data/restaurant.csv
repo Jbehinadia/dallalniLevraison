@@ -1,11 +1,2 @@
-id;nom_restaurant;adresse_restaurant;num_restaurant
-1;initiative;Riel projection Rubber;Tunisian connect embrace
-2;heuristic payment;Compatible Avon revolutionize;Account Mouse b
-3;SMTP Computer e-markets;Dominique;Vision-oriented productize
-4;b;Designer;transmit b transitional
-5;grey deposit deposit;synthesizing white integrated;Aquitaine revolutionize de
-6;Avon relationships compress;Cedi leverage Plastic;Credit
-7;connect;transmitting b;maroon Euro
-8;c RAM;Shoes;Producteur payment
-9;system;Account Côte deposit;Liberia Buckinghamshire
-10;silver;haptic;synergies invoice open-source
+id;nom_restaurant;adresse_restaurant;num_restaurant;date_ouverture;date_fermiture
+

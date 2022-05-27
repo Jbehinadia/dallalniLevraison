@@ -12,24 +12,33 @@
     {
       "fieldName": "numRestaurant",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "dateOuverture",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "dateFermiture",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "menu",
+      "otherEntityField": "nomResponsable",
+      "otherEntityName": "ResponsableRestaurant",
       "otherEntityRelationshipName": "restaurant",
-      "relationshipName": "menu"
+      "relationshipName": "ResponsableRestaurant",
+      "relationshipType": "many-to-one"
     }
   ],
+  "changelogDate": "20220516214140",
   "entityTableName": "restaurant",
-  "dto": "mapstruct",
+  "applications": "*",
   "pagination": "pagination",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "dto": "mapstruct",
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": "*",
-  "changelogDate": "20220527094035"
+  "jpaMetamodelFiltering": true
 }

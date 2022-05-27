@@ -9,7 +9,7 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = { LivreurMapper.class, ClientMapper.class })
 public interface CommandeMapper extends EntityMapper<CommandeDTO, Commande> {
-    @Mapping(target = "livreur", source = "livreur", qualifiedByName = "id")
+    @Mapping(target = "livreur", source = "livreur", qualifiedByName = "nomLivreur")
     @Mapping(target = "client", source = "client", qualifiedByName = "id")
     CommandeDTO toDto(Commande s);
 

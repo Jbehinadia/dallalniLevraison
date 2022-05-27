@@ -36,32 +36,27 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "commandeDetails",
-      "otherEntityRelationshipName": "commande",
-      "relationshipName": "commandeDetails"
-    },
-    {
-      "relationshipType": "many-to-one",
+      "otherEntityField": "nomLivreur",
       "otherEntityName": "livreur",
       "otherEntityRelationshipName": "commande",
-      "relationshipName": "livreur"
+      "relationshipName": "livreur",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "client",
       "otherEntityRelationshipName": "commande",
-      "relationshipName": "client"
+      "relationshipName": "client",
+      "relationshipType": "many-to-one"
     }
   ],
+  "changelogDate": "20220516214145",
   "entityTableName": "commande",
-  "dto": "mapstruct",
+  "applications": "*",
   "pagination": "pagination",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "dto": "mapstruct",
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": "*",
-  "changelogDate": "20220527094040"
+  "jpaMetamodelFiltering": true
 }

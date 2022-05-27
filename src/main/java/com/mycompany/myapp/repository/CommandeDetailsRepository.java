@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CommandeDetailsRepository extends JpaRepository<CommandeDetails, Long> {}
+public interface CommandeDetailsRepository extends JpaRepository<CommandeDetails, Long>, JpaSpecificationExecutor<CommandeDetails> {}

@@ -9,8 +9,9 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface TypePlatMapper extends EntityMapper<TypePlatDTO, TypePlat> {
-    @Named("id")
+    @Named("type")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    TypePlatDTO toDtoId(TypePlat typePlat);
+    @Mapping(target = "type", source = "type")
+    TypePlatDTO toDtoType(TypePlat typePlat);
 }

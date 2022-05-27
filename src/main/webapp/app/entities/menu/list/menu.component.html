@@ -34,7 +34,7 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
           <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="nomMenu"><span>Nom Menu</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="restaurant.id"><span>Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="restaurant.nomRestaurant"><span>Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -46,7 +46,7 @@
           <td>{{ menu.nomMenu }}</td>
           <td>
             <div *ngIf="menu.restaurant">
-              <a [routerLink]="['/restaurant', menu.restaurant?.id, 'view']">{{ menu.restaurant?.id }}</a>
+              <a [routerLink]="['/restaurant', menu.restaurant?.id, 'view']">{{ menu.restaurant?.nomRestaurant }}</a>
             </div>
           </td>
           <td class="text-right">

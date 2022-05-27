@@ -10,6 +10,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = { CommandeMapper.class, PlatMapper.class })
 public interface CommandeDetailsMapper extends EntityMapper<CommandeDetailsDTO, CommandeDetails> {
     @Mapping(target = "commande", source = "commande", qualifiedByName = "id")
-    @Mapping(target = "plat", source = "plat", qualifiedByName = "id")
+    @Mapping(target = "plat", source = "plat", qualifiedByName = "nomPlat")
     CommandeDetailsDTO toDto(CommandeDetails s);
 }

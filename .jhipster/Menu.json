@@ -8,26 +8,21 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "plat",
-      "otherEntityRelationshipName": "menu",
-      "relationshipName": "plat"
-    },
-    {
-      "relationshipType": "many-to-one",
+      "otherEntityField": "nomRestaurant",
       "otherEntityName": "restaurant",
       "otherEntityRelationshipName": "menu",
-      "relationshipName": "restaurant"
+      "relationshipName": "restaurant",
+      "relationshipType": "many-to-one"
     }
   ],
+  "changelogDate": "20220516214142",
   "entityTableName": "menu",
-  "dto": "mapstruct",
+  "applications": "*",
   "pagination": "pagination",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "dto": "mapstruct",
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": "*",
-  "changelogDate": "20220527094037"
+  "jpaMetamodelFiltering": true
 }

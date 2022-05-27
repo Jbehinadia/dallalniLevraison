@@ -1,6 +1,5 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -8,7 +7,7 @@ import javax.persistence.*;
  * A ResponsableRestaurant.
  */
 @Entity
-@Table(name = "responsable_restaurant")
+@Table(name = "ResponsableRestaurant")
 public class ResponsableRestaurant implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,11 +28,6 @@ public class ResponsableRestaurant implements Serializable {
 
     @Column(name = "num_responsable")
     private String numResponsable;
-
-    @JsonIgnoreProperties(value = { "menus" }, allowSetters = true)
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Restaurant restaurant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -100,19 +94,6 @@ public class ResponsableRestaurant implements Serializable {
 
     public void setNumResponsable(String numResponsable) {
         this.numResponsable = numResponsable;
-    }
-
-    public Restaurant getRestaurant() {
-        return this.restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
-    public ResponsableRestaurant restaurant(Restaurant restaurant) {
-        this.setRestaurant(restaurant);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -17,13 +17,13 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_qty">Qty</label>
-          <input type="number" class="form-control" name="qty" id="field_qty" data-cy="qty" formControlName="qty" />
+          <label class="form-control-label" for="field_etat">Etat</label>
+          <input type="text" class="form-control" name="etat" id="field_etat" data-cy="etat" formControlName="etat" />
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_etat">Etat</label>
-          <input type="text" class="form-control" name="etat" id="field_etat" data-cy="etat" formControlName="etat" />
+          <label class="form-control-label" for="field_qte">Qte</label>
+          <input type="number" class="form-control" name="qte" id="field_qte" data-cy="qte" formControlName="qte" />
         </div>
 
         <div class="form-group">
@@ -47,7 +47,7 @@
               [ngValue]="platOption.id === editForm.get('plat')!.value?.id ? editForm.get('plat')!.value : platOption"
               *ngFor="let platOption of platsSharedCollection; trackBy: trackPlatById"
             >
-              {{ platOption.id }}
+              {{ platOption.nomPlat }}
             </option>
           </select>
         </div>

@@ -21,7 +21,7 @@
         <dt><span>Restaurant</span></dt>
         <dd>
           <div *ngIf="menu.restaurant">
-            <a [routerLink]="['/restaurant', menu.restaurant?.id, 'view']">{{ menu.restaurant?.id }}</a>
+            <a [routerLink]="['/restaurant', menu.restaurant?.id, 'view']">{{ menu.restaurant?.nomRestaurant }}</a>
           </div>
         </dd>
       </dl>

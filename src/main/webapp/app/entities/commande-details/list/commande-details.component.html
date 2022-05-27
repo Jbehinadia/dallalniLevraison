@@ -34,10 +34,10 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
           <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="prix"><span>Prix</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="qty"><span>Qty</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="etat"><span>Etat</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="qte"><span>Qte</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="commande.id"><span>Commande</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="plat.id"><span>Plat</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="plat.nomPlat"><span>Plat</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -47,8 +47,8 @@
             <a [routerLink]="['/commande-details', commandeDetails.id, 'view']">{{ commandeDetails.id }}</a>
           </td>
           <td>{{ commandeDetails.prix }}</td>
-          <td>{{ commandeDetails.qty }}</td>
           <td>{{ commandeDetails.etat }}</td>
+          <td>{{ commandeDetails.qte }}</td>
           <td>
             <div *ngIf="commandeDetails.commande">
               <a [routerLink]="['/commande', commandeDetails.commande?.id, 'view']">{{ commandeDetails.commande?.id }}</a>
@@ -56,7 +56,7 @@
           </td>
           <td>
             <div *ngIf="commandeDetails.plat">
-              <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.id }}</a>
+              <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.nomPlat }}</a>
             </div>
           </td>
           <td class="text-right">

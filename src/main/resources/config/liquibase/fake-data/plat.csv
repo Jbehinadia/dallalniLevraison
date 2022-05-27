@@ -1,11 +1,2 @@
 id;nom_plat;image_path;prix;remise_perc;remice_val
-1;recontextualize;../fake-data/blob/hipster.txt;23326;76517;32608
-2;synergistic protocol;../fake-data/blob/hipster.txt;81803;43318;72903
-3;Paix hacking;../fake-data/blob/hipster.txt;71051;1846;24962
-4;c Micronésie;../fake-data/blob/hipster.txt;64636;14922;99304
-5;Account;../fake-data/blob/hipster.txt;71707;32511;98822
-6;extranet Bedfordshire;../fake-data/blob/hipster.txt;19225;47571;78811
-7;tan;../fake-data/blob/hipster.txt;24652;74678;25965
-8;Limousin;../fake-data/blob/hipster.txt;70505;89552;96065
-9;sensor;../fake-data/blob/hipster.txt;18772;2078;5783
-10;input Designer Poitou-Charentes;../fake-data/blob/hipster.txt;97934;72162;78511
+

@@ -2,8 +2,6 @@ package com.mycompany.myapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -23,12 +21,8 @@ public class Menu implements Serializable {
     @Column(name = "nom_menu")
     private String nomMenu;
 
-    @OneToMany(mappedBy = "menu")
-    @JsonIgnoreProperties(value = { "commandeDetails", "menu", "typePlat" }, allowSetters = true)
-    private Set<Plat> plats = new HashSet<>();
-
     @ManyToOne
-    @JsonIgnoreProperties(value = { "menus" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "responsableRestaurant" }, allowSetters = true)
     private Restaurant restaurant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -57,37 +51,6 @@ public class Menu implements Serializable {
 
     public void setNomMenu(String nomMenu) {
         this.nomMenu = nomMenu;
-    }
-
-    public Set<Plat> getPlats() {
-        return this.plats;
-    }
-
-    public void setPlats(Set<Plat> plats) {
-        if (this.plats != null) {
-            this.plats.forEach(i -> i.setMenu(null));
-        }
-        if (plats != null) {
-            plats.forEach(i -> i.setMenu(this));
-        }
-        this.plats = plats;
-    }
-
-    public Menu plats(Set<Plat> plats) {
-        this.setPlats(plats);
-        return this;
-    }
-
-    public Menu addPlat(Plat plat) {
-        this.plats.add(plat);
-        plat.setMenu(this);
-        return this;
-    }
-
-    public Menu removePlat(Plat plat) {
-        this.plats.remove(plat);
-        plat.setMenu(null);
-        return this;
     }
 
     public Restaurant getRestaurant() {

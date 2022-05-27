@@ -22,8 +22,8 @@ describe('CommandeDetails Service', () => {
     elemDefault = {
       id: 0,
       prix: 0,
-      qty: 0,
       etat: 'AAAAAAA',
+      qte: 0,
     };
   });
 
@@ -60,8 +60,8 @@ describe('CommandeDetails Service', () => {
         {
           id: 1,
           prix: 1,
-          qty: 1,
           etat: 'BBBBBB',
+          qte: 1,
         },
         elemDefault
       );
@@ -78,8 +78,8 @@ describe('CommandeDetails Service', () => {
     it('should partial update a CommandeDetails', () => {
       const patchObject = Object.assign(
         {
-          qty: 1,
           etat: 'BBBBBB',
+          qte: 1,
         },
         new CommandeDetails()
       );
@@ -100,8 +100,8 @@ describe('CommandeDetails Service', () => {
         {
           id: 1,
           prix: 1,
-          qty: 1,
           etat: 'BBBBBB',
+          qte: 1,
         },
         elemDefault
       );

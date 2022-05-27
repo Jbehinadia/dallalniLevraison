@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.ResponsableRestaurantRepository;
+import com.mycompany.myapp.service.ResponsableRestaurantQueryService;
 import com.mycompany.myapp.service.ResponsableRestaurantService;
+import com.mycompany.myapp.service.criteria.ResponsableRestaurantCriteria;
 import com.mycompany.myapp.service.dto.ResponsableRestaurantDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,12 +43,16 @@ public class ResponsableRestaurantResource {
 
     private final ResponsableRestaurantRepository responsableRestaurantRepository;
 
+    private final ResponsableRestaurantQueryService responsableRestaurantQueryService;
+
     public ResponsableRestaurantResource(
         ResponsableRestaurantService responsableRestaurantService,
-        ResponsableRestaurantRepository responsableRestaurantRepository
+        ResponsableRestaurantRepository responsableRestaurantRepository,
+        ResponsableRestaurantQueryService responsableRestaurantQueryService
     ) {
         this.responsableRestaurantService = responsableRestaurantService;
         this.responsableRestaurantRepository = responsableRestaurantRepository;
+        this.responsableRestaurantQueryService = responsableRestaurantQueryService;
     }
 
     /**
@@ -145,14 +151,30 @@ public class ResponsableRestaurantResource {
      * {@code GET  /responsable-restaurants} : get all the responsableRestaurants.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of responsableRestaurants in body.
      */
     @GetMapping("/responsable-restaurants")
-    public ResponseEntity<List<ResponsableRestaurantDTO>> getAllResponsableRestaurants(Pageable pageable) {
-        log.debug("REST request to get a page of ResponsableRestaurants");
-        Page<ResponsableRestaurantDTO> page = responsableRestaurantService.findAll(pageable);
+    public ResponseEntity<List<ResponsableRestaurantDTO>> getAllResponsableRestaurants(
+        ResponsableRestaurantCriteria criteria,
+        Pageable pageable
+    ) {
+        log.debug("REST request to get ResponsableRestaurants by criteria: {}", criteria);
+        Page<ResponsableRestaurantDTO> page = responsableRestaurantQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /responsable-restaurants/count} : count all the responsableRestaurants.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/responsable-restaurants/count")
+    public ResponseEntity<Long> countResponsableRestaurants(ResponsableRestaurantCriteria criteria) {
+        log.debug("REST request to count ResponsableRestaurants by criteria: {}", criteria);
+        return ResponseEntity.ok().body(responsableRestaurantQueryService.countByCriteria(criteria));
     }
 
     /**

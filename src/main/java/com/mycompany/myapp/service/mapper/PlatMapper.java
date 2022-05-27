@@ -9,12 +9,13 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = { MenuMapper.class, TypePlatMapper.class })
 public interface PlatMapper extends EntityMapper<PlatDTO, Plat> {
-    @Mapping(target = "menu", source = "menu", qualifiedByName = "id")
-    @Mapping(target = "typePlat", source = "typePlat", qualifiedByName = "id")
+    @Mapping(target = "menu", source = "menu", qualifiedByName = "nomMenu")
+    @Mapping(target = "typePlat", source = "typePlat", qualifiedByName = "type")
     PlatDTO toDto(Plat s);
 
-    @Named("id")
+    @Named("nomPlat")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    PlatDTO toDtoId(Plat plat);
+    @Mapping(target = "nomPlat", source = "nomPlat")
+    PlatDTO toDtoNomPlat(Plat plat);
 }

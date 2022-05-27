@@ -41,6 +41,9 @@
             </column>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
+            <column name="responsable" type="bigint"/>
+            <column name="livreur" type="bigint"/>
+            <column name="client" type="bigint"/>
         </createTable>
 
         <createTable tableName="jhi_authority">

@@ -1,5 +1,4 @@
 import * as dayjs from 'dayjs';
-import { ICommandeDetails } from 'app/entities/commande-details/commande-details.model';
 import { ILivreur } from 'app/entities/livreur/livreur.model';
 import { IClient } from 'app/entities/client/client.model';
 
@@ -13,7 +12,6 @@ export interface ICommande {
   remiceVal?: number | null;
   prixLivreson?: number | null;
   dateSortie?: dayjs.Dayjs | null;
-  commandeDetails?: ICommandeDetails[] | null;
   livreur?: ILivreur | null;
   client?: IClient | null;
 }
@@ -29,7 +27,6 @@ export class Commande implements ICommande {
     public remiceVal?: number | null,
     public prixLivreson?: number | null,
     public dateSortie?: dayjs.Dayjs | null,
-    public commandeDetails?: ICommandeDetails[] | null,
     public livreur?: ILivreur | null,
     public client?: IClient | null
   ) {}

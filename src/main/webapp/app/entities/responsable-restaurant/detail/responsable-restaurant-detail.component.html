@@ -30,12 +30,6 @@
         <dd>
           <span>{{ responsableRestaurant.numResponsable }}</span>
         </dd>
-        <dt><span>Restaurant</span></dt>
-        <dd>
-          <div *ngIf="responsableRestaurant.restaurant">
-            <a [routerLink]="['/restaurant', responsableRestaurant.restaurant?.id, 'view']">{{ responsableRestaurant.restaurant?.id }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

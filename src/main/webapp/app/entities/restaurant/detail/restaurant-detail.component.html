@@ -26,6 +26,22 @@
         <dd>
           <span>{{ restaurant.numRestaurant }}</span>
         </dd>
+        <dt><span>Date Ouverture</span></dt>
+        <dd>
+          <span>{{ restaurant.dateOuverture | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Date Fermiture</span></dt>
+        <dd>
+          <span>{{ restaurant.dateFermiture | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Responsable Restaurant</span></dt>
+        <dd>
+          <div *ngIf="restaurant.responsableRestaurant">
+            <a [routerLink]="['/responsable-restaurant', restaurant.responsableRestaurant?.id, 'view']">{{
+              restaurant.responsableRestaurant?.nomResponsable
+            }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

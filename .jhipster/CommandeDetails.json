@@ -6,36 +6,37 @@
       "fieldType": "Double"
     },
     {
-      "fieldName": "qty",
-      "fieldType": "Integer"
-    },
-    {
       "fieldName": "etat",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "qte",
+      "fieldType": "Double"
     }
   ],
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "commande",
       "otherEntityRelationshipName": "commandeDetails",
-      "relationshipName": "commande"
+      "relationshipName": "commande",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
+      "otherEntityField": "nomPlat",
       "otherEntityName": "plat",
       "otherEntityRelationshipName": "commandeDetails",
-      "relationshipName": "plat"
+      "relationshipName": "plat",
+      "relationshipType": "many-to-one"
     }
   ],
+  "changelogDate": "20220516214146",
   "entityTableName": "commande_details",
-  "dto": "mapstruct",
+  "applications": "*",
   "pagination": "pagination",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "dto": "mapstruct",
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": "*",
-  "changelogDate": "20220527094041"
+  "jpaMetamodelFiltering": true
 }

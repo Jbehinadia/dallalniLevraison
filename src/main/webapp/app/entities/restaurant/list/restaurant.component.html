@@ -36,6 +36,11 @@
           <th scope="col" jhiSortBy="nomRestaurant"><span>Nom Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="adresseRestaurant"><span>Adresse Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="numRestaurant"><span>Num Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="dateOuverture"><span>Date Ouverture</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="dateFermiture"><span>Date Fermiture</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="ResponsableRestaurant.nomResponsable">
+            <span>Responsable Restaurant</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -47,6 +52,15 @@
           <td>{{ restaurant.nomRestaurant }}</td>
           <td>{{ restaurant.adresseRestaurant }}</td>
           <td>{{ restaurant.numRestaurant }}</td>
+          <td>{{ restaurant.dateOuverture | formatMediumDatetime }}</td>
+          <td>{{ restaurant.dateFermiture | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="restaurant.responsableRestaurant">
+              <a [routerLink]="['/responsable-restaurant', restaurant.responsableRestaurant?.id, 'view']">{{
+                restaurant.responsableRestaurant?.nomResponsable
+              }}</a>
+            </div>
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <button

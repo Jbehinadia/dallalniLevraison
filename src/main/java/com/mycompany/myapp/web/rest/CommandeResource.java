@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.CommandeRepository;
+import com.mycompany.myapp.service.CommandeQueryService;
 import com.mycompany.myapp.service.CommandeService;
+import com.mycompany.myapp.service.criteria.CommandeCriteria;
 import com.mycompany.myapp.service.dto.CommandeDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,9 +43,16 @@ public class CommandeResource {
 
     private final CommandeRepository commandeRepository;
 
-    public CommandeResource(CommandeService commandeService, CommandeRepository commandeRepository) {
+    private final CommandeQueryService commandeQueryService;
+
+    public CommandeResource(
+        CommandeService commandeService,
+        CommandeRepository commandeRepository,
+        CommandeQueryService commandeQueryService
+    ) {
         this.commandeService = commandeService;
         this.commandeRepository = commandeRepository;
+        this.commandeQueryService = commandeQueryService;
     }
 
     /**
@@ -140,14 +149,27 @@ public class CommandeResource {
      * {@code GET  /commandes} : get all the commandes.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of commandes in body.
      */
     @GetMapping("/commandes")
-    public ResponseEntity<List<CommandeDTO>> getAllCommandes(Pageable pageable) {
-        log.debug("REST request to get a page of Commandes");
-        Page<CommandeDTO> page = commandeService.findAll(pageable);
+    public ResponseEntity<List<CommandeDTO>> getAllCommandes(CommandeCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Commandes by criteria: {}", criteria);
+        Page<CommandeDTO> page = commandeQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /commandes/count} : count all the commandes.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/commandes/count")
+    public ResponseEntity<Long> countCommandes(CommandeCriteria criteria) {
+        log.debug("REST request to count Commandes by criteria: {}", criteria);
+        return ResponseEntity.ok().body(commandeQueryService.countByCriteria(criteria));
     }
 
     /**

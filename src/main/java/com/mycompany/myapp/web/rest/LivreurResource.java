@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.LivreurRepository;
+import com.mycompany.myapp.service.LivreurQueryService;
 import com.mycompany.myapp.service.LivreurService;
+import com.mycompany.myapp.service.criteria.LivreurCriteria;
 import com.mycompany.myapp.service.dto.LivreurDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,9 +43,12 @@ public class LivreurResource {
 
     private final LivreurRepository livreurRepository;
 
-    public LivreurResource(LivreurService livreurService, LivreurRepository livreurRepository) {
+    private final LivreurQueryService livreurQueryService;
+
+    public LivreurResource(LivreurService livreurService, LivreurRepository livreurRepository, LivreurQueryService livreurQueryService) {
         this.livreurService = livreurService;
         this.livreurRepository = livreurRepository;
+        this.livreurQueryService = livreurQueryService;
     }
 
     /**
@@ -140,14 +145,27 @@ public class LivreurResource {
      * {@code GET  /livreurs} : get all the livreurs.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of livreurs in body.
      */
     @GetMapping("/livreurs")
-    public ResponseEntity<List<LivreurDTO>> getAllLivreurs(Pageable pageable) {
-        log.debug("REST request to get a page of Livreurs");
-        Page<LivreurDTO> page = livreurService.findAll(pageable);
+    public ResponseEntity<List<LivreurDTO>> getAllLivreurs(LivreurCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Livreurs by criteria: {}", criteria);
+        Page<LivreurDTO> page = livreurQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /livreurs/count} : count all the livreurs.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/livreurs/count")
+    public ResponseEntity<Long> countLivreurs(LivreurCriteria criteria) {
+        log.debug("REST request to count Livreurs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(livreurQueryService.countByCriteria(criteria));
     }
 
     /**

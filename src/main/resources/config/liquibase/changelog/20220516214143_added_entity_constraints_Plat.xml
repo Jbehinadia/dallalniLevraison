@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Plat.
     -->
-    <changeSet id="20220527094038-2" author="jhipster">
+    <changeSet id="20220516214143-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="menu_id"
                                  baseTableName="plat"

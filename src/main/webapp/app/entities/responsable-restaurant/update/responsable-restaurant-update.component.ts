@@ -3,12 +3,10 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IResponsableRestaurant, ResponsableRestaurant } from '../responsable-restaurant.model';
 import { ResponsableRestaurantService } from '../service/responsable-restaurant.service';
-import { IRestaurant } from 'app/entities/restaurant/restaurant.model';
-import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
 
 @Component({
   selector: 'jhi-responsable-restaurant-update',
@@ -17,20 +15,16 @@ import { RestaurantService } from 'app/entities/restaurant/service/restaurant.se
 export class ResponsableRestaurantUpdateComponent implements OnInit {
   isSaving = false;
 
-  restaurantsCollection: IRestaurant[] = [];
-
   editForm = this.fb.group({
     id: [],
     nomResponsable: [],
     prenomResponsable: [],
     adresseResponsable: [],
     numResponsable: [],
-    restaurant: [],
   });
 
   constructor(
     protected responsableRestaurantService: ResponsableRestaurantService,
-    protected restaurantService: RestaurantService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -38,8 +32,6 @@ export class ResponsableRestaurantUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ responsableRestaurant }) => {
       this.updateForm(responsableRestaurant);
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -55,10 +47,6 @@ export class ResponsableRestaurantUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.responsableRestaurantService.create(responsableRestaurant));
     }
-  }
-
-  trackRestaurantById(index: number, item: IRestaurant): number {
-    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IResponsableRestaurant>>): void {
@@ -87,25 +75,7 @@ export class ResponsableRestaurantUpdateComponent implements OnInit {
       prenomResponsable: responsableRestaurant.prenomResponsable,
       adresseResponsable: responsableRestaurant.adresseResponsable,
       numResponsable: responsableRestaurant.numResponsable,
-      restaurant: responsableRestaurant.restaurant,
     });
-
-    this.restaurantsCollection = this.restaurantService.addRestaurantToCollectionIfMissing(
-      this.restaurantsCollection,
-      responsableRestaurant.restaurant
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.restaurantService
-      .query({ filter: 'responsablerestaurant-is-null' })
-      .pipe(map((res: HttpResponse<IRestaurant[]>) => res.body ?? []))
-      .pipe(
-        map((restaurants: IRestaurant[]) =>
-          this.restaurantService.addRestaurantToCollectionIfMissing(restaurants, this.editForm.get('restaurant')!.value)
-        )
-      )
-      .subscribe((restaurants: IRestaurant[]) => (this.restaurantsCollection = restaurants));
   }
 
   protected createFromForm(): IResponsableRestaurant {
@@ -116,7 +86,6 @@ export class ResponsableRestaurantUpdateComponent implements OnInit {
       prenomResponsable: this.editForm.get(['prenomResponsable'])!.value,
       adresseResponsable: this.editForm.get(['adresseResponsable'])!.value,
       numResponsable: this.editForm.get(['numResponsable'])!.value,
-      restaurant: this.editForm.get(['restaurant'])!.value,
     };
   }
 }

@@ -1,9 +1,6 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -26,10 +23,6 @@ public class TypePlat implements Serializable {
     @Lob
     @Column(name = "image_path")
     private String imagePath;
-
-    @OneToMany(mappedBy = "typePlat")
-    @JsonIgnoreProperties(value = { "commandeDetails", "menu", "typePlat" }, allowSetters = true)
-    private Set<Plat> plats = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -70,37 +63,6 @@ public class TypePlat implements Serializable {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
-    }
-
-    public Set<Plat> getPlats() {
-        return this.plats;
-    }
-
-    public void setPlats(Set<Plat> plats) {
-        if (this.plats != null) {
-            this.plats.forEach(i -> i.setTypePlat(null));
-        }
-        if (plats != null) {
-            plats.forEach(i -> i.setTypePlat(this));
-        }
-        this.plats = plats;
-    }
-
-    public TypePlat plats(Set<Plat> plats) {
-        this.setPlats(plats);
-        return this;
-    }
-
-    public TypePlat addPlat(Plat plat) {
-        this.plats.add(plat);
-        plat.setTypePlat(this);
-        return this;
-    }
-
-    public TypePlat removePlat(Plat plat) {
-        this.plats.remove(plat);
-        plat.setTypePlat(null);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

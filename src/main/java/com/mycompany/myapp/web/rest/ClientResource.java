@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.ClientRepository;
+import com.mycompany.myapp.service.ClientQueryService;
 import com.mycompany.myapp.service.ClientService;
+import com.mycompany.myapp.service.criteria.ClientCriteria;
 import com.mycompany.myapp.service.dto.ClientDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,9 +43,12 @@ public class ClientResource {
 
     private final ClientRepository clientRepository;
 
-    public ClientResource(ClientService clientService, ClientRepository clientRepository) {
+    private final ClientQueryService clientQueryService;
+
+    public ClientResource(ClientService clientService, ClientRepository clientRepository, ClientQueryService clientQueryService) {
         this.clientService = clientService;
         this.clientRepository = clientRepository;
+        this.clientQueryService = clientQueryService;
     }
 
     /**
@@ -140,14 +145,27 @@ public class ClientResource {
      * {@code GET  /clients} : get all the clients.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of clients in body.
      */
     @GetMapping("/clients")
-    public ResponseEntity<List<ClientDTO>> getAllClients(Pageable pageable) {
-        log.debug("REST request to get a page of Clients");
-        Page<ClientDTO> page = clientService.findAll(pageable);
+    public ResponseEntity<List<ClientDTO>> getAllClients(ClientCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Clients by criteria: {}", criteria);
+        Page<ClientDTO> page = clientQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /clients/count} : count all the clients.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/clients/count")
+    public ResponseEntity<Long> countClients(ClientCriteria criteria) {
+        log.debug("REST request to count Clients by criteria: {}", criteria);
+        return ResponseEntity.ok().body(clientQueryService.countByCriteria(criteria));
     }
 
     /**

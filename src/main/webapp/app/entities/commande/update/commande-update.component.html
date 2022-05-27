@@ -100,7 +100,7 @@
               [ngValue]="livreurOption.id === editForm.get('livreur')!.value?.id ? editForm.get('livreur')!.value : livreurOption"
               *ngFor="let livreurOption of livreursSharedCollection; trackBy: trackLivreurById"
             >
-              {{ livreurOption.id }}
+              {{ livreurOption.nomLivreur }}
             </option>
           </select>
         </div>

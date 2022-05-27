@@ -8,7 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.Menu;
+import com.mycompany.myapp.domain.Restaurant;
 import com.mycompany.myapp.repository.MenuRepository;
+import com.mycompany.myapp.service.criteria.MenuCriteria;
 import com.mycompany.myapp.service.dto.MenuDTO;
 import com.mycompany.myapp.service.mapper.MenuMapper;
 import java.util.List;
@@ -156,6 +158,166 @@ class MenuResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(menu.getId().intValue()))
             .andExpect(jsonPath("$.nomMenu").value(DEFAULT_NOM_MENU));
+    }
+
+    @Test
+    @Transactional
+    void getMenusByIdFiltering() throws Exception {
+        // Initialize the database
+        menuRepository.saveAndFlush(menu);
+
+        Long id = menu.getId();
+
+        defaultMenuShouldBeFound("id.equals=" + id);
+        defaultMenuShouldNotBeFound("id.notEquals=" + id);
+
+        defaultMenuShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultMenuShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultMenuShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultMenuShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllMenusByNomMenuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        menuRepository.saveAndFlush(menu);
+
+        // Get all the menuList where nomMenu equals to DEFAULT_NOM_MENU
+        defaultMenuShouldBeFound("nomMenu.equals=" + DEFAULT_NOM_MENU);
+
+        // Get all the menuList where nomMenu equals to UPDATED_NOM_MENU
+        defaultMenuShouldNotBeFound("nomMenu.equals=" + UPDATED_NOM_MENU);
+    }
+
+    @Test
+    @Transactional
+    void getAllMenusByNomMenuIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        menuRepository.saveAndFlush(menu);
+
+        // Get all the menuList where nomMenu not equals to DEFAULT_NOM_MENU
+        defaultMenuShouldNotBeFound("nomMenu.notEquals=" + DEFAULT_NOM_MENU);
+
+        // Get all the menuList where nomMenu not equals to UPDATED_NOM_MENU
+        defaultMenuShouldBeFound("nomMenu.notEquals=" + UPDATED_NOM_MENU);
+    }
+
+    @Test
+    @Transactional
+    void getAllMenusByNomMenuIsInShouldWork() throws Exception {
+        // Initialize the database
+        menuRepository.saveAndFlush(menu);
+
+        // Get all the menuList where nomMenu in DEFAULT_NOM_MENU or UPDATED_NOM_MENU
+        defaultMenuShouldBeFound("nomMenu.in=" + DEFAULT_NOM_MENU + "," + UPDATED_NOM_MENU);
+
+        // Get all the menuList where nomMenu equals to UPDATED_NOM_MENU
+        defaultMenuShouldNotBeFound("nomMenu.in=" + UPDATED_NOM_MENU);
+    }
+
+    @Test
+    @Transactional
+    void getAllMenusByNomMenuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        menuRepository.saveAndFlush(menu);
+
+        // Get all the menuList where nomMenu is not null
+        defaultMenuShouldBeFound("nomMenu.specified=true");
+
+        // Get all the menuList where nomMenu is null
+        defaultMenuShouldNotBeFound("nomMenu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllMenusByNomMenuContainsSomething() throws Exception {
+        // Initialize the database
+        menuRepository.saveAndFlush(menu);
+
+        // Get all the menuList where nomMenu contains DEFAULT_NOM_MENU
+        defaultMenuShouldBeFound("nomMenu.contains=" + DEFAULT_NOM_MENU);
+
+        // Get all the menuList where nomMenu contains UPDATED_NOM_MENU
+        defaultMenuShouldNotBeFound("nomMenu.contains=" + UPDATED_NOM_MENU);
+    }
+
+    @Test
+    @Transactional
+    void getAllMenusByNomMenuNotContainsSomething() throws Exception {
+        // Initialize the database
+        menuRepository.saveAndFlush(menu);
+
+        // Get all the menuList where nomMenu does not contain DEFAULT_NOM_MENU
+        defaultMenuShouldNotBeFound("nomMenu.doesNotContain=" + DEFAULT_NOM_MENU);
+
+        // Get all the menuList where nomMenu does not contain UPDATED_NOM_MENU
+        defaultMenuShouldBeFound("nomMenu.doesNotContain=" + UPDATED_NOM_MENU);
+    }
+
+    @Test
+    @Transactional
+    void getAllMenusByRestaurantIsEqualToSomething() throws Exception {
+        // Initialize the database
+        menuRepository.saveAndFlush(menu);
+        Restaurant restaurant;
+        if (TestUtil.findAll(em, Restaurant.class).isEmpty()) {
+            restaurant = RestaurantResourceIT.createEntity(em);
+            em.persist(restaurant);
+            em.flush();
+        } else {
+            restaurant = TestUtil.findAll(em, Restaurant.class).get(0);
+        }
+        em.persist(restaurant);
+        em.flush();
+        menu.setRestaurant(restaurant);
+        menuRepository.saveAndFlush(menu);
+        Long restaurantId = restaurant.getId();
+
+        // Get all the menuList where restaurant equals to restaurantId
+        defaultMenuShouldBeFound("restaurantId.equals=" + restaurantId);
+
+        // Get all the menuList where restaurant equals to (restaurantId + 1)
+        defaultMenuShouldNotBeFound("restaurantId.equals=" + (restaurantId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultMenuShouldBeFound(String filter) throws Exception {
+        restMenuMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(menu.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nomMenu").value(hasItem(DEFAULT_NOM_MENU)));
+
+        // Check, that the count call also returns 1
+        restMenuMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultMenuShouldNotBeFound(String filter) throws Exception {
+        restMenuMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restMenuMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

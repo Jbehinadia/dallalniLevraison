@@ -18,22 +18,15 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "commande",
-      "otherEntityRelationshipName": "client",
-      "relationshipName": "commande"
-    }
-  ],
+  "relationships": [],
+  "changelogDate": "20220516214138",
   "entityTableName": "client",
-  "dto": "mapstruct",
+  "applications": "*",
   "pagination": "pagination",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "dto": "mapstruct",
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": "*",
-  "changelogDate": "20220527094033"
+  "jpaMetamodelFiltering": true
 }

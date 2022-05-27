@@ -25,8 +25,8 @@ export class CommandeDetailsUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     prix: [],
-    qty: [],
     etat: [],
+    qte: [],
     commande: [],
     plat: [],
   });
@@ -92,8 +92,8 @@ export class CommandeDetailsUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: commandeDetails.id,
       prix: commandeDetails.prix,
-      qty: commandeDetails.qty,
       etat: commandeDetails.etat,
+      qte: commandeDetails.qte,
       commande: commandeDetails.commande,
       plat: commandeDetails.plat,
     });
@@ -128,8 +128,8 @@ export class CommandeDetailsUpdateComponent implements OnInit {
       ...new CommandeDetails(),
       id: this.editForm.get(['id'])!.value,
       prix: this.editForm.get(['prix'])!.value,
-      qty: this.editForm.get(['qty'])!.value,
       etat: this.editForm.get(['etat'])!.value,
+      qte: this.editForm.get(['qte'])!.value,
       commande: this.editForm.get(['commande'])!.value,
       plat: this.editForm.get(['plat'])!.value,
     };

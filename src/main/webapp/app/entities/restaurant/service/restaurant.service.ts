@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as dayjs from 'dayjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -17,28 +19,37 @@ export class RestaurantService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(restaurant: IRestaurant): Observable<EntityResponseType> {
-    return this.http.post<IRestaurant>(this.resourceUrl, restaurant, { observe: 'response' });
+    const copy = this.convertDateFromClient(restaurant);
+    return this.http
+      .post<IRestaurant>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   update(restaurant: IRestaurant): Observable<EntityResponseType> {
-    return this.http.put<IRestaurant>(`${this.resourceUrl}/${getRestaurantIdentifier(restaurant) as number}`, restaurant, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(restaurant);
+    return this.http
+      .put<IRestaurant>(`${this.resourceUrl}/${getRestaurantIdentifier(restaurant) as number}`, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   partialUpdate(restaurant: IRestaurant): Observable<EntityResponseType> {
-    return this.http.patch<IRestaurant>(`${this.resourceUrl}/${getRestaurantIdentifier(restaurant) as number}`, restaurant, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(restaurant);
+    return this.http
+      .patch<IRestaurant>(`${this.resourceUrl}/${getRestaurantIdentifier(restaurant) as number}`, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IRestaurant>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<IRestaurant>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IRestaurant[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<IRestaurant[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -63,5 +74,30 @@ export class RestaurantService {
       return [...restaurantsToAdd, ...restaurantCollection];
     }
     return restaurantCollection;
+  }
+
+  protected convertDateFromClient(restaurant: IRestaurant): IRestaurant {
+    return Object.assign({}, restaurant, {
+      dateOuverture: restaurant.dateOuverture?.isValid() ? restaurant.dateOuverture.toJSON() : undefined,
+      dateFermiture: restaurant.dateFermiture?.isValid() ? restaurant.dateFermiture.toJSON() : undefined,
+    });
+  }
+
+  protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
+    if (res.body) {
+      res.body.dateOuverture = res.body.dateOuverture ? dayjs(res.body.dateOuverture) : undefined;
+      res.body.dateFermiture = res.body.dateFermiture ? dayjs(res.body.dateFermiture) : undefined;
+    }
+    return res;
+  }
+
+  protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+    if (res.body) {
+      res.body.forEach((restaurant: IRestaurant) => {
+        restaurant.dateOuverture = restaurant.dateOuverture ? dayjs(restaurant.dateOuverture) : undefined;
+        restaurant.dateFermiture = restaurant.dateFermiture ? dayjs(restaurant.dateFermiture) : undefined;
+      });
+    }
+    return res;
   }
 }

@@ -4,13 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
     <!--
-        Added the constraints for entity ResponsableRestaurant.
+        Added the constraints for entity Menu.
     -->
-    <changeSet id="20220527094034-2" author="jhipster">
+    <changeSet id="20220516214142-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="restaurant_id"
-                                 baseTableName="responsable_restaurant"
-                                 constraintName="fk_responsable_restaurant__restaurant_id"
+                                 baseTableName="menu"
+                                 constraintName="fk_menu__restaurant_id"
                                  referencedColumnNames="id"
                                  referencedTableName="restaurant"/>
     </changeSet>

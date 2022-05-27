@@ -1,6 +1,7 @@
 package com.mycompany.myapp.service.dto;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -15,6 +16,12 @@ public class RestaurantDTO implements Serializable {
     private String adresseRestaurant;
 
     private String numRestaurant;
+
+    private Instant dateOuverture;
+
+    private Instant dateFermiture;
+
+    private ResponsableRestaurantDTO ResponsableRestaurant;
 
     public Long getId() {
         return id;
@@ -48,6 +55,30 @@ public class RestaurantDTO implements Serializable {
         this.numRestaurant = numRestaurant;
     }
 
+    public Instant getDateOuverture() {
+        return dateOuverture;
+    }
+
+    public void setDateOuverture(Instant dateOuverture) {
+        this.dateOuverture = dateOuverture;
+    }
+
+    public Instant getDateFermiture() {
+        return dateFermiture;
+    }
+
+    public void setDateFermiture(Instant dateFermiture) {
+        this.dateFermiture = dateFermiture;
+    }
+
+    public ResponsableRestaurantDTO getResponsableRestaurant() {
+        return ResponsableRestaurant;
+    }
+
+    public void setResponsableRestaurant(ResponsableRestaurantDTO ResponsableRestaurant) {
+        this.ResponsableRestaurant = ResponsableRestaurant;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -77,6 +108,9 @@ public class RestaurantDTO implements Serializable {
             ", nomRestaurant='" + getNomRestaurant() + "'" +
             ", adresseRestaurant='" + getAdresseRestaurant() + "'" +
             ", numRestaurant='" + getNumRestaurant() + "'" +
+            ", dateOuverture='" + getDateOuverture() + "'" +
+            ", dateFermiture='" + getDateFermiture() + "'" +
+            ", ResponsableRestaurant=" + getResponsableRestaurant() +
             "}";
     }
 }

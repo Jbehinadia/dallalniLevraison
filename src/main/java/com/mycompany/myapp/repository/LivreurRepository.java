@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface LivreurRepository extends JpaRepository<Livreur, Long> {}
+public interface LivreurRepository extends JpaRepository<Livreur, Long>, JpaSpecificationExecutor<Livreur> {}

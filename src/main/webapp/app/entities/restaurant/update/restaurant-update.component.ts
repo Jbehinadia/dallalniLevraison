@@ -3,10 +3,15 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
+
+import * as dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IRestaurant, Restaurant } from '../restaurant.model';
 import { RestaurantService } from '../service/restaurant.service';
+import { IResponsableRestaurant } from 'app/entities/responsable-restaurant/responsable-restaurant.model';
+import { ResponsableRestaurantService } from 'app/entities/responsable-restaurant/service/responsable-restaurant.service';
 
 @Component({
   selector: 'jhi-restaurant-update',
@@ -15,18 +20,36 @@ import { RestaurantService } from '../service/restaurant.service';
 export class RestaurantUpdateComponent implements OnInit {
   isSaving = false;
 
+  responsableRestaurantsSharedCollection: IResponsableRestaurant[] = [];
+
   editForm = this.fb.group({
     id: [],
     nomRestaurant: [],
     adresseRestaurant: [],
     numRestaurant: [],
+    dateOuverture: [],
+    dateFermiture: [],
+    ResponsableRestaurant: [],
   });
 
-  constructor(protected restaurantService: RestaurantService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected restaurantService: RestaurantService,
+    protected responsableRestaurantService: ResponsableRestaurantService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ restaurant }) => {
+      if (restaurant.id === undefined) {
+        const today = dayjs().startOf('day');
+        restaurant.dateOuverture = today;
+        restaurant.dateFermiture = today;
+      }
+
       this.updateForm(restaurant);
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -42,6 +65,10 @@ export class RestaurantUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.restaurantService.create(restaurant));
     }
+  }
+
+  trackResponsableRestaurantById(index: number, item: IResponsableRestaurant): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IRestaurant>>): void {
@@ -69,7 +96,32 @@ export class RestaurantUpdateComponent implements OnInit {
       nomRestaurant: restaurant.nomRestaurant,
       adresseRestaurant: restaurant.adresseRestaurant,
       numRestaurant: restaurant.numRestaurant,
+      dateOuverture: restaurant.dateOuverture ? restaurant.dateOuverture.format(DATE_TIME_FORMAT) : null,
+      dateFermiture: restaurant.dateFermiture ? restaurant.dateFermiture.format(DATE_TIME_FORMAT) : null,
+      ResponsableRestaurant: restaurant.responsableRestaurant,
     });
+
+    this.responsableRestaurantsSharedCollection = this.responsableRestaurantService.addResponsableRestaurantToCollectionIfMissing(
+      this.responsableRestaurantsSharedCollection,
+      restaurant.responsableRestaurant
+    );
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.responsableRestaurantService
+      .query()
+      .pipe(map((res: HttpResponse<IResponsableRestaurant[]>) => res.body ?? []))
+      .pipe(
+        map((responsableRestaurants: IResponsableRestaurant[]) =>
+          this.responsableRestaurantService.addResponsableRestaurantToCollectionIfMissing(
+            responsableRestaurants,
+            this.editForm.get('ResponsableRestaurant')!.value
+          )
+        )
+      )
+      .subscribe(
+        (responsableRestaurants: IResponsableRestaurant[]) => (this.responsableRestaurantsSharedCollection = responsableRestaurants)
+      );
   }
 
   protected createFromForm(): IRestaurant {
@@ -79,6 +131,13 @@ export class RestaurantUpdateComponent implements OnInit {
       nomRestaurant: this.editForm.get(['nomRestaurant'])!.value,
       adresseRestaurant: this.editForm.get(['adresseRestaurant'])!.value,
       numRestaurant: this.editForm.get(['numRestaurant'])!.value,
+      dateOuverture: this.editForm.get(['dateOuverture'])!.value
+        ? dayjs(this.editForm.get(['dateOuverture'])!.value, DATE_TIME_FORMAT)
+        : undefined,
+      dateFermiture: this.editForm.get(['dateFermiture'])!.value
+        ? dayjs(this.editForm.get(['dateFermiture'])!.value, DATE_TIME_FORMAT)
+        : undefined,
+      responsableRestaurant: this.editForm.get(['ResponsableRestaurant'])!.value,
     };
   }
 }

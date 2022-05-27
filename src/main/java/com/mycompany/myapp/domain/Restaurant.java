@@ -1,9 +1,7 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Instant;
 import javax.persistence.*;
 
 /**
@@ -29,9 +27,14 @@ public class Restaurant implements Serializable {
     @Column(name = "num_restaurant")
     private String numRestaurant;
 
-    @OneToMany(mappedBy = "restaurant")
-    @JsonIgnoreProperties(value = { "plats", "restaurant" }, allowSetters = true)
-    private Set<Menu> menus = new HashSet<>();
+    @Column(name = "date_ouverture")
+    private Instant dateOuverture;
+
+    @Column(name = "date_fermiture")
+    private Instant dateFermiture;
+
+    @ManyToOne
+    private ResponsableRestaurant responsableRestaurant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -87,34 +90,42 @@ public class Restaurant implements Serializable {
         this.numRestaurant = numRestaurant;
     }
 
-    public Set<Menu> getMenus() {
-        return this.menus;
+    public Instant getDateOuverture() {
+        return this.dateOuverture;
     }
 
-    public void setMenus(Set<Menu> menus) {
-        if (this.menus != null) {
-            this.menus.forEach(i -> i.setRestaurant(null));
-        }
-        if (menus != null) {
-            menus.forEach(i -> i.setRestaurant(this));
-        }
-        this.menus = menus;
-    }
-
-    public Restaurant menus(Set<Menu> menus) {
-        this.setMenus(menus);
+    public Restaurant dateOuverture(Instant dateOuverture) {
+        this.setDateOuverture(dateOuverture);
         return this;
     }
 
-    public Restaurant addMenu(Menu menu) {
-        this.menus.add(menu);
-        menu.setRestaurant(this);
+    public void setDateOuverture(Instant dateOuverture) {
+        this.dateOuverture = dateOuverture;
+    }
+
+    public Instant getDateFermiture() {
+        return this.dateFermiture;
+    }
+
+    public Restaurant dateFermiture(Instant dateFermiture) {
+        this.setDateFermiture(dateFermiture);
         return this;
     }
 
-    public Restaurant removeMenu(Menu menu) {
-        this.menus.remove(menu);
-        menu.setRestaurant(null);
+    public void setDateFermiture(Instant dateFermiture) {
+        this.dateFermiture = dateFermiture;
+    }
+
+    public ResponsableRestaurant getResponsableRestaurant() {
+        return this.responsableRestaurant;
+    }
+
+    public void setResponsableRestaurant(ResponsableRestaurant ResponsableRestaurant) {
+        this.responsableRestaurant = ResponsableRestaurant;
+    }
+
+    public Restaurant responsableRestaurant(ResponsableRestaurant ResponsableRestaurant) {
+        this.setResponsableRestaurant(ResponsableRestaurant);
         return this;
     }
 
@@ -145,6 +156,8 @@ public class Restaurant implements Serializable {
             ", nomRestaurant='" + getNomRestaurant() + "'" +
             ", adresseRestaurant='" + getAdresseRestaurant() + "'" +
             ", numRestaurant='" + getNumRestaurant() + "'" +
+            ", dateOuverture='" + getDateOuverture() + "'" +
+            ", dateFermiture='" + getDateFermiture() + "'" +
             "}";
     }
 }

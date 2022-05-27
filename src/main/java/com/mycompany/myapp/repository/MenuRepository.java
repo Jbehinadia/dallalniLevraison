@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MenuRepository extends JpaRepository<Menu, Long> {}
+public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificationExecutor<Menu> {}

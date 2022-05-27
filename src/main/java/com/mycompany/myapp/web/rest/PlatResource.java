@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.PlatRepository;
+import com.mycompany.myapp.service.PlatQueryService;
 import com.mycompany.myapp.service.PlatService;
+import com.mycompany.myapp.service.criteria.PlatCriteria;
 import com.mycompany.myapp.service.dto.PlatDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -41,9 +43,12 @@ public class PlatResource {
 
     private final PlatRepository platRepository;
 
-    public PlatResource(PlatService platService, PlatRepository platRepository) {
+    private final PlatQueryService platQueryService;
+
+    public PlatResource(PlatService platService, PlatRepository platRepository, PlatQueryService platQueryService) {
         this.platService = platService;
         this.platRepository = platRepository;
+        this.platQueryService = platQueryService;
     }
 
     /**
@@ -138,14 +143,27 @@ public class PlatResource {
      * {@code GET  /plats} : get all the plats.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of plats in body.
      */
     @GetMapping("/plats")
-    public ResponseEntity<List<PlatDTO>> getAllPlats(Pageable pageable) {
-        log.debug("REST request to get a page of Plats");
-        Page<PlatDTO> page = platService.findAll(pageable);
+    public ResponseEntity<List<PlatDTO>> getAllPlats(PlatCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Plats by criteria: {}", criteria);
+        Page<PlatDTO> page = platQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /plats/count} : count all the plats.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/plats/count")
+    public ResponseEntity<Long> countPlats(PlatCriteria criteria) {
+        log.debug("REST request to count Plats by criteria: {}", criteria);
+        return ResponseEntity.ok().body(platQueryService.countByCriteria(criteria));
     }
 
     /**

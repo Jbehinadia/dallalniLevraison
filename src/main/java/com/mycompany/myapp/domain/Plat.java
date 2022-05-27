@@ -2,8 +2,6 @@ package com.mycompany.myapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -36,16 +34,11 @@ public class Plat implements Serializable {
     @Column(name = "remice_val")
     private Double remiceVal;
 
-    @OneToMany(mappedBy = "plat")
-    @JsonIgnoreProperties(value = { "commande", "plat" }, allowSetters = true)
-    private Set<CommandeDetails> commandeDetails = new HashSet<>();
-
     @ManyToOne
-    @JsonIgnoreProperties(value = { "plats", "restaurant" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "restaurant" }, allowSetters = true)
     private Menu menu;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "plats" }, allowSetters = true)
     private TypePlat typePlat;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -126,37 +119,6 @@ public class Plat implements Serializable {
 
     public void setRemiceVal(Double remiceVal) {
         this.remiceVal = remiceVal;
-    }
-
-    public Set<CommandeDetails> getCommandeDetails() {
-        return this.commandeDetails;
-    }
-
-    public void setCommandeDetails(Set<CommandeDetails> commandeDetails) {
-        if (this.commandeDetails != null) {
-            this.commandeDetails.forEach(i -> i.setPlat(null));
-        }
-        if (commandeDetails != null) {
-            commandeDetails.forEach(i -> i.setPlat(this));
-        }
-        this.commandeDetails = commandeDetails;
-    }
-
-    public Plat commandeDetails(Set<CommandeDetails> commandeDetails) {
-        this.setCommandeDetails(commandeDetails);
-        return this;
-    }
-
-    public Plat addCommandeDetails(CommandeDetails commandeDetails) {
-        this.commandeDetails.add(commandeDetails);
-        commandeDetails.setPlat(this);
-        return this;
-    }
-
-    public Plat removeCommandeDetails(CommandeDetails commandeDetails) {
-        this.commandeDetails.remove(commandeDetails);
-        commandeDetails.setPlat(null);
-        return this;
     }
 
     public Menu getMenu() {

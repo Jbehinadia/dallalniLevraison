@@ -18,23 +18,15 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "restaurant",
-      "otherEntityRelationshipName": "responsableRestaurant",
-      "relationshipName": "restaurant",
-      "ownerSide": true
-    }
-  ],
-  "entityTableName": "responsable_restaurant",
-  "dto": "mapstruct",
+  "relationships": [],
+  "changelogDate": "20220516214139",
+  "entityTableName": "ResponsableRestaurant",
+  "applications": "*",
   "pagination": "pagination",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "dto": "mapstruct",
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": "*",
-  "changelogDate": "20220527094034"
+  "jpaMetamodelFiltering": true
 }

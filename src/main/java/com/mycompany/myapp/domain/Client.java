@@ -1,9 +1,6 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -31,10 +28,6 @@ public class Client implements Serializable {
 
     @Column(name = "num_client")
     private String numClient;
-
-    @OneToMany(mappedBy = "client")
-    @JsonIgnoreProperties(value = { "commandeDetails", "livreur", "client" }, allowSetters = true)
-    private Set<Commande> commandes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -101,37 +94,6 @@ public class Client implements Serializable {
 
     public void setNumClient(String numClient) {
         this.numClient = numClient;
-    }
-
-    public Set<Commande> getCommandes() {
-        return this.commandes;
-    }
-
-    public void setCommandes(Set<Commande> commandes) {
-        if (this.commandes != null) {
-            this.commandes.forEach(i -> i.setClient(null));
-        }
-        if (commandes != null) {
-            commandes.forEach(i -> i.setClient(this));
-        }
-        this.commandes = commandes;
-    }
-
-    public Client commandes(Set<Commande> commandes) {
-        this.setCommandes(commandes);
-        return this;
-    }
-
-    public Client addCommande(Commande commande) {
-        this.commandes.add(commande);
-        commande.setClient(this);
-        return this;
-    }
-
-    public Client removeCommande(Commande commande) {
-        this.commandes.remove(commande);
-        commande.setClient(null);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

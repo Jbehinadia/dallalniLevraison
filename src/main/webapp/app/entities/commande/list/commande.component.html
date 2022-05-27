@@ -41,7 +41,7 @@
           <th scope="col" jhiSortBy="remiceVal"><span>Remice Val</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="prixLivreson"><span>Prix Livreson</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="dateSortie"><span>Date Sortie</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="livreur.id"><span>Livreur</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="livreur.nomLivreur"><span>Livreur</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="client.id"><span>Client</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
@@ -61,7 +61,7 @@
           <td>{{ commande.dateSortie | formatMediumDatetime }}</td>
           <td>
             <div *ngIf="commande.livreur">
-              <a [routerLink]="['/livreur', commande.livreur?.id, 'view']">{{ commande.livreur?.id }}</a>
+              <a [routerLink]="['/livreur', commande.livreur?.id, 'view']">{{ commande.livreur?.nomLivreur }}</a>
             </div>
           </td>
           <td>

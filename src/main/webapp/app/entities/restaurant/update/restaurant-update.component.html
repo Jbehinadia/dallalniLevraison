@@ -46,6 +46,59 @@
             formControlName="numRestaurant"
           />
         </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_dateOuverture">Date Ouverture</label>
+          <div class="d-flex">
+            <input
+              id="field_dateOuverture"
+              data-cy="dateOuverture"
+              type="datetime-local"
+              class="form-control"
+              name="dateOuverture"
+              formControlName="dateOuverture"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_dateFermiture">Date Fermiture</label>
+          <div class="d-flex">
+            <input
+              id="field_dateFermiture"
+              data-cy="dateFermiture"
+              type="datetime-local"
+              class="form-control"
+              name="dateFermiture"
+              formControlName="dateFermiture"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_ResponsableRestaurant">Responsable Restaurant</label>
+          <select
+            class="form-control"
+            id="field_ResponsableRestaurant"
+            data-cy="responsableRestaurant"
+            name="ResponsableRestaurant"
+            formControlName="responsableRestaurant"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                ResponsableRestaurantOption.id === editForm.get('responsableRestaurant')!.value?.id
+                  ? editForm.get('responsableRestaurant')!.value
+                  : ResponsableRestaurantOption
+              "
+              *ngFor="let ResponsableRestaurantOption of responsableRestaurantsSharedCollection; trackBy: trackResponsableRestaurantById"
+            >
+              {{ ResponsableRestaurantOption.nomResponsable }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div>
