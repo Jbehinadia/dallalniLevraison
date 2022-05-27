@@ -4,16 +4,16 @@ import { FormBuilder } from '@angular/forms';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
-import { Restaurant } from 'app/entities/restaurant/restaurant.model';
+import { IRestaurant } from 'app/entities/restaurant/restaurant.model';
 import { Observable } from 'rxjs';
-import { Client, IClient } from 'app/entities/client/client.model';
+import { IClient } from 'app/entities/client/client.model';
 import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
 import { ResponsableRestaurantService } from 'app/entities/responsable-restaurant/service/responsable-restaurant.service';
 import { ClientService } from 'app/entities/client/service/client.service';
 import { LivreurService } from 'app/entities/livreur/service/livreur.service';
-import { IResponsableRestaurant, ResponsableRestaurant } from 'app/entities/responsable-restaurant/responsable-restaurant.model';
-import { ILivreur, Livreur } from 'app/entities/livreur/livreur.model';
-import { IUser } from 'app/admin/user-management/user-management.model';
+import { IResponsableRestaurant } from 'app/entities/responsable-restaurant/responsable-restaurant.model';
+import { ILivreur } from 'app/entities/livreur/livreur.model';
+import { IUser, } from 'app/admin/user-management/user-management.model';
 import * as dayjs from 'dayjs';
 import { map } from 'rxjs/operators';
 
@@ -34,10 +34,10 @@ export class RegisterComponent implements AfterViewInit {
   user: IUser = {};
 
   typeUser = 'Client';
-  resto: Restaurant = {};
-  client: Client = {};
-  responsable: ResponsableRestaurant = {};
-  livreur: Livreur = {};
+  resto: IRestaurant = {};
+  client: IClient = {};
+  responsable: IResponsableRestaurant = {};
+  livreur: ILivreur = {};
 
   constructor(
     private registerService: RegisterService,
@@ -77,7 +77,7 @@ export class RegisterComponent implements AfterViewInit {
       switch (this.typeUser) {
         case 'Client':
           this.createClient()
-            .pipe(map(res => res.body))
+            .pipe(map((res: HttpResponse<IClient>) => res.body))
             .subscribe(client => {
               this.client = client!;
               this.registerUser();

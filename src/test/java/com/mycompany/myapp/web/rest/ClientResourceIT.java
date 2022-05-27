@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.Client;
 import com.mycompany.myapp.repository.ClientRepository;
-import com.mycompany.myapp.service.criteria.ClientCriteria;
 import com.mycompany.myapp.service.dto.ClientDTO;
 import com.mycompany.myapp.service.mapper.ClientMapper;
 import java.util.List;

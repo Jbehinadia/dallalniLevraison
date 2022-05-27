@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data SQL repository for the CommandeDetails entity.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("")
 @Repository
 public interface CommandeDetailsRepository extends JpaRepository<CommandeDetails, Long>, JpaSpecificationExecutor<CommandeDetails> {}

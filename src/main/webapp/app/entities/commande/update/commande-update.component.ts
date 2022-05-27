@@ -75,19 +75,19 @@ export class CommandeUpdateComponent implements OnInit {
     }
   }
 
-  trackLivreurById(index: number, item: ILivreur): number {
+  trackLivreurById(_index: number, item: ILivreur): number {
     return item.id!;
   }
 
-  trackClientById(index: number, item: IClient): number {
+  trackClientById(_index: number, item: IClient): number {
     return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICommande>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {

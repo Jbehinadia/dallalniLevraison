@@ -1,19 +1,12 @@
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="commande">
       <h2 data-cy="commandeDetailsHeading"><span>Commande</span></h2>
 
       <hr />
-
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
-
       <dl class="row-md jh-entity-details">
-        <dt><span>ID</span></dt>
-        <dd>
-          <span>{{ commande.id }}</span>
-        </dd>
         <dt><span>Adresse Commande</span></dt>
         <dd>
           <span>{{ commande.adresseCommande }}</span>
@@ -28,7 +21,7 @@
         </dd>
         <dt><span>Prix Total</span></dt>
         <dd>
-          <span>{{ commande.prixTotal }}</span>
+          <span>{{ commande.prixTotal }} DT</span>
         </dd>
         <dt><span>Remise Perc</span></dt>
         <dd>
@@ -49,7 +42,7 @@
         <dt><span>Livreur</span></dt>
         <dd>
           <div *ngIf="commande.livreur">
-            <a [routerLink]="['/livreur', commande.livreur?.id, 'view']">{{ commande.livreur?.nomLivreur }}</a>
+            <a [routerLink]="['/livreur', commande.livreur?.id, 'view']">{{ commande.livreur?.id }}</a>
           </div>
         </dd>
         <dt><span>Client</span></dt>
@@ -60,12 +53,12 @@
         </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      <button type="submit" (click)="previousState()" class="btn btn-info text-white" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>
       </button>
 
-      <button type="button" [routerLink]="['/commande', commande.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      <button type="button" [routerLink]="['/commande', commande.id, 'edit']" class="btn btn-primary text-white">
+        <fa-icon icon="pencil-alt"></fa-icon>
       </button>
     </div>
   </div>

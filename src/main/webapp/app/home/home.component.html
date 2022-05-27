@@ -1,54 +1,206 @@
-<div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
+<main class="row dashboard">
+  <div class="col-md-8 restaurant-panel">
+    <header class="row welcome-banner">
+      <div class="col-md-5">
+        <div class="delivery-header"></div>
+      </div>
+      <div class="col-md-7 mt-5">
+        <h1>0 DT livraison pour les plats de poisson🐠 ! &nbsp;&nbsp;🎉</h1>
+        <p>Frais de livraison de 0 DT pour les commandes de plus de 20 DT</p>
+        <a href="#" class="learn-more"
+          >Plus
+          <svg width="18" height="18" class="arrow" viewBox="0 0 24 24">
+            <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+          </svg>
+        </a>
+      </div>
+    </header>
+    <section class="section" id="restaurants">
+      <div class="section-titles">
+        <div class="section-title">catégories&nbsp;🍔</div>
+        <div class="search-bar">
+          <div class="input-group" style="flex-wrap: nowrap">
+            <button class="btn">
+              <svg
+                t="1585652817188"
+                class="search"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="1034"
+                width="14"
+                height="14"
+              >
+                <path
+                  d="M888.703059 847.158363 733.373365 691.826622c50.040696-59.650565 80.190367-136.551002 80.190367-220.507136 0-189.613522-153.703661-343.318206-343.31616-343.318206-189.616592 0-343.31923 153.703661-343.31923 343.318206s153.703661 343.318206 343.31923 343.318206c85.053118 0 162.867368-30.94171 222.838228-82.163301l155.141406 155.141406c11.174504 11.17655 29.300326 11.17655 40.47483 0C899.859144 876.440269 899.859144 858.334913 888.703059 847.158363zM470.248595 757.416456c-158.006663 0-286.10004-128.090307-286.10004-286.097994 0-158.006663 128.093377-286.099017 286.10004-286.099017s286.079574 128.093377 286.079574 286.099017C756.32817 629.326149 628.254236 757.416456 470.248595 757.416456z"
+                  p-id="1035"
+                ></path>
+              </svg>
+            </button>
+            <input type="search" class="form-control" name="search" placeholder="Recherche" />
+          </div>
+        </div>
+      </div>
+      <div class="categories">
+        <div class="row">
+          <div class="col-md-11">
+            <ul class="category-list">
+              <li class="category-list item" id="all" (click)="filterPlatByType(0)">
+                <a href="#all">
+                  <div class="category-icon">
+                    <svg
+                      t="1586140242732"
+                      class="icon"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="4517"
+                    >
+                      <path
+                        d="M1002.666667 842.666667v64H21.333333v-64h981.333334zM512 106.666667a117.333333 117.333333 0 0 1 98.090667 181.738666c192 43.968 335.786667 214.357333 339.2 418.88l0.042666 7.381334H1002.666667v64H21.333333v-64h53.333334c0-207.786667 144.938667-381.76 339.221333-426.282667A117.333333 117.333333 0 0 1 512 106.666667z m0 234.666666c-203.84 0-369.536 163.370667-373.269333 366.314667L138.666667 714.666667h746.666666C885.333333 508.48 718.186667 341.333333 512 341.333333z m118.954667 87.722667a310.314667 310.314667 0 0 1 164.416 161.408l3.2 7.573333-59.264 24.149334a246.314667 246.314667 0 0 0-126.336-131.2l-6.634667-2.88 24.618667-59.050667zM512 170.666667a53.333333 53.333333 0 1 0 0 106.666666 53.333333 53.333333 0 0 0 0-106.666666z"
+                        p-id="4518"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="category-name">All</div>
+                </a>
+              </li>
+              <!-- afficher les types des plats -->
+              <li
+                class="category-list item"
+                *ngFor="let typePlat of typePlats; let i = index"
+                id="type-{{ i }}"
+                (click)="filterPlatByType(typePlat.id!)"
+              >
+                <a href="#type-{{ i }}">
+                  <div class="category-icon">
+                    <div
+                      [style.backgroundImage]="'url(' + typePlat.imagePath + ')'"
+                      style="width: 30px; height: 30px; background-size: cover; background-repeat: no-repeat; background-position: center"
+                    ></div>
+                  </div>
+                  <div class="category-name">{{ typePlat.type }}</div>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-1 category-more">
+            <button class="btn btn-secondary category-more-btn">
+              <svg
+                t="1586141872496"
+                class="icon"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="1458"
+                width="18"
+                height="18"
+              >
+                <path d="M689.621 512l-328.832-328.832-60.331 60.331 268.501 268.501-268.501 268.501 60.331 60.331z" p-id="1459"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <ul class="restaurant-list">
+        <li class="restaurant-list item" *ngFor="let plat of Plats" (click)="addLineCmd(plat)">
+          <a href="#">
+            <div class="col-md-2 restaurant-image" [style.backgroundImage]="'url(' + plat.imagePath + ')'"></div>
+          </a>
+          <div class="restaurant-name">{{ plat.nomRestau! }}</div>
+          <div class="restaurant-info">
+            <span class="restaurant-rate">
+              <svg
+                t="1586144500681"
+                class="icon"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="1458"
+                width="10"
+                height="10"
+              >
+                <path
+                  d="M686.153143 573.732571l174.884571-169.691429-241.152-35.401143-108.032-218.258286-108.032 218.258286-241.152 35.401143 174.884571 169.691429-41.691429 240.566857 215.990857-113.737143 215.405714 113.737143zM987.282286 369.737143q0 12.580571-14.848 27.428571l-207.433143 202.313143 49.152 285.696q0.585143 4.022857 0.585143 11.410286 0 28.598857-23.405714 28.598857-10.825143 0-22.820571-6.875429l-256.585143-134.875429-256.585143 134.875429q-12.580571 6.875429-22.820571 6.875429-11.995429 0-17.993143-8.265143t-5.997714-20.260571q0-3.437714 1.170286-11.410286l49.152-285.696-208.018286-202.313143q-14.262857-15.433143-14.262857-27.428571 0-21.138286 32.036571-26.258286l286.866286-41.691429 128.585143-260.022857q10.825143-23.405714 28.013714-23.405714t28.013714 23.405714l128.585143 260.022857 286.866286 41.691429q32.036571 5.12 32.036571 26.258286z"
+                  p-id="1459"
+                ></path>
+              </svg>
+              4.7
+            </span>
+            <span class="restaurant-category">
+              <span>{{ plat.nomPlat }}</span>
+              <span *ngIf="!plat.remisePerc" class="text-success">{{ plat.prix }} DT</span>
+              <span *ngIf="plat.remisePerc" class="text-danger"
+                ><s>{{ plat.prix }} DT</s></span
+              >
+              <span *ngIf="plat.remisePerc" class="text-success" style="font-weight: bold">
+                {{ plat.prix! - (plat.prix! * plat.remisePerc!) / 100 }} DT
+              </span>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </section>
   </div>
-
-  <div class="col-md-9">
-    <h1 class="display-4"><span>Welcome, Java Hipster!</span> (Dallalni Livraison)</h1>
-
-    <p class="lead">This is your homepage</p>
-
-    <div [ngSwitch]="account !== null">
-      <div class="alert alert-success" *ngSwitchCase="true">
-        <span id="home-logged-message" *ngIf="account">You are logged in as user "{{ account.login }}".</span>
-      </div>
-
-      <div class="alert alert-warning" *ngSwitchCase="false">
-        <span>If you want to </span>
-        <a class="alert-link" (click)="login()">sign in</a
-        ><span
-          >, you can try the default accounts:<br />- Administrator (login="admin" and password="admin") <br />- User (login="user" and
-          password="user").</span
+  <div class="col-md-4">
+    <div class="order-panel">
+      <header class="user-info">
+        <span style="font-weight: 600; margin-right: 3px">{{ client?.nomClient! }}</span>
+        <svg
+          t="1586156234890"
+          class="user"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="2663"
+          width="18"
+          height="18"
         >
-      </div>
-
-      <div class="alert alert-warning" *ngSwitchCase="false">
-        <span>You don't have an account yet?</span>&nbsp;
-        <a class="alert-link" routerLink="account/register">Register a new account</a>
-      </div>
+          <path
+            d="M917.965523 917.331585c0 22.469758-17.891486 40.699957-39.913035 40.699957-22.058388 0-39.913035-18.2302-39.913035-40.699957l-0.075725-0.490164-1.087774 0c-18.945491-157.665903-148.177807-280.296871-306.821991-285.4748-3.412726 0.151449-6.751774 0.562818-10.240225 0.562818-3.450589 0-6.789637-0.410346-10.202363-0.524956-158.606321 5.139044-287.839661 127.806851-306.784128 285.436938l-1.014096 0 0.075725 0.490164c0 22.469758-17.854647 40.699957-39.913035 40.699957s-39.915082-18.2302-39.915082-40.699957l-0.373507-3.789303c0-6.751774 2.026146-12.903891 4.91494-18.531052 21.082154-140.712789 111.075795-258.241552 235.432057-312.784796C288.420387 530.831904 239.989351 444.515003 239.989351 346.604042c0-157.591201 125.33352-285.361213 279.924387-285.361213 154.62873 0 279.960203 127.770012 279.960203 285.361213 0 97.873098-48.391127 184.15316-122.103966 235.545644 124.843356 54.732555 215.099986 172.863023 235.808634 314.211285 2.437515 5.290493 4.01443 10.992355 4.01443 17.181311L917.965523 917.331585zM719.822744 346.679767c0-112.576985-89.544409-203.808826-199.983707-203.808826-110.402459 0-199.944821 91.232864-199.944821 203.808826s89.542362 203.808826 199.944821 203.808826C630.278335 550.488593 719.822744 459.256752 719.822744 346.679767z"
+            p-id="2664"
+          ></path>
+        </svg>
+        <button class="btn btn-warning buy-count" (click)="openMyCommandes()">{{ nbrCommandes }}</button>
+      </header>
+      <section class="section" id="order">
+        <div class="section-title">Ma commande&nbsp;😎</div>
+        <div class="order-info" *ngIf="client?.adresseClient">
+          <div class="address">
+            <input type="text" class="form-control form-adresse" [(ngModel)]="client!.adresseClient" />
+          </div>
+        </div>
+        <ul class="food-list">
+          <li class="row food-list item" *ngFor="let line of linesCmd">
+            <div class="col-md-2 food-image" [style.backgroundImage]="'url(' + line.plat!.imagePath + ')'"></div>
+            <div class="col-md-3 food-buy-amount">
+              <input type="number" [min]="1" class="form-control form-qty" [(ngModel)]="line.qte" (ngModelChange)="changeQties()" />
+            </div>
+            <div class="col-md-4 food-name">{{ line.plat!.nomPlat }}</div>
+            <div class="col-md-2 food-price text-nowrap">
+              <span>{{ line.prix! * line.qte! }} DT</span>
+            </div>
+            <div class="col-md-1 text-danger" (click)="deleteLineCmd(line)"><fa-icon icon="times"></fa-icon></div>
+          </li>
+        </ul>
+        <div class="total-price">
+          <div class="total">Total:</div>
+          <div class="price">
+            <span>{{ totalCommande }} DT</span>
+          </div>
+        </div>
+        <div class="buy-action">
+          <button class="btn btn-warning checkout-btn" (click)="saveCommande()">
+            confirmer<svg width="18" height="18" class="arrow" viewBox="0 0 24 24">
+              <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path>
+            </svg>
+          </button>
+        </div>
+      </section>
     </div>
-
-    <p>If you have any question on JHipster:</p>
-
-    <ul>
-      <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">JHipster homepage</a></li>
-      <li>
-        <a href="https://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer">JHipster on Stack Overflow</a>
-      </li>
-      <li>
-        <a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer"
-          >JHipster bug tracker</a
-        >
-      </li>
-      <li>
-        <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">JHipster public chat room</a>
-      </li>
-      <li><a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer">follow @jhipster on Twitter</a></li>
-    </ul>
-
-    <p>
-      <span>If you like JHipster, don't forget to give us a star on</span>
-      <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">GitHub</a>!
-    </p>
   </div>
-</div>
+</main>

@@ -1,91 +1,78 @@
 <div>
   <h2 id="page-heading" data-cy="CommandeDetailsHeading">
-    <span>Commande Details</span>
+    <span>Mes Commande</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info me-2 text-white" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh List</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-commande-details"
-        [routerLink]="['/commande-details/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Commande Details </span>
       </button>
     </div>
   </h2>
-
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
-
   <div class="alert alert-warning" id="no-result" *ngIf="commandeDetails?.length === 0">
-    <span>No commandeDetails found</span>
+    <span>Aucun commandeDétails trouvés</span>
   </div>
 
   <div class="table-responsive" id="entities" *ngIf="commandeDetails && commandeDetails.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="plat.id"><span>Plat</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="prix"><span>Prix</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="prix"><span>Quantité</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="prix"><span>Net</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="etat"><span>Etat</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="qte"><span>Qte</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="commande.id"><span>Commande</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="plat.nomPlat"><span>Plat</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let commandeDetails of commandeDetails; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/commande-details', commandeDetails.id, 'view']">{{ commandeDetails.id }}</a>
-          </td>
-          <td>{{ commandeDetails.prix }}</td>
-          <td>{{ commandeDetails.etat }}</td>
-          <td>{{ commandeDetails.qte }}</td>
-          <td>
-            <div *ngIf="commandeDetails.commande">
-              <a [routerLink]="['/commande', commandeDetails.commande?.id, 'view']">{{ commandeDetails.commande?.id }}</a>
-            </div>
-          </td>
-          <td>
             <div *ngIf="commandeDetails.plat">
               <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.nomPlat }}</a>
             </div>
           </td>
-          <td class="text-right">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/commande-details', commandeDetails.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline">View</span>
-              </button>
+          <td>
+            <span style="font-weight: 600">{{ commandeDetails.prix }}DT</span>
+          </td>
+          <td>
+            <span class="text-info" style="font-weight: 600">{{ commandeDetails.qte }}</span>
+          </td>
+          <td>
+            <span class="text-success" style="font-weight: 600">{{ commandeDetails.prix! * commandeDetails.qte! }}DT</span>
+          </td>
 
-              <button
-                type="submit"
-                [routerLink]="['/commande-details', commandeDetails.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(commandeDetails)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline">Delete</span>
-              </button>
-            </div>
+          <td>
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'reprise'" class="btn btn-info text-white">
+              reprise
+            </button>
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'annule'" class="btn btn-danger text-white">
+              annulée
+            </button>
+            <button
+              (click)="modifierEtatCmd(commandeDetails)"
+              *ngIf="commandeDetails.etat === 'accepte'"
+              class="btn btn-success text-white"
+            >
+              acceptée
+            </button>
+            <button
+              (click)="modifierEtatCmd(commandeDetails)"
+              *ngIf="commandeDetails.etat === 'demande'"
+              class="btn btn-secondary text-white"
+            >
+              demandée
+            </button>
+            <button
+              (click)="modifierEtatCmd(commandeDetails)"
+              *ngIf="commandeDetails.etat === 'prepare'"
+              class="btn btn-warning text-white"
+            >
+              preparée
+            </button>
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'livre'" class="btn btn-success text-white">
+              livrée
+            </button>
           </td>
         </tr>
       </tbody>
@@ -93,11 +80,11 @@
   </div>
 
   <div *ngIf="commandeDetails && commandeDetails.length > 0">
-    <div class="row justify-content-center">
+    <div class="d-flex justify-content-center">
       <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="d-flex justify-content-center">
       <ngb-pagination
         [collectionSize]="totalItems"
         [(page)]="ngbPaginationPage"

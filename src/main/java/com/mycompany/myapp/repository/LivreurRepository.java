@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data SQL repository for the Livreur entity.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("")
 @Repository
 public interface LivreurRepository extends JpaRepository<Livreur, Long>, JpaSpecificationExecutor<Livreur> {}

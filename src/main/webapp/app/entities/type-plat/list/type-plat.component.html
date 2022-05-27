@@ -3,73 +3,66 @@
     <span>Type Plats</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info me-2 text-white" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh List</span>
       </button>
 
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-type-plat"
+        class="btn btn-primary jh-create-entity create-type-plat text-white"
         [routerLink]="['/type-plat/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Type Plat </span>
       </button>
     </div>
   </h2>
-
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
-
   <div class="alert alert-warning" id="no-result" *ngIf="typePlats?.length === 0">
-    <span>No typePlats found</span>
+    <span>Aucun type Plats trouvé</span>
   </div>
 
   <div class="table-responsive" id="entities" *ngIf="typePlats && typePlats.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="type"><span>Type</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="imagePath"><span>Image Path</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"><span>Image</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let typePlat of typePlats; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/type-plat', typePlat.id, 'view']">{{ typePlat.id }}</a>
-          </td>
           <td>{{ typePlat.type }}</td>
-          <td>{{ typePlat.imagePath }}</td>
-          <td class="text-right">
+          <td>
+            <div
+              [style.backgroundImage]="'url(' + typePlat.imagePath + ')'"
+              style="width: 50px; height: 50px; background-size: cover; background-repeat: no-repeat; background-position: center"
+            ></div>
+          </td>
+          <td class="text-end">
             <div class="btn-group">
               <button
                 type="submit"
                 [routerLink]="['/type-plat', typePlat.id, 'view']"
-                class="btn btn-info btn-sm"
+                class="btn btn-info btn-sm text-white"
                 data-cy="entityDetailsButton"
               >
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline">View</span>
               </button>
 
               <button
                 type="submit"
                 [routerLink]="['/type-plat', typePlat.id, 'edit']"
-                class="btn btn-primary btn-sm"
+                class="btn btn-primary btn-sm text-white"
                 data-cy="entityEditButton"
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(typePlat)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button type="submit" (click)="delete(typePlat)" class="btn btn-danger btn-sm text-white" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline">Delete</span>
               </button>
             </div>
           </td>
@@ -79,11 +72,11 @@
   </div>
 
   <div *ngIf="typePlats && typePlats.length > 0">
-    <div class="row justify-content-center">
+    <div class="d-flex justify-content-center">
       <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="d-flex justify-content-center">
       <ngb-pagination
         [collectionSize]="totalItems"
         [(page)]="ngbPaginationPage"

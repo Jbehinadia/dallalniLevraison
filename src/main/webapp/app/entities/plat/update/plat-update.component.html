@@ -1,63 +1,23 @@
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-plat-heading" data-cy="PlatCreateUpdateHeading">Create or edit a Plat</h2>
-
+      <h2 id="jhi-plat-heading" data-cy="PlatCreateUpdateHeading" *ngIf="!editForm.get('id')!.value">Ajout un plat</h2>
+      <h2 id="jhi-plat-heading" data-cy="PlatCreateUpdateHeading" *ngIf="editForm.get('id')!.value">Modifier un plat</h2>
+      <jhi-alert-error></jhi-alert-error>
+      <jhi-alert></jhi-alert>
       <div>
-        <jhi-alert-error></jhi-alert-error>
-
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="field_nomPlat">Nom Plat</label>
+        <div class="row mb-3">
+          <label class="form-label" for="field_nomPlat">Nom Plat</label>
           <input type="text" class="form-control" name="nomPlat" id="field_nomPlat" data-cy="nomPlat" formControlName="nomPlat" />
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" for="field_imagePath">Image Path</label>
-          <textarea class="form-control" name="imagePath" id="field_imagePath" data-cy="imagePath" formControlName="imagePath"></textarea>
+        <div class="row mb-3">
+          <label class="form-label" for="field_imagePath">Image</label>
+          <input type="file" id="imageUpload" #fileInput (change)="uploadFile($event)" />
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" for="field_prix">Prix</label>
-          <input type="number" class="form-control" name="prix" id="field_prix" data-cy="prix" formControlName="prix" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="field_remisePerc">Remise Perc</label>
-          <input
-            type="number"
-            class="form-control"
-            name="remisePerc"
-            id="field_remisePerc"
-            data-cy="remisePerc"
-            formControlName="remisePerc"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="field_remiceVal">Remice Val</label>
-          <input type="number" class="form-control" name="remiceVal" id="field_remiceVal" data-cy="remiceVal" formControlName="remiceVal" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="field_menu">Menu</label>
-          <select class="form-control" id="field_menu" data-cy="menu" name="menu" formControlName="menu">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="menuOption.id === editForm.get('menu')!.value?.id ? editForm.get('menu')!.value : menuOption"
-              *ngFor="let menuOption of menusSharedCollection; trackBy: trackMenuById"
-            >
-              {{ menuOption.nomMenu }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="field_typePlat">Type Plat</label>
+        <div class="row mb-3">
+          <label class="form-label" for="field_typePlat">Type Plat</label>
           <select class="form-control" id="field_typePlat" data-cy="typePlat" name="typePlat" formControlName="typePlat">
             <option [ngValue]="null"></option>
             <option
@@ -68,11 +28,47 @@
             </option>
           </select>
         </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_prix">Prix</label>
+          <input type="number" class="form-control" name="prix" id="field_prix" data-cy="prix" formControlName="prix" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_remisePerc">Remise %</label>
+          <input
+            type="number"
+            class="form-control"
+            name="remisePerc"
+            id="field_remisePerc"
+            data-cy="remisePerc"
+            formControlName="remisePerc"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_menu">Menu</label>
+          <select class="form-control" id="field_menu" data-cy="menu" name="menu" formControlName="menu">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="menu.id === editForm.get('menu')!.value?.id ? editForm.get('menu')!.value : menu"
+              *ngFor="let menu of menusSharedCollection; trackBy: trackMenuById"
+            >
+              {{ menu.nomRestau! }} - {{ menu.nomMenu! }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        <button
+          type="button"
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          class="btn btn-secondary text-white"
+          (click)="previousState()"
+        >
+          <fa-icon icon="ban"></fa-icon>
         </button>
 
         <button
@@ -80,9 +76,9 @@
           id="save-entity"
           data-cy="entityCreateSaveButton"
           [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
+          class="btn btn-success text-white"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+          <fa-icon icon="save"></fa-icon>
         </button>
       </div>
     </form>

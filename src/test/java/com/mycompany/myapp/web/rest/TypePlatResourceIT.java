@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.TypePlat;
 import com.mycompany.myapp.repository.TypePlatRepository;
-import com.mycompany.myapp.service.criteria.TypePlatCriteria;
 import com.mycompany.myapp.service.dto.TypePlatDTO;
 import com.mycompany.myapp.service.mapper.TypePlatMapper;
 import java.util.List;
@@ -24,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link TypePlatResource} REST controller.

@@ -7,7 +7,6 @@ import com.mycompany.myapp.service.criteria.ResponsableRestaurantCriteria;
 import com.mycompany.myapp.service.dto.ResponsableRestaurantDTO;
 import com.mycompany.myapp.service.mapper.ResponsableRestaurantMapper;
 import java.util.List;
-import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

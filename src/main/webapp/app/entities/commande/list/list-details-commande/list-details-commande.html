@@ -1,0 +1,76 @@
+<div class="modal-header">
+  <h2><span>Details des Commandes</span></h2>
+  <button type="button" class="close" (click)="this.parent!.modalRef.close()" class="btn">
+    <fa-icon icon="times" class="close-danger"></fa-icon>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="alert alert-warning" id="no-result" *ngIf="commandeDetails?.length === 0">
+    <span>Aucun commandeDétails trouvés</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="commandeDetails && commandeDetails.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span>Plat</span></th>
+          <th scope="col"><span>Prix</span></th>
+          <th scope="col"><span>Quantité</span></th>
+          <th scope="col"><span>Net</span></th>
+          <th scope="col"><span>Etat</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let commandeDetails of commandeDetails;" data-cy="entityTable">
+          <td>
+            <div *ngIf="commandeDetails.plat">
+              <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.nomPlat }}</a>
+            </div>
+          </td>
+          <td>
+            <span style="font-weight: 600">{{ commandeDetails.prix }}DT</span>
+          </td>
+          <td>
+            <span class="text-info" style="font-weight: 600">{{ commandeDetails.qte }}</span>
+          </td>
+          <td>
+            <span class="text-success" style="font-weight: 600">{{ commandeDetails.prix! * commandeDetails.qte! }}DT</span>
+          </td>
+
+          <td>
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'reprise'" class="btn btn-info text-white">
+              reprise
+            </button>
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'annule'" class="btn btn-danger text-white">
+              annulée
+            </button>
+            <button
+              (click)="modifierEtatCmd(commandeDetails)"
+              *ngIf="commandeDetails.etat === 'accepte'"
+              class="btn btn-success text-white"
+            >
+              acceptée
+            </button>
+            <button
+              (click)="modifierEtatCmd(commandeDetails)"
+              *ngIf="commandeDetails.etat === 'demande'"
+              class="btn btn-secondary text-white"
+            >
+              demandée
+            </button>
+            <button
+              (click)="modifierEtatCmd(commandeDetails)"
+              *ngIf="commandeDetails.etat === 'prepare'"
+              class="btn btn-warning text-white"
+            >
+              preparée
+            </button>
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'livre'" class="btn btn-success text-white">
+              livrée
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

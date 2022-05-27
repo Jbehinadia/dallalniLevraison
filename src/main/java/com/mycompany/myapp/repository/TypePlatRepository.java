@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data SQL repository for the TypePlat entity.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("")
 @Repository
 public interface TypePlatRepository extends JpaRepository<TypePlat, Long>, JpaSpecificationExecutor<TypePlat> {}

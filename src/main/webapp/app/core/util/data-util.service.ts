@@ -64,7 +64,7 @@ export class DataUtils {
         const file: File = eventTarget.files[0];
         if (isImage && !file.type.startsWith('image/')) {
           const error: FileLoadError = {
-            message: `File was expected to be an image but was found to be '${file.type}'`,
+            message: `Le fichier devait être une image, mais il s’est avéré être '${file.type}'`,
             key: 'not.image',
             params: { fileType: file.type },
           };
@@ -82,7 +82,7 @@ export class DataUtils {
         }
       } else {
         const error: FileLoadError = {
-          message: 'Could not extract file',
+          message: 'Impossible d’extraire le fichier',
           key: 'could.not.extract',
           params: { event },
         };
@@ -98,7 +98,7 @@ export class DataUtils {
     const fileReader: FileReader = new FileReader();
     fileReader.onload = (e: ProgressEvent<FileReader>) => {
       if (typeof e.target?.result === 'string') {
-        const base64Data: string = e.target.result.substr(e.target.result.indexOf('base64,') + 'base64,'.length);
+        const base64Data: string = e.target.result.substring(e.target.result.indexOf('base64,') + 'base64,'.length);
         callback(base64Data);
       }
     };

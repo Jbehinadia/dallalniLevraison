@@ -1,6 +1,5 @@
 package com.mycompany.myapp;
 
-import com.mycompany.myapp.DallalniLivraisonApp;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

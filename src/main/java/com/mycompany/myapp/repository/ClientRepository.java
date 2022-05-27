@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data SQL repository for the Client entity.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("")
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long>, JpaSpecificationExecutor<Client> {}

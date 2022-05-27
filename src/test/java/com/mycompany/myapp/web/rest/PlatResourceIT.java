@@ -11,7 +11,6 @@ import com.mycompany.myapp.domain.Menu;
 import com.mycompany.myapp.domain.Plat;
 import com.mycompany.myapp.domain.TypePlat;
 import com.mycompany.myapp.repository.PlatRepository;
-import com.mycompany.myapp.service.criteria.PlatCriteria;
 import com.mycompany.myapp.service.dto.PlatDTO;
 import com.mycompany.myapp.service.mapper.PlatMapper;
 import java.util.List;
@@ -26,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link PlatResource} REST controller.

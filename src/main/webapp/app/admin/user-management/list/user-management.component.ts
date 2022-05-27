@@ -14,6 +14,7 @@ import { UserManagementDeleteDialogComponent } from '../delete/user-management-d
 @Component({
   selector: 'jhi-user-mgmt',
   templateUrl: './user-management.component.html',
+  styleUrls: ['./user.scss'],
 })
 export class UserManagementComponent implements OnInit {
   currentAccount: Account | null = null;
@@ -42,7 +43,7 @@ export class UserManagementComponent implements OnInit {
     this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
   }
 
-  trackIdentity(index: number, item: User): number {
+  trackIdentity(_index: number, item: User): number {
     return item.id!;
   }
 
@@ -65,13 +66,13 @@ export class UserManagementComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<User[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<User[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers);
         },
-        () => (this.isLoading = false)
-      );
+        error: () => (this.isLoading = false),
+      });
   }
 
   transition(): void {

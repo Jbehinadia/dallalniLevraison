@@ -1,5 +1,6 @@
 node_modules/
 src/main/docker/
+src/main/src/
 jest.conf.js
 webpack/
 target/

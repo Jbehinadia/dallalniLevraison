@@ -54,15 +54,15 @@ export class MenuUpdateComponent implements OnInit {
     }
   }
 
-  trackRestaurantById(index: number, item: IRestaurant): number {
+  trackRestaurantById(_index: number, item: IRestaurant): number {
     return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMenu>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {

@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.ResponsableRestaurant;
 import com.mycompany.myapp.repository.ResponsableRestaurantRepository;
-import com.mycompany.myapp.service.criteria.ResponsableRestaurantCriteria;
 import com.mycompany.myapp.service.dto.ResponsableRestaurantDTO;
 import com.mycompany.myapp.service.mapper.ResponsableRestaurantMapper;
 import java.util.List;

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data SQL repository for the Restaurant entity.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("")
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, JpaSpecificationExecutor<Restaurant> {}

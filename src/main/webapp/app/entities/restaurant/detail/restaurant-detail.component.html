@@ -1,19 +1,12 @@
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="restaurant">
       <h2 data-cy="restaurantDetailsHeading"><span>Restaurant</span></h2>
 
       <hr />
-
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
-
       <dl class="row-md jh-entity-details">
-        <dt><span>ID</span></dt>
-        <dd>
-          <span>{{ restaurant.id }}</span>
-        </dd>
         <dt><span>Nom Restaurant</span></dt>
         <dd>
           <span>{{ restaurant.nomRestaurant }}</span>
@@ -26,30 +19,22 @@
         <dd>
           <span>{{ restaurant.numRestaurant }}</span>
         </dd>
-        <dt><span>Date Ouverture</span></dt>
+        <dt><span>Heure Ouverture</span></dt>
         <dd>
-          <span>{{ restaurant.dateOuverture | formatMediumDatetime }}</span>
+          <span>{{ restaurant.dateOuverture | formatMediumTime }}</span>
         </dd>
-        <dt><span>Date Fermiture</span></dt>
+        <dt><span>Heure Fermiture</span></dt>
         <dd>
-          <span>{{ restaurant.dateFermiture | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span>Responsable Restaurant</span></dt>
-        <dd>
-          <div *ngIf="restaurant.responsableRestaurant">
-            <a [routerLink]="['/responsable-restaurant', restaurant.responsableRestaurant?.id, 'view']">{{
-              restaurant.responsableRestaurant?.nomResponsable
-            }}</a>
-          </div>
+          <span>{{ restaurant.dateFermiture | formatMediumTime }}</span>
         </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      <button type="submit" (click)="previousState()" class="btn btn-info text-white" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>
       </button>
 
-      <button type="button" [routerLink]="['/restaurant', restaurant.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      <button type="button" [routerLink]="['/restaurant', restaurant.id, 'edit']" class="btn btn-primary text-white">
+        <fa-icon icon="pencil-alt"></fa-icon>
       </button>
     </div>
   </div>

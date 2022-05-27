@@ -1,15 +1,15 @@
 <div>
-  <div class="row justify-content-center">
+  <div class="d-flex justify-content-center">
     <div class="col-md-8">
       <h1>Activation</h1>
 
       <div class="alert alert-success" *ngIf="success">
-        <span><strong>Your user account has been activated.</strong> Please </span>
+        <span><strong>Votre compte utilisateur a été activé.</strong> merci </span>
         <a class="alert-link" routerLink="/login">sign in</a>.
       </div>
 
       <div class="alert alert-danger" *ngIf="error">
-        <strong>Your user could not be activated.</strong> Please use the registration form to sign up.
+        <strong>Votre utilisateur n’a pas pu être activé.</strong> Veuillez utiliser le formulaire d’inscription pour vous inscrire.
       </div>
     </div>
   </div>

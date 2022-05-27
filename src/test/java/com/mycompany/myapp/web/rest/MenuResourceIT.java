@@ -10,7 +10,6 @@ import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.Menu;
 import com.mycompany.myapp.domain.Restaurant;
 import com.mycompany.myapp.repository.MenuRepository;
-import com.mycompany.myapp.service.criteria.MenuCriteria;
 import com.mycompany.myapp.service.dto.MenuDTO;
 import com.mycompany.myapp.service.mapper.MenuMapper;
 import java.util.List;

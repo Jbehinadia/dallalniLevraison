@@ -1,109 +1,46 @@
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-restaurant-heading" data-cy="RestaurantCreateUpdateHeading">Create or edit a Restaurant</h2>
-
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+      <h2 id="jhi-restaurant-heading" data-cy="RestaurantCreateUpdateHeading" *ngIf="!restaurant.id">Ajouter un Restaurant</h2>
+      <h2 id="jhi-restaurant-heading" data-cy="RestaurantCreateUpdateHeading" *ngIf="restaurant.id">Modifier Restaurant</h2>
+      <jhi-alert-error></jhi-alert-error>
+      <jhi-alert></jhi-alert>
       <div>
-        <jhi-alert-error></jhi-alert-error>
-
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        <div class="row mb-3">
+          <label class="form-label" for="field_nomRestaurant">Nom</label>
+          <input type="text" class="form-control" name="nomRestaurant" id="field_nomRestaurant" [(ngModel)]="restaurant.nomRestaurant" />
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" for="field_nomRestaurant">Nom Restaurant</label>
-          <input
-            type="text"
-            class="form-control"
-            name="nomRestaurant"
-            id="field_nomRestaurant"
-            data-cy="nomRestaurant"
-            formControlName="nomRestaurant"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="field_adresseRestaurant">Adresse Restaurant</label>
+        <div class="row mb-3">
+          <label class="form-label" for="field_adresseRestaurant">Adresse</label>
           <input
             type="text"
             class="form-control"
             name="adresseRestaurant"
             id="field_adresseRestaurant"
-            data-cy="adresseRestaurant"
-            formControlName="adresseRestaurant"
+            [(ngModel)]="restaurant.adresseRestaurant"
           />
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" for="field_numRestaurant">Num Restaurant</label>
-          <input
-            type="text"
-            class="form-control"
-            name="numRestaurant"
-            id="field_numRestaurant"
-            data-cy="numRestaurant"
-            formControlName="numRestaurant"
-          />
+        <div class="row mb-3">
+          <label class="form-label" for="field_numRestaurant">Numero</label>
+          <input type="text" class="form-control" name="numRestaurant" id="field_numRestaurant" [(ngModel)]="restaurant.numRestaurant" />
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" for="field_dateOuverture">Date Ouverture</label>
-          <div class="d-flex">
-            <input
-              id="field_dateOuverture"
-              data-cy="dateOuverture"
-              type="datetime-local"
-              class="form-control"
-              name="dateOuverture"
-              formControlName="dateOuverture"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
+        <div class="row mb-3">
+          <label class="form-control-label">Heure Ouverture</label>
+          <input type="time" class="form-control" name="heureO" [(ngModel)]="heureO" />
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" for="field_dateFermiture">Date Fermiture</label>
-          <div class="d-flex">
-            <input
-              id="field_dateFermiture"
-              data-cy="dateFermiture"
-              type="datetime-local"
-              class="form-control"
-              name="dateFermiture"
-              formControlName="dateFermiture"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="field_ResponsableRestaurant">Responsable Restaurant</label>
-          <select
-            class="form-control"
-            id="field_ResponsableRestaurant"
-            data-cy="responsableRestaurant"
-            name="ResponsableRestaurant"
-            formControlName="responsableRestaurant"
-          >
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                ResponsableRestaurantOption.id === editForm.get('responsableRestaurant')!.value?.id
-                  ? editForm.get('responsableRestaurant')!.value
-                  : ResponsableRestaurantOption
-              "
-              *ngFor="let ResponsableRestaurantOption of responsableRestaurantsSharedCollection; trackBy: trackResponsableRestaurantById"
-            >
-              {{ ResponsableRestaurantOption.nomResponsable }}
-            </option>
-          </select>
+        <div class="row mb-3">
+          <label class="form-label">Heure Fermiture</label>
+          <input type="time" class="form-control" name="heureF" [(ngModel)]="heureF" />
         </div>
       </div>
 
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+          <fa-icon icon="ban"></fa-icon>
         </button>
 
         <button
@@ -111,9 +48,9 @@
           id="save-entity"
           data-cy="entityCreateSaveButton"
           [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
+          class="btn btn-success text-white"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+          <fa-icon icon="save"></fa-icon>
         </button>
       </div>
     </form>

@@ -1,35 +1,26 @@
-<div class="row justify-content-center">
-  <div class="col-8">
+<div class="d-flex justify-content-center">
+  <div class="col-md-6 border p-5">
     <div *ngIf="typePlat">
-      <h2 data-cy="typePlatDetailsHeading"><span>Type Plat</span></h2>
-
-      <hr />
-
-      <jhi-alert-error></jhi-alert-error>
-
-      <jhi-alert></jhi-alert>
-
       <dl class="row-md jh-entity-details">
-        <dt><span>ID</span></dt>
-        <dd>
-          <span>{{ typePlat.id }}</span>
-        </dd>
         <dt><span>Type</span></dt>
         <dd>
           <span>{{ typePlat.type }}</span>
         </dd>
-        <dt><span>Image Path</span></dt>
+        <dt><span>Image</span></dt>
         <dd>
-          <span>{{ typePlat.imagePath }}</span>
+          <div
+            [style.backgroundImage]="'url(' + typePlat.imagePath + ')'"
+            style="width: 50px; height: 50px; background-size: cover; background-repeat: no-repeat; background-position: center"
+          ></div>
         </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      <button type="submit" (click)="previousState()" class="btn btn-info text-white" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>
       </button>
 
-      <button type="button" [routerLink]="['/type-plat', typePlat.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      <button type="button" [routerLink]="['/type-plat', typePlat.id, 'edit']" class="btn btn-primary text-white">
+        <fa-icon icon="pencil-alt"></fa-icon>
       </button>
     </div>
   </div>

@@ -11,7 +11,6 @@ import com.mycompany.myapp.domain.Commande;
 import com.mycompany.myapp.domain.CommandeDetails;
 import com.mycompany.myapp.domain.Plat;
 import com.mycompany.myapp.repository.CommandeDetailsRepository;
-import com.mycompany.myapp.service.criteria.CommandeDetailsCriteria;
 import com.mycompany.myapp.service.dto.CommandeDetailsDTO;
 import com.mycompany.myapp.service.mapper.CommandeDetailsMapper;
 import java.util.List;

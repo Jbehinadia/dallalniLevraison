@@ -1,0 +1,57 @@
+<div>
+  <div class="modal-header">
+    <span>Mes Commandes</span>
+    <button type="button" class="close" (click)="this.parent!.modalRef.close()" class="btn">
+      <fa-icon icon="times" class="close-danger"></fa-icon>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-warning" id="no-result" *ngIf="commandes?.length === 0">
+      <span>Aucune commande trouvée</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="commandes && commandes.length > 0">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr>
+            <th scope="col"><span>N</span></th>
+            <th scope="col"><span>Adresse </span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"><span>Date </span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"><span>Prix</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"><span>Livraison</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"><span>Net</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"><span>Etat</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let commande of commandes; let i = index" data-cy="entityTable">
+            <td>{{ i + 1 }}</td>
+            <td>{{ commande.adresseCommande }}</td>
+            <td>{{ commande.dateCommande | formatMediumDatetime }}</td>
+            <td style="font-weight: 600">{{ commande.prixTotal }} DT</td>
+            <td class="text-info">{{ commande.prixLivreson }} DT</td>
+            <td class="text-success" style="font-weight: 600">{{ commande.prixTotal! + commande.prixLivreson! }} DT</td>
+
+            <td>
+              <button *ngIf="commande.etat === 'reprise'" class="btn btn-info text-white">reprise</button>
+              <button *ngIf="commande.etat === 'annule'" class="btn btn-danger text-white">annulée</button>
+              <button *ngIf="commande.etat === 'accepte'" class="btn btn-success text-white">acceptée</button>
+              <button *ngIf="commande.etat === 'demande'" class="btn btn-secondary text-white">demandée</button>
+              <button *ngIf="commande.etat === 'prepare'" class="btn btn-warning text-white">preparée</button>
+              <button *ngIf="commande.etat === 'livre'" class="btn btn-success text-white">livrée</button>
+            </td>
+
+            <td class="text-end">
+              <div class="btn-group">
+                <button type="submit" class="btn btn-info btn-sm text-white" data-cy="entityDetailsButton" (click)="listCommande(commande)">
+                  <fa-icon icon="list"></fa-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

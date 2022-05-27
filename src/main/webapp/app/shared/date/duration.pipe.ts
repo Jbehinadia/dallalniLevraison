@@ -8,7 +8,7 @@ import * as dayjs from 'dayjs';
 export class DurationPipe implements PipeTransform {
   transform(value: any): string {
     if (value) {
-      return dayjs.duration(value).humanize();
+      return dayjs().format();// dayjs.duration(value).humanize();
     }
     return '';
   }

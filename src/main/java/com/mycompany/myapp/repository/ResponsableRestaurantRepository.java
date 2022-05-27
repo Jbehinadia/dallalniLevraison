@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data SQL repository for the ResponsableRestaurant entity.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("")
 @Repository
 public interface ResponsableRestaurantRepository
     extends JpaRepository<ResponsableRestaurant, Long>, JpaSpecificationExecutor<ResponsableRestaurant> {}

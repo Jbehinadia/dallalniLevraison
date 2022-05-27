@@ -5,10 +5,18 @@ import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ICommande } from '../commande.model';
+import { CommandeService } from '../service/commande.service';
 
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
-import { CommandeService } from '../service/commande.service';
-import { CommandeDeleteDialogComponent } from '../delete/commande-delete-dialog.component';
+import Swals2 from 'sweetalert2';
+import Swal from 'sweetalert2';
+import { LivreurService } from 'app/entities/livreur/service/livreur.service';
+import { ILivreur } from 'app/entities/livreur/livreur.model';
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { ClientService } from 'app/entities/client/service/client.service';
+import { CommandePourlivreurComponent } from './list-pour-livreur/commande-pour-livreur.component';
+import { listDetailsCommandeComponent } from './list-details-commande/list-details-commande';
 
 @Component({
   selector: 'jhi-commande',
@@ -23,13 +31,31 @@ export class CommandeComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  livreur: ILivreur = {};
+  modalRef: any;
 
   constructor(
+    protected clientService: ClientService,
     protected commandeService: CommandeService,
+    protected livreurService: LivreurService,
     protected activatedRoute: ActivatedRoute,
+    private accountService: AccountService,
     protected router: Router,
     protected modalService: NgbModal
   ) {}
+
+  ngOnInit(): void {
+    this.accountService.getAuthenticationState().subscribe(account => {
+      this.getLivreur(account!);
+    });
+  }
+
+  getLivreur(account: Account): void {
+    this.livreurService.find(account.livreur!).subscribe((resLivreur: HttpResponse<ILivreur>) => {
+      this.livreur = resLivreur.body!;
+      this.handleNavigation();
+    });
+  }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
@@ -37,41 +63,142 @@ export class CommandeComponent implements OnInit {
 
     this.commandeService
       .query({
+        'livreurId.equals': this.livreur.id,
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<ICommande[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<ICommande[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
-        () => {
+        error: () => {
           this.isLoading = false;
           this.onError();
-        }
-      );
+        },
+      });
   }
 
-  ngOnInit(): void {
-    this.handleNavigation();
-  }
-
-  trackId(index: number, item: ICommande): number {
+  trackId(_index: number, item: ICommande): number {
     return item.id!;
   }
 
+  associerCommande(commande: ICommande): void {
+    commande.livreur = this.livreur!;
+    Swals2.fire({
+      title: 'associer cette commande',
+      text: 'vous êtes sûr de vouloir associer cette commande?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ff8200',
+    }).then(() => this.commandeService.update(commande).subscribe());
+  }
+
   delete(commande: ICommande): void {
-    const modalRef = this.modalService.open(CommandeDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.commande = commande;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed.subscribe(reason => {
-      if (reason === 'deleted') {
-        this.loadPage();
+    commande.livreur = {};
+    Swals2.fire({
+      title: 'dissocier cette commande',
+      text: 'vous êtes sûr de vouloir dissocier cette commande?',
+      type: 'error',
+      showCancelButton: true,
+      confirmButtonColor: '#ff8200',
+    }).then(() => this.commandeService.update(commande).subscribe());
+  }
+
+  editPrixLivraison(cmd: ICommande): void {
+    Swals2.fire({
+      title: 'Modifier le Prix Livraison',
+      input: 'number',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      showCancelButton: true,
+    }).then(res => {
+      if (res.value) {
+        cmd.prixLivreson = Number(res.value);
+        this.commandeService.update(cmd).subscribe();
       }
     });
   }
 
+  modifierEtatCmd(cmd: ICommande): void {
+    Swal.fire({
+      title: "Modifier l'etat du commande",
+      html:
+        '  <strong></strong> ... <br/><br/>' +
+        '<button id="reprise" class="btn btn-info text-white">reprise</button><br /><br />' +
+        '<button id="annule" class="btn btn-danger text-white">annulée</button><br /><br />' +
+        '<button id="accepte" class="btn btn-success text-white">acceptée</button><br /><br />' +
+        '<button id="demande" class="btn btn-secondary text-white">demandée</button><br /><br />' +
+        '<button id="prepare" class="btn btn-warning text-white">preparée</button><br /><br />' +
+        '<button id="livre" class="btn btn-success text-white">livrée</button><br /><br />' +
+        '',
+      onBeforeOpen: () => {
+        const content = Swal.getContent();
+        const $ = content.querySelector.bind(content);
+
+        const reprise = $('#reprise');
+        const annule = $('#annule');
+        const accepte = $('#accepte');
+        const demande = $('#demande');
+        const prepare = $('#prepare');
+        const livre = $('#livre');
+
+        Swal.showLoading();
+
+        function toggleButtons(): void {
+          Swal.close();
+        }
+
+        reprise!.addEventListener('click', () => {
+          cmd.etat = 'reprise';
+          this.commandeService.update(cmd).subscribe();
+          toggleButtons();
+        });
+
+        annule!.addEventListener('click', () => {
+          cmd.etat = 'annule';
+          this.commandeService.update(cmd).subscribe();
+          toggleButtons();
+        });
+
+        accepte!.addEventListener('click', () => {
+          cmd.etat = 'accepte';
+          this.commandeService.update(cmd).subscribe();
+          toggleButtons();
+        });
+
+        demande!.addEventListener('click', () => {
+          cmd.etat = 'demande';
+          this.commandeService.update(cmd).subscribe();
+          toggleButtons();
+        });
+
+        prepare!.addEventListener('click', () => {
+          cmd.etat = 'prepare';
+          this.commandeService.update(cmd).subscribe();
+          toggleButtons();
+        });
+
+        livre!.addEventListener('click', () => {
+          cmd.etat = 'livre';
+          this.commandeService.update(cmd).subscribe();
+          toggleButtons();
+        });
+      },
+    });
+  }
+
+  loadOtherCommandes(): void {
+    this.modalRef = this.modalService.open(CommandePourlivreurComponent as Component, { size: 'lg' });
+    this.modalRef.componentInstance.parent = this;
+    this.modalRef.componentInstance.livreur = this.livreur!;
+  }
+  listCommande(commande: ICommande): void {
+    this.modalRef = this.modalService.open(listDetailsCommandeComponent as Component, { size: 'lg' });
+    this.modalRef.componentInstance.parent = this;
+    this.modalRef.componentInstance.commande = commande!;
+  }
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
     if (this.predicate !== 'id') {
@@ -108,6 +235,9 @@ export class CommandeComponent implements OnInit {
       });
     }
     this.commandes = data ?? [];
+    this.commandes.forEach(cmd => {
+      this.clientService.find(cmd.client!.id!).subscribe(res => (cmd.client = res.body!));
+    });
     this.ngbPaginationPage = this.page;
   }
 

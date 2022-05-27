@@ -41,23 +41,23 @@ export class RestaurantComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<IRestaurant[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<IRestaurant[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
-        () => {
+        error: () => {
           this.isLoading = false;
           this.onError();
-        }
-      );
+        },
+      });
   }
 
   ngOnInit(): void {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: IRestaurant): number {
+  trackId(_index: number, item: IRestaurant): number {
     return item.id!;
   }
 

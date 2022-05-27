@@ -3,77 +3,76 @@
     <span>Responsable Restaurants</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info me-2 text-white" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh List</span>
       </button>
 
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-responsable-restaurant"
+        class="btn btn-primary jh-create-entity create-responsable-restaurant text-white"
         [routerLink]="['/responsable-restaurant/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Responsable Restaurant </span>
       </button>
     </div>
   </h2>
-
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
-
   <div class="alert alert-warning" id="no-result" *ngIf="responsableRestaurants?.length === 0">
-    <span>No responsableRestaurants found</span>
+    <span>Aucun responsableRestaurants trouvés</span>
   </div>
 
   <div class="table-responsive" id="entities" *ngIf="responsableRestaurants && responsableRestaurants.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="nomResponsable"><span>Nom Responsable</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="prenomResponsable"><span>Prenom Responsable</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="adresseResponsable"><span>Adresse Responsable</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="numResponsable"><span>Num Responsable</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="nomResponsable"><span>Nom </span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="prenomResponsable"><span>Prenom </span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="adresseResponsable"><span>Adresse </span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="numResponsable"><span>Num </span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="restaurant.id"><span>Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let responsableRestaurant of responsableRestaurants; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/responsable-restaurant', responsableRestaurant.id, 'view']">{{ responsableRestaurant.id }}</a>
-          </td>
           <td>{{ responsableRestaurant.nomResponsable }}</td>
           <td>{{ responsableRestaurant.prenomResponsable }}</td>
           <td>{{ responsableRestaurant.adresseResponsable }}</td>
           <td>{{ responsableRestaurant.numResponsable }}</td>
-          <td class="text-right">
+          <td>
+            <div *ngIf="responsableRestaurant.restaurant">
+              <a [routerLink]="['/restaurant', responsableRestaurant.restaurant?.id, 'view']">{{ responsableRestaurant.restaurant?.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
             <div class="btn-group">
               <button
                 type="submit"
                 [routerLink]="['/responsable-restaurant', responsableRestaurant.id, 'view']"
-                class="btn btn-info btn-sm"
+                class="btn btn-info btn-sm text-white"
                 data-cy="entityDetailsButton"
               >
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline">View</span>
               </button>
 
               <button
                 type="submit"
                 [routerLink]="['/responsable-restaurant', responsableRestaurant.id, 'edit']"
-                class="btn btn-primary btn-sm"
+                class="btn btn-primary btn-sm text-white"
                 data-cy="entityEditButton"
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(responsableRestaurant)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                type="submit"
+                (click)="delete(responsableRestaurant)"
+                class="btn btn-danger btn-sm text-white"
+                data-cy="entityDeleteButton"
+              >
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline">Delete</span>
               </button>
             </div>
           </td>
@@ -83,11 +82,11 @@
   </div>
 
   <div *ngIf="responsableRestaurants && responsableRestaurants.length > 0">
-    <div class="row justify-content-center">
+    <div class="d-flex justify-content-center">
       <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="d-flex justify-content-center">
       <ngb-pagination
         [collectionSize]="totalItems"
         [(page)]="ngbPaginationPage"

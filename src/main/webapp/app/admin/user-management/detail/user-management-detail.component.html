@@ -1,51 +1,52 @@
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="user">
       <h2>
-        <span>User</span> [<strong>{{ user.login }}</strong
+        <span>Utilisateur</span> [<strong>{{ user.login }}</strong
         >]
       </h2>
-
+      <jhi-alert-error></jhi-alert-error>
+      <jhi-alert></jhi-alert>
       <dl class="row-md jh-entity-details">
-        <dt><span>Login</span></dt>
+        <dt><span>Connexion</span></dt>
         <dd>
           <span>{{ user.login }}</span>
-          <span *ngIf="user.activated" class="badge badge-success">Activated</span>
-          <span *ngIf="!user.activated" class="badge badge-danger">Deactivated</span>
+          <span *ngIf="user.activated" class="badge bg-success">Activé</span>
+          <span *ngIf="!user.activated" class="badge bg-danger">Désactivé</span>
         </dd>
 
-        <dt><span>First Name</span></dt>
+        <dt><span>Nom </span></dt>
         <dd>{{ user.firstName }}</dd>
 
-        <dt><span>Last Name</span></dt>
+        <dt><span>Prénom</span></dt>
         <dd>{{ user.lastName }}</dd>
 
         <dt><span>Email</span></dt>
         <dd>{{ user.email }}</dd>
 
-        <dt><span>Created By</span></dt>
+        <dt><span>Créé par</span></dt>
         <dd>{{ user.createdBy }}</dd>
 
-        <dt><span>Created Date</span></dt>
+        <dt><span>Date de création</span></dt>
         <dd>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
 
-        <dt><span>Last Modified By</span></dt>
+        <dt><span>Modifié en dernier lieu par</span></dt>
         <dd>{{ user.lastModifiedBy }}</dd>
 
-        <dt><span>Last Modified Date</span></dt>
+        <dt><span>Date de dernière modification</span></dt>
         <dd>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
 
         <dt><span>Profiles</span></dt>
         <dd>
           <ul class="list-unstyled">
             <li *ngFor="let authority of user.authorities">
-              <span class="badge badge-info">{{ authority }}</span>
+              <span class="badge bg-info">{{ authority }}</span>
             </li>
           </ul>
         </dd>
       </dl>
 
-      <button type="submit" routerLink="../../" class="btn btn-info"><fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span></button>
+      <button type="submit" routerLink="../../" class="btn btn-info text-white"><fa-icon icon="arrow-left"></fa-icon></button>
     </div>
   </div>
 </div>

@@ -16,17 +16,17 @@ export class AlertErrorComponent implements OnDestroy {
   httpErrorListener: Subscription;
 
   constructor(private alertService: AlertService, private eventManager: EventManager) {
-    this.errorListener = eventManager.subscribe('dallalniLivraisonApp.error', (response: EventWithContent<unknown> | string) => {
+    this.errorListener = eventManager.subscribe('dallalniDeliveryFoodApp.error', (response: EventWithContent<unknown> | string) => {
       const errorResponse = (response as EventWithContent<AlertError>).content;
       this.addErrorAlert(errorResponse.message);
     });
 
-    this.httpErrorListener = eventManager.subscribe('dallalniLivraisonApp.httpError', (response: EventWithContent<unknown> | string) => {
+    this.httpErrorListener = eventManager.subscribe('dallalniDeliveryFoodApp.httpError', (response: EventWithContent<unknown> | string) => {
       const httpErrorResponse = (response as EventWithContent<HttpErrorResponse>).content;
       switch (httpErrorResponse.status) {
         // connection refused, server not reachable
         case 0:
-          this.addErrorAlert('Server not reachable');
+          this.addErrorAlert('Serveur inaccessible');
           break;
 
         case 400: {

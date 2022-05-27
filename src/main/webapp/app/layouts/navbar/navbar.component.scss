@@ -5,11 +5,6 @@
 Navbar
 ========================================================================== */
 
-.navbar-version {
-  font-size: 0.65em;
-  color: $navbar-dark-color;
-}
-
 .profile-image {
   height: 1.75em;
   width: 1.75em;
@@ -18,25 +13,487 @@ Navbar
 .navbar {
   padding: 0.2rem 1rem;
 
-  ul.navbar-nav {
-    .nav-item {
-      margin-left: 0.5em;
-    }
-  }
-
   a.nav-link {
     font-weight: 400;
+    color: chocolate;
   }
+}
+.navbar-title {
+  margin-right: 50px;
 }
 
 /* ==========================================================================
 Logo styles
 ========================================================================== */
-.logo-img {
-  height: 45px;
-  width: 45px;
-  display: inline-block;
-  vertical-align: middle;
-  background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
-  background-size: contain;
+// @import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700");)
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-size: 14px !important;
+  font-family: Roboto, sans-serif;
+}
+
+.dashboard {
+  display: flex;
+  width: 100%;
+  margin: 8px;
+  background: white;
+  border-radius: 30px;
+}
+
+.restaurant-panel {
+  display: grid;
+  width: 75%;
+  row-gap: 72px;
+  padding: 45px 80px;
+  border-right: 1px solid rgb(248, 248, 247);
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  box-shadow: 0px 12px 18px rgb(0 0 0 / 16%);
+}
+
+.menu {
+  margin-right: 28px;
+}
+
+.title {
+  margin-right: 78px;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+}
+
+.search-bar {
+  width: 50%;
+
+  .form-control {
+    background-color: white;
+    width: 100%;
+    border-color: transparent;
+    border-radius: 15px;
+  }
+
+  .btn {
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px 6px 18px 18px;
+    border-color: transparent;
+    border-radius: 15px;
+  }
+}
+
+.welcome-banner {
+  position: relative;
+  padding: 64px 180px 72px 324px;
+  background: rgb(255, 247, 237);
+  border-radius: 15px;
+  white-space: nowrap;
+  box-shadow: 0px 12px 18px rgb(0 0 0 / 16%);
+
+  .delivery {
+    position: absolute;
+    top: -22px;
+    left: 40px;
+    width: 240px;
+    height: 240px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 18px;
+    color: rgb(250, 83, 24);
+  }
+
+  p {
+    margin: 14px 0 0 0;
+    color: rgb(160, 160, 160);
+  }
+
+  .learn-more {
+    position: absolute;
+    right: 36px;
+    bottom: 36px;
+    display: flex;
+    align-items: center;
+    color: rgb(250, 83, 24);
+    text-decoration: none;
+
+    .arrow {
+      margin-left: 12px;
+      fill: currentColor;
+    }
+  }
+}
+
+#restaurants {
+  .section-titles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 60px;
+
+    .section-title {
+      font-size: 21px;
+      font-weight: bold;
+    }
+    .btn-Delivery {
+      color: white;
+      background-color: rgb(250, 83, 24);
+      border: 1px solid rgb(250, 83, 24);
+      border-radius: 30px;
+    }
+  }
+}
+
+.date-select {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+
+  .clock {
+    margin-right: 9px;
+    fill: currentColor;
+  }
+
+  .chevron {
+    margin-left: 15px;
+    fill: currentColor;
+  }
+}
+
+.categories {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 12px 18px rgb(0 0 0 / 16%);
+}
+
+.category-list {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
+  .item {
+    box-sizing: border-box;
+    width: 72px;
+    padding: 6px;
+    border-radius: 36px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+    &:not(:last-child) {
+      margin-right: 18px;
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      padding-left: 5%;
+    }
+
+    .category-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 56px;
+      height: 56px;
+      background: white;
+      border: 1px solid rgb(160, 160, 160);
+      border-radius: 50%;
+
+      svg {
+        fill: black;
+        transform: scale(1.2);
+      }
+    }
+
+    .category-name {
+      padding: 9px 0 36px 0;
+      font-size: 10px;
+      font-weight: bold;
+      color: black;
+    }
+
+    &:target {
+      background: rgb(252, 213, 97);
+
+      .category-icon {
+        border-color: transparent;
+      }
+    }
+  }
+}
+
+.category-more-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 15px;
+  color: white;
+  background-color: rgb(248, 248, 247);
+  border: 1px solid rgb(248, 248, 247);
+}
+
+.restaurant-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 36px 27px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
+  .item {
+    .restaurant-image {
+      width: 250px;
+      height: 125px;
+      border-radius: 15px;
+    }
+
+    .restaurant-name {
+      margin-top: 27px;
+    }
+
+    .restaurant-info {
+      margin-top: 12px;
+      font-size: 10px;
+    }
+
+    .restaurant-rate {
+      margin-right: 9px;
+
+      & > * {
+        display: inline-flex;
+        vertical-align: middle;
+      }
+
+      svg {
+        margin-right: 6px;
+      }
+    }
+
+    .restaurant-category {
+      color: rgb(160, 160, 160);
+    }
+  }
+}
+
+.order-panel {
+  padding: 56px 50px 42px 48px;
+  background: rgb(255 247 237);
+  border-radius: 5% 0 0 5%;
+  box-shadow: 0px 12px 18px rgb(0 0 0 / 16%);
+}
+
+.user-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .buy-count {
+    margin-left: 30px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    color: black;
+    border-radius: 15px;
+    background-color: rgb(252, 213, 97);
+  }
+}
+
+#order {
+  margin-top: 64px;
+
+  .section-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+.order-info {
+  width: 240px;
+  margin-top: 44px;
+  padding: 27px 24px 24px 24px;
+  color: white;
+  background: rgb(80, 62, 157);
+  border-radius: 15px;
+
+  .address,
+  .delivery {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .address-edit {
+    color: rgb(252, 213, 97);
+    text-decoration: none;
+  }
+
+  .delivery {
+    margin-top: 20px;
+
+    .delivery-time {
+      display: flex;
+      align-items: center;
+    }
+
+    .time-btn {
+      width: 40px;
+      height: 40px;
+      padding: 4px 5px 8px 7px;
+      color: rgb(252, 213, 97);
+      background: rgba(252, 213, 97, 0.1);
+      border-color: transparent;
+      border-radius: 15px;
+
+      svg {
+        fill: currentColor;
+      }
+    }
+
+    .time {
+      margin-left: 12px;
+    }
+
+    .delivery-choose-time {
+      color: rgb(252, 213, 97);
+      text-decoration: none;
+    }
+  }
+}
+
+.food-list {
+  display: grid;
+  row-gap: 33px;
+  padding: 0;
+  margin: 54px 0 0 0;
+  font-size: 10px;
+  font-weight: bold;
+  list-style-type: none;
+
+  .item {
+    display: grid;
+    align-items: center;
+
+    &:not(:last-child) {
+      grid-template-columns: 78px 20px 106px 1fr;
+    }
+
+    &:last-child {
+      grid-template-columns: 78px 20px 1fr;
+    }
+
+    .food-image {
+      width: 57px;
+      height: 32px;
+      border-radius: 5px;
+    }
+
+    .food-price {
+      color: rgb(160, 160, 160);
+      justify-self: flex-end;
+    }
+  }
+}
+
+.total-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 115px;
+  padding-bottom: 24px;
+
+  .price {
+    font-size: 22px;
+    font-weight: bold;
+  }
+}
+
+.buy-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 34px;
+  border-top: 2px solid rgb(248, 248, 247);
+
+  .persons {
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .input-spinner {
+    margin-top: 16px;
+    padding: 15px 25px 0px 0px;
+  }
+
+  .checkout-btn {
+    display: flex;
+    align-items: center;
+    padding: 30px;
+    color: black;
+    border-radius: 10px;
+    background-color: rgb(252, 213, 97);
+
+    .arrow {
+      margin-left: 16px;
+    }
+  }
+}
+
+.input-spinner {
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-color: hsl(214, 16%, 92%);
+
+    padding: 12px;
+    border-radius: 10px;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: hsl(214, 16%, 92%);
+    }
+  }
+
+  .form-control {
+    border-color: hsl(214, 16%, 92%);
+    background: rgb(255 247 237);
+
+    box-sizing: border-box;
+    max-width: 48px;
+    text-align: center;
+    border-left: none !important;
+    border-right: none !important;
+  }
+  .input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: 100%;
+  }
+  .plus {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .minus {
+    padding-right: 0;
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }

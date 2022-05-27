@@ -43,23 +43,23 @@ export class TypePlatComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<ITypePlat[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<ITypePlat[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
-        () => {
+        error: () => {
           this.isLoading = false;
           this.onError();
-        }
-      );
+        },
+      });
   }
 
   ngOnInit(): void {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: ITypePlat): number {
+  trackId(_index: number, item: ITypePlat): number {
     return item.id!;
   }
 

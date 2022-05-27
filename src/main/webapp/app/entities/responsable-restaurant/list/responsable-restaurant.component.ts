@@ -41,23 +41,23 @@ export class ResponsableRestaurantComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<IResponsableRestaurant[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<IResponsableRestaurant[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
-        () => {
+        error: () => {
           this.isLoading = false;
           this.onError();
-        }
-      );
+        },
+      });
   }
 
   ngOnInit(): void {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: IResponsableRestaurant): number {
+  trackId(_index: number, item: IResponsableRestaurant): number {
     return item.id!;
   }
 

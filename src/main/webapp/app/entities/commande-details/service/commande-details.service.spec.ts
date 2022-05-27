@@ -23,7 +23,6 @@ describe('CommandeDetails Service', () => {
       id: 0,
       prix: 0,
       etat: 'AAAAAAA',
-      qte: 0,
     };
   });
 
@@ -61,7 +60,6 @@ describe('CommandeDetails Service', () => {
           id: 1,
           prix: 1,
           etat: 'BBBBBB',
-          qte: 1,
         },
         elemDefault
       );
@@ -79,7 +77,6 @@ describe('CommandeDetails Service', () => {
       const patchObject = Object.assign(
         {
           etat: 'BBBBBB',
-          qte: 1,
         },
         new CommandeDetails()
       );
@@ -101,7 +98,6 @@ describe('CommandeDetails Service', () => {
           id: 1,
           prix: 1,
           etat: 'BBBBBB',
-          qte: 1,
         },
         elemDefault
       );
@@ -153,7 +149,7 @@ describe('CommandeDetails Service', () => {
       });
 
       it('should add only unique CommandeDetails to an array', () => {
-        const commandeDetailsArray: ICommandeDetails[] = [{ id: 123 }, { id: 456 }, { id: 64947 }];
+        const commandeDetailsArray: ICommandeDetails[] = [{ id: 123 }, { id: 456 }, { id: 84465 }];
         const commandeDetailsCollection: ICommandeDetails[] = [{ id: 123 }];
         expectedResult = service.addCommandeDetailsToCollectionIfMissing(commandeDetailsCollection, ...commandeDetailsArray);
         expect(expectedResult).toHaveLength(3);

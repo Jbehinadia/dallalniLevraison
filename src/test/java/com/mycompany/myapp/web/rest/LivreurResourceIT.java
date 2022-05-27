@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.Livreur;
 import com.mycompany.myapp.repository.LivreurRepository;
-import com.mycompany.myapp.service.criteria.LivreurCriteria;
 import com.mycompany.myapp.service.dto.LivreurDTO;
 import com.mycompany.myapp.service.mapper.LivreurMapper;
 import java.util.List;

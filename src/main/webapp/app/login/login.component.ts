@@ -8,10 +8,12 @@ import { AccountService } from 'app/core/auth/account.service';
 @Component({
   selector: 'jhi-login',
   templateUrl: './login.component.html',
+  styleUrls: ['./login.scss'],
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('username', { static: false })
   username!: ElementRef;
+  parent!: any;
 
   authenticationError = false;
 
@@ -48,15 +50,27 @@ export class LoginComponent implements OnInit, AfterViewInit {
         password: this.loginForm.get('password')!.value,
         rememberMe: this.loginForm.get('rememberMe')!.value,
       })
-      .subscribe(
-        () => {
+      .subscribe({
+        next: account => {
           this.authenticationError = false;
           if (!this.router.getCurrentNavigation()) {
             // There were no routing during login (eg from navigationToStoredUrl)
-            this.router.navigate(['']);
+            if (this.parent) {
+              this.parent.modalRefSignIn.close();
+            } else {
+              if (account!.authorities.includes('ROLE_ADMIN')) {
+                this.router.navigate(['/admin/user-management']);
+              } else if (account!.authorities.includes('ROLE_Livreur')) {
+                this.router.navigate(['/commande']);
+              } else if (account!.authorities.includes('ROLE_Resto')) {
+                this.router.navigate(['/commande-details']);
+              } else {
+                this.router.navigate(['']);
+              }
+            }
           }
         },
-        () => (this.authenticationError = true)
-      );
+        error: () => (this.authenticationError = true),
+      });
   }
 }

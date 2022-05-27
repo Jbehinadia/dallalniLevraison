@@ -10,7 +10,6 @@ import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.ResponsableRestaurant;
 import com.mycompany.myapp.domain.Restaurant;
 import com.mycompany.myapp.repository.RestaurantRepository;
-import com.mycompany.myapp.service.criteria.RestaurantCriteria;
 import com.mycompany.myapp.service.dto.RestaurantDTO;
 import com.mycompany.myapp.service.mapper.RestaurantMapper;
 import java.time.Instant;

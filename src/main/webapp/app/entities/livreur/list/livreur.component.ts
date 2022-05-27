@@ -41,23 +41,23 @@ export class LivreurComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<ILivreur[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<ILivreur[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
-        () => {
+        error: () => {
           this.isLoading = false;
           this.onError();
-        }
-      );
+        },
+      });
   }
 
   ngOnInit(): void {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: ILivreur): number {
+  trackId(_index: number, item: ILivreur): number {
     return item.id!;
   }
 

@@ -1,30 +1,19 @@
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="commandeDetails">
       <h2 data-cy="commandeDetailsDetailsHeading"><span>Commande Details</span></h2>
 
       <hr />
-
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
-
       <dl class="row-md jh-entity-details">
-        <dt><span>ID</span></dt>
-        <dd>
-          <span>{{ commandeDetails.id }}</span>
-        </dd>
         <dt><span>Prix</span></dt>
         <dd>
-          <span>{{ commandeDetails.prix }}</span>
+          <span>{{ commandeDetails.prix }} DT</span>
         </dd>
         <dt><span>Etat</span></dt>
         <dd>
           <span>{{ commandeDetails.etat }}</span>
-        </dd>
-        <dt><span>Qte</span></dt>
-        <dd>
-          <span>{{ commandeDetails.qte }}</span>
         </dd>
         <dt><span>Commande</span></dt>
         <dd>
@@ -35,17 +24,17 @@
         <dt><span>Plat</span></dt>
         <dd>
           <div *ngIf="commandeDetails.plat">
-            <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.nomPlat }}</a>
+            <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.id }}</a>
           </div>
         </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      <button type="submit" (click)="previousState()" class="btn btn-info text-white" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>
       </button>
 
-      <button type="button" [routerLink]="['/commande-details', commandeDetails.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      <button type="button" [routerLink]="['/commande-details', commandeDetails.id, 'edit']" class="btn btn-primary text-white">
+        <fa-icon icon="pencil-alt"></fa-icon>
       </button>
     </div>
   </div>

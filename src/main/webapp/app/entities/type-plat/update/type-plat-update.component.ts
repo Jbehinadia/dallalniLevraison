@@ -38,6 +38,19 @@ export class TypePlatUpdateComponent implements OnInit {
     });
   }
 
+  uploadFile(event: any): any {
+    const reader = new FileReader();
+    const file = event.target!.files[0];
+    if (event.target!.files && event.target.files[0]) {
+      reader.readAsDataURL(file);
+
+      // When file uploads push it to file list
+      reader.onload = () => {
+        this.editForm.controls['imagePath'].setValue(reader.result!.toString());
+      };
+    }
+  }
+
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
@@ -49,7 +62,7 @@ export class TypePlatUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('dallalniLivraisonApp.error', { message: err.message })),
+        this.eventManager.broadcast(new EventWithContent<AlertError>('dallalniDeliveryFoodApp.error', { message: err.message })),
     });
   }
 
@@ -68,10 +81,10 @@ export class TypePlatUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITypePlat>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {

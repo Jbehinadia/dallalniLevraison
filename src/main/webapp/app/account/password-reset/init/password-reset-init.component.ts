@@ -6,6 +6,7 @@ import { PasswordResetInitService } from './password-reset-init.service';
 @Component({
   selector: 'jhi-password-reset-init',
   templateUrl: './password-reset-init.component.html',
+  styleUrls: ['./password-reset.scss'],
 })
 export class PasswordResetInitComponent implements AfterViewInit {
   @ViewChild('email', { static: false })

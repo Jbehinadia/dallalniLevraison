@@ -1,21 +1,21 @@
 <div>
   <h2 id="session-page-heading" *ngIf="account">
-    Active sessions for [<strong>{{ account.login }}</strong
+    Séances actives pour [<strong>{{ account.login }}</strong
     >]
   </h2>
 
   <div class="alert alert-success" *ngIf="success">
-    <strong>Session invalidated!</strong>
+    <strong>Session invalidée!</strong>
   </div>
 
-  <div class="alert alert-danger" *ngIf="error"><strong>An error has occurred!</strong> The session could not be invalidated.</div>
+  <div class="alert alert-danger" *ngIf="error"><strong>Une erreur s’est produite !</strong> La session n’a pas pu être invalidée.</div>
 
   <div class="table-responsive">
     <table class="table table-striped" aria-describedby="session-page-heading">
       <thead>
         <tr>
-          <th scope="col">IP Address</th>
-          <th scope="col">User agent</th>
+          <th scope="col">Adresse IP</th>
+          <th scope="col">Agent utilisateur</th>
           <th scope="col">Date</th>
           <th scope="col"></th>
         </tr>
@@ -26,7 +26,7 @@
           <td>{{ session.userAgent }}</td>
           <td>{{ session.tokenDate | date: 'longDate' }}</td>
           <td>
-            <button type="submit" class="btn btn-primary" (click)="invalidate(session.series)">Invalidate</button>
+            <button type="submit" class="btn btn-primary" (click)="invalidate(session.series)">Invalider</button>
           </td>
         </tr>
       </tbody>

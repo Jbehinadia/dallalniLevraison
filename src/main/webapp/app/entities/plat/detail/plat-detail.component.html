@@ -1,59 +1,55 @@
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="plat">
       <h2 data-cy="platDetailsHeading"><span>Plat</span></h2>
 
       <hr />
-
       <jhi-alert-error></jhi-alert-error>
-
-      <jhi-alert></jhi-alert>
-
       <dl class="row-md jh-entity-details">
-        <dt><span>ID</span></dt>
-        <dd>
-          <span>{{ plat.id }}</span>
-        </dd>
         <dt><span>Nom Plat</span></dt>
         <dd>
           <span>{{ plat.nomPlat }}</span>
         </dd>
-        <dt><span>Image Path</span></dt>
-        <dd>
-          <span>{{ plat.imagePath }}</span>
-        </dd>
-        <dt><span>Prix</span></dt>
-        <dd>
-          <span>{{ plat.prix }}</span>
-        </dd>
-        <dt><span>Remise Perc</span></dt>
-        <dd>
-          <span>{{ plat.remisePerc }}</span>
-        </dd>
-        <dt><span>Remice Val</span></dt>
-        <dd>
-          <span>{{ plat.remiceVal }}</span>
-        </dd>
-        <dt><span>Menu</span></dt>
-        <dd>
-          <div *ngIf="plat.menu">
-            <a [routerLink]="['/menu', plat.menu?.id, 'view']">{{ plat.menu?.nomMenu }}</a>
-          </div>
-        </dd>
-        <dt><span>Type Plat</span></dt>
+        <dt><span>Type</span></dt>
         <dd>
           <div *ngIf="plat.typePlat">
             <a [routerLink]="['/type-plat', plat.typePlat?.id, 'view']">{{ plat.typePlat?.type }}</a>
           </div>
         </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <div
+            [style.backgroundImage]="'url(' + plat.imagePath + ')'"
+            style="width: 300px; height: 150px; background-size: cover; background-repeat: no-repeat; background-position: center"
+          ></div>
+        </dd>
+        <dt><span>Prix</span></dt>
+        <dd>
+          <span>{{ plat.prix }} DT</span>
+        </dd>
+        <dt><span class="text-danger">Remise %</span></dt>
+        <dd>
+          <span>{{ plat.remisePerc }}</span>
+        </dd>
+        <dt><span class="text-success">Net</span></dt>
+        <dd>
+          <span>{{ plat.prix! - (plat.prix! * plat.remisePerc!) / 100 }} DT</span>
+        </dd>
+
+        <dt><span>Menu</span></dt>
+        <dd>
+          <div *ngIf="plat.menu">
+            <a [routerLink]="['/menu', plat.menu?.id, 'view']">{{ plat.menu?.id }}</a>
+          </div>
+        </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      <button type="submit" (click)="previousState()" class="btn btn-info text-white" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>
       </button>
 
-      <button type="button" [routerLink]="['/plat', plat.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      <button type="button" [routerLink]="['/plat', plat.id, 'edit']" class="btn btn-primary text-white">
+        <fa-icon icon="pencil-alt"></fa-icon>
       </button>
     </div>
   </div>

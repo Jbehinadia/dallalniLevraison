@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data SQL repository for the Plat entity.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("")
 @Repository
 public interface PlatRepository extends JpaRepository<Plat, Long>, JpaSpecificationExecutor<Plat> {}

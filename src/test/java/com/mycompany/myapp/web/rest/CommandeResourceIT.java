@@ -11,7 +11,6 @@ import com.mycompany.myapp.domain.Client;
 import com.mycompany.myapp.domain.Commande;
 import com.mycompany.myapp.domain.Livreur;
 import com.mycompany.myapp.repository.CommandeRepository;
-import com.mycompany.myapp.service.criteria.CommandeCriteria;
 import com.mycompany.myapp.service.dto.CommandeDTO;
 import com.mycompany.myapp.service.mapper.CommandeMapper;
 import java.time.Instant;

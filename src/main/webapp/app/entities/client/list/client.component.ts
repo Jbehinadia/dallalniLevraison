@@ -41,23 +41,23 @@ export class ClientComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<IClient[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<IClient[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
-        () => {
+        error: () => {
           this.isLoading = false;
           this.onError();
-        }
-      );
+        },
+      });
   }
 
   ngOnInit(): void {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: IClient): number {
+  trackId(_index: number, item: IClient): number {
     return item.id!;
   }
 

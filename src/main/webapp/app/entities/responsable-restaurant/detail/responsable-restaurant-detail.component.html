@@ -1,19 +1,12 @@
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="responsableRestaurant">
       <h2 data-cy="responsableRestaurantDetailsHeading"><span>Responsable Restaurant</span></h2>
 
       <hr />
-
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
-
       <dl class="row-md jh-entity-details">
-        <dt><span>ID</span></dt>
-        <dd>
-          <span>{{ responsableRestaurant.id }}</span>
-        </dd>
         <dt><span>Nom Responsable</span></dt>
         <dd>
           <span>{{ responsableRestaurant.nomResponsable }}</span>
@@ -30,14 +23,20 @@
         <dd>
           <span>{{ responsableRestaurant.numResponsable }}</span>
         </dd>
+        <dt><span>Restaurant</span></dt>
+        <dd>
+          <div *ngIf="responsableRestaurant.restaurant">
+            <a [routerLink]="['/restaurant', responsableRestaurant.restaurant?.id, 'view']">{{ responsableRestaurant.restaurant?.id }}</a>
+          </div>
+        </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      <button type="submit" (click)="previousState()" class="btn btn-info text-white" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>
       </button>
 
-      <button type="button" [routerLink]="['/responsable-restaurant', responsableRestaurant.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      <button type="button" [routerLink]="['/responsable-restaurant', responsableRestaurant.id, 'edit']" class="btn btn-primary text-white">
+        <fa-icon icon="pencil-alt"></fa-icon>
       </button>
     </div>
   </div>

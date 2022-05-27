@@ -26,7 +26,6 @@ export class CommandeDetailsUpdateComponent implements OnInit {
     id: [],
     prix: [],
     etat: [],
-    qte: [],
     commande: [],
     plat: [],
   });
@@ -61,19 +60,19 @@ export class CommandeDetailsUpdateComponent implements OnInit {
     }
   }
 
-  trackCommandeById(index: number, item: ICommande): number {
+  trackCommandeById(_index: number, item: ICommande): number {
     return item.id!;
   }
 
-  trackPlatById(index: number, item: IPlat): number {
+  trackPlatById(_index: number, item: IPlat): number {
     return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICommandeDetails>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {
@@ -93,7 +92,6 @@ export class CommandeDetailsUpdateComponent implements OnInit {
       id: commandeDetails.id,
       prix: commandeDetails.prix,
       etat: commandeDetails.etat,
-      qte: commandeDetails.qte,
       commande: commandeDetails.commande,
       plat: commandeDetails.plat,
     });
@@ -129,7 +127,6 @@ export class CommandeDetailsUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       prix: this.editForm.get(['prix'])!.value,
       etat: this.editForm.get(['etat'])!.value,
-      qte: this.editForm.get(['qte'])!.value,
       commande: this.editForm.get(['commande'])!.value,
       plat: this.editForm.get(['plat'])!.value,
     };

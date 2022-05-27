@@ -3,67 +3,65 @@
     <span>Menus</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info me-2 text-white" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh List</span>
       </button>
 
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-menu"
+        class="btn btn-primary jh-create-entity create-menu text-white"
         [routerLink]="['/menu/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Menu </span>
       </button>
     </div>
   </h2>
-
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
-
   <div class="alert alert-warning" id="no-result" *ngIf="menus?.length === 0">
-    <span>No menus found</span>
+    <span>Aucun menu trouvé</span>
   </div>
 
   <div class="table-responsive" id="entities" *ngIf="menus && menus.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="nomMenu"><span>Nom Menu</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="restaurant.nomRestaurant"><span>Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="nomMenu"><span>Nom</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="restaurant.id"><span>Restaurant</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let menu of menus; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/menu', menu.id, 'view']">{{ menu.id }}</a>
-          </td>
           <td>{{ menu.nomMenu }}</td>
           <td>
             <div *ngIf="menu.restaurant">
               <a [routerLink]="['/restaurant', menu.restaurant?.id, 'view']">{{ menu.restaurant?.nomRestaurant }}</a>
             </div>
           </td>
-          <td class="text-right">
+          <td class="text-end">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/menu', menu.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <button
+                type="submit"
+                [routerLink]="['/menu', menu.id, 'view']"
+                class="btn btn-info btn-sm text-white"
+                data-cy="entityDetailsButton"
+              >
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline">View</span>
               </button>
 
-              <button type="submit" [routerLink]="['/menu', menu.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button
+                type="submit"
+                [routerLink]="['/menu', menu.id, 'edit']"
+                class="btn btn-primary btn-sm text-white"
+                data-cy="entityEditButton"
+              >
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(menu)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button type="submit" (click)="delete(menu)" class="btn btn-danger btn-sm text-white" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline">Delete</span>
               </button>
             </div>
           </td>
@@ -73,11 +71,11 @@
   </div>
 
   <div *ngIf="menus && menus.length > 0">
-    <div class="row justify-content-center">
+    <div class="d-flex justify-content-center">
       <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="d-flex justify-content-center">
       <ngb-pagination
         [collectionSize]="totalItems"
         [(page)]="ngbPaginationPage"
