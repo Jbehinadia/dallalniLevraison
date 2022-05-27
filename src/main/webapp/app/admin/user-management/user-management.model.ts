@@ -11,6 +11,12 @@ export interface IUser {
   createdDate?: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
+  client?: number;
+  livreur?: number;
+  responsable?: number;
+
+  password?: string; // local use
+  confirmPassword?: string; // local use
 }
 
 export class User implements IUser {
@@ -26,6 +32,9 @@ export class User implements IUser {
     public createdBy?: string,
     public createdDate?: Date,
     public lastModifiedBy?: string,
-    public lastModifiedDate?: Date
+    public lastModifiedDate?: Date,
+    public client?: number,
+    public livreur?: number,
+    public responsable?: number
   ) {}
 }

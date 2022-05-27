@@ -48,6 +48,12 @@ public class AdminUserDTO {
 
     private Set<String> authorities;
 
+    private Long responsable;
+
+    private Long livreur;
+
+    private Long client;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -57,6 +63,9 @@ public class AdminUserDTO {
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.responsable = user.getResponsable();
+        this.livreur = user.getLivreur();
+        this.client = user.getClient();
         this.email = user.getEmail();
         this.activated = user.isActivated();
         this.imageUrl = user.getImageUrl();
@@ -98,6 +107,30 @@ public class AdminUserDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Long getResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(Long responsable) {
+        this.responsable = responsable;
+    }
+
+    public Long getLivreur() {
+        return livreur;
+    }
+
+    public void setLivreur(Long livreur) {
+        this.livreur = livreur;
+    }
+
+    public Long getClient() {
+        return client;
+    }
+
+    public void setClient(Long client) {
+        this.client = client;
     }
 
     public String getEmail() {
@@ -179,6 +212,9 @@ public class AdminUserDTO {
             "login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", responsable='" + responsable + '\'' +
+            ", livreur='" + livreur + '\'' +
+            ", client='" + client + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +
