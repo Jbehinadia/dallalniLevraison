@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   nbrCommandes = 0;
   modalRefSignIn!: any;
   modalRef!: any;
+  account!: Account;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -65,6 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
       .subscribe(account => {
+        this.account = account!;
         this.getClientAndCommandes(account!);
       });
   }

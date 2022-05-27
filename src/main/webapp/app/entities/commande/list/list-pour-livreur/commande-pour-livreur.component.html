@@ -1,6 +1,6 @@
 <div>
   <div class="modal-header">
-    <span>Mes Commandes</span>
+    <span>Commandes</span>
     <button type="button" class="close" (click)="this.parent!.modalRef.close()" class="btn">
       <fa-icon icon="times" class="close-danger"></fa-icon>
     </button>
@@ -15,18 +15,20 @@
         <thead>
           <tr>
             <th scope="col"><span>N</span></th>
-            <th scope="col"><span>Adresse </span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"><span>Date </span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"><span>Prix</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"><span>Livraison</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"><span>Net</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"><span>Etat</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"><span>client </span></th>
+            <th scope="col"><span>Adresse </span></th>
+            <th scope="col"><span>Date </span></th>
+            <th scope="col"><span>Prix</span></th>
+            <th scope="col"><span>Livraison</span></th>
+            <th scope="col"><span>Net</span></th>
+            <th scope="col"><span>Etat</span></th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let commande of commandes; let i = index" data-cy="entityTable">
             <td>{{ i + 1 }}</td>
+            <td>{{ commande.client!.nomClient }}</td>
             <td>{{ commande.adresseCommande }}</td>
             <td>{{ commande.dateCommande | formatMediumDatetime }}</td>
             <td style="font-weight: 600">{{ commande.prixTotal }} DT</td>
@@ -34,12 +36,8 @@
             <td class="text-success" style="font-weight: 600">{{ commande.prixTotal! + commande.prixLivreson! }} DT</td>
 
             <td>
-              <button *ngIf="commande.etat === 'reprise'" class="btn btn-info text-white">reprise</button>
-              <button *ngIf="commande.etat === 'annule'" class="btn btn-danger text-white">annulée</button>
-              <button *ngIf="commande.etat === 'accepte'" class="btn btn-success text-white">acceptée</button>
-              <button *ngIf="commande.etat === 'demande'" class="btn btn-secondary text-white">demandée</button>
-              <button *ngIf="commande.etat === 'prepare'" class="btn btn-warning text-white">preparée</button>
-              <button *ngIf="commande.etat === 'livre'" class="btn btn-success text-white">livrée</button>
+              <button (click)="modifierEtatCmd(commande)" *ngIf="commande.etat === 'reprise'" class="btn btn-info text-white">reprise</button>
+              <button (click)="modifierEtatCmd(commande)" *ngIf="commande.etat === 'annule'" class="btn btn-danger text-white">annulée</button>
             </td>
 
             <td class="text-right">

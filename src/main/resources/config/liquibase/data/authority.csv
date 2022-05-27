@@ -1,3 +1,7 @@
 name
 ROLE_ADMIN
 ROLE_USER
+ROLE_Client
+ROLE_Livreur
+ROLE_Resto
+

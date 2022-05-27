@@ -64,6 +64,7 @@ export class CommandeComponent implements OnInit {
     this.commandeService
       .query({
         'livreurId.equals': this.livreur.id,
+        'etat.in': ['accepte', 'demande', 'prepare'],
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -126,9 +127,7 @@ export class CommandeComponent implements OnInit {
       title: "Modifier l'etat du commande",
       html:
         '  <strong></strong> ... <br/><br/>' +
-        '<button id="reprise" class="btn btn-info text-white">reprise</button><br /><br />' +
         '<button id="annule" class="btn btn-danger text-white">annulée</button><br /><br />' +
-        '<button id="accepte" class="btn btn-success text-white">acceptée</button><br /><br />' +
         '<button id="demande" class="btn btn-secondary text-white">demandée</button><br /><br />' +
         '<button id="prepare" class="btn btn-warning text-white">preparée</button><br /><br />' +
         '<button id="livre" class="btn btn-success text-white">livrée</button><br /><br />' +
@@ -137,9 +136,7 @@ export class CommandeComponent implements OnInit {
         const content = Swal.getContent();
         const $ = content.querySelector.bind(content);
 
-        const reprise = $('#reprise');
         const annule = $('#annule');
-        const accepte = $('#accepte');
         const demande = $('#demande');
         const prepare = $('#prepare');
         const livre = $('#livre');
@@ -150,39 +147,27 @@ export class CommandeComponent implements OnInit {
           Swal.close();
         }
 
-        reprise!.addEventListener('click', () => {
-          cmd.etat = 'reprise';
-          this.commandeService.update(cmd).subscribe();
-          toggleButtons();
-        });
-
         annule!.addEventListener('click', () => {
           cmd.etat = 'annule';
-          this.commandeService.update(cmd).subscribe();
-          toggleButtons();
-        });
-
-        accepte!.addEventListener('click', () => {
-          cmd.etat = 'accepte';
-          this.commandeService.update(cmd).subscribe();
+          this.commandeService.update(cmd).subscribe(() => this.loadPage());
           toggleButtons();
         });
 
         demande!.addEventListener('click', () => {
           cmd.etat = 'demande';
-          this.commandeService.update(cmd).subscribe();
+          this.commandeService.update(cmd).subscribe(() => this.loadPage());
           toggleButtons();
         });
 
         prepare!.addEventListener('click', () => {
           cmd.etat = 'prepare';
-          this.commandeService.update(cmd).subscribe();
+          this.commandeService.update(cmd).subscribe(() => this.loadPage());
           toggleButtons();
         });
 
         livre!.addEventListener('click', () => {
           cmd.etat = 'livre';
-          this.commandeService.update(cmd).subscribe();
+          this.commandeService.update(cmd).subscribe(() => this.loadPage());
           toggleButtons();
         });
       },
