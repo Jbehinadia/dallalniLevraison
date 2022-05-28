@@ -41,41 +41,6 @@
             </span>
           </a>
         </li>
-        <li *jhiHasAnyAuthority="'ROLE_Resto'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a
-            class="nav-link"
-            routerLink="restaurant"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <span>Restaurant</span>
-          </a>
-        </li>
-        <li *jhiHasAnyAuthority="'ROLE_Resto'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a
-            class="nav-link"
-            routerLink="plat"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <span>Plat</span>
-          </a>
-        </li>
-        <li *jhiHasAnyAuthority="'ROLE_Resto'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a
-            class="nav-link"
-            routerLink="menu"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <span>Menu</span>
-          </a>
-        </li>
-       
-
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
