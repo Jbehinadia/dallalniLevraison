@@ -13,6 +13,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
+          <th scope="col"><span>Restaurant</span></th>
           <th scope="col"><span>Plat</span></th>
           <th scope="col"><span>Prix</span></th>
           <th scope="col"><span>Quantité</span></th>
@@ -22,6 +23,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let commandeDetails of commandeDetails;" data-cy="entityTable">
+          <td>
+            <div *ngIf="commandeDetails.Restau">
+              <a [routerLink]="['/restaurant', commandeDetails.Restau?.id, 'view']">{{ commandeDetails.Restau?.nomRestaurant }}</a>
+            </div>
+          </td>
           <td>
             <div *ngIf="commandeDetails.plat">
               <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.nomPlat }}</a>

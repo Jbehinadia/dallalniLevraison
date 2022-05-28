@@ -7,6 +7,12 @@ import Swal from 'sweetalert2';
 import { ICommandeDetails } from 'app/entities/commande-details/commande-details.model';
 import { CommandeDetailsService } from 'app/entities/commande-details/service/commande-details.service';
 import { ICommande } from '../../commande.model';
+import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
+import { PlatService } from 'app/entities/plat/service/plat.service';
+import { MenuService } from 'app/entities/menu/service/menu.service';
+import { IPlat } from 'app/entities/plat/plat.model';
+import { map, mergeMap } from 'rxjs/operators';
+import { IMenu } from 'app/entities/menu/menu.model';
 
 @Component({
   selector: 'jhi-list-details-commande',
@@ -21,6 +27,9 @@ export class listDetailsCommandeComponent implements OnInit {
 
   constructor(
     protected commandeDetailsService: CommandeDetailsService,
+    protected restaurantService: RestaurantService,
+    protected platService: PlatService,
+    protected menuService: MenuService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal
@@ -123,5 +132,13 @@ export class listDetailsCommandeComponent implements OnInit {
 
   protected onSuccess(data: ICommandeDetails[]): void {
     this.commandeDetails = data;
+    this.commandeDetails.forEach(element => {
+      this.platService.find(element.plat!.id!).pipe(
+        map((res: HttpResponse<IPlat>) => res.body!),
+        mergeMap((resPlat: IPlat) => 
+          this.menuService.find(resPlat.menu!.id!).pipe(map(res => res.body!))
+        )
+      ).subscribe((resMenu: IMenu) => element.Restau = resMenu.restaurant!)
+    });
   }
 }

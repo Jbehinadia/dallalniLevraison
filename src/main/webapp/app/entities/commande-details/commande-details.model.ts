@@ -1,5 +1,6 @@
 import { ICommande } from 'app/entities/commande/commande.model';
 import { IPlat } from 'app/entities/plat/plat.model';
+import { IRestaurant } from '../restaurant/restaurant.model';
 
 export interface ICommandeDetails {
   id?: number;
@@ -8,6 +9,8 @@ export interface ICommandeDetails {
   qte?: number | null;
   commande?: ICommande | null;
   plat?: IPlat | null;
+
+  Restau?: IRestaurant; //local
 }
 
 export class CommandeDetails implements ICommandeDetails {
