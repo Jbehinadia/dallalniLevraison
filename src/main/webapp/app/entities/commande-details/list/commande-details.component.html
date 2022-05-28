@@ -33,7 +33,7 @@
               <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.nomPlat }}</a>
             </div><br />
             <div *ngIf="commandeDetails.Restau">
-              <span class="badge badge-pill badge-secondary text-white" [routerLink]="['/restaurant', commandeDetails.Restau?.id, 'view']">{{ commandeDetails.Restau?.nomRestaurant }}</span>
+              <span class="badge badge-pill badge-warning text-white" [routerLink]="['/restaurant', commandeDetails.Restau?.id, 'view']">{{ commandeDetails.Restau?.nomRestaurant }}</span>
             </div>
           </td>
           <td>
