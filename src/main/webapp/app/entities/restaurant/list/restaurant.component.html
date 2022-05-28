@@ -32,6 +32,7 @@
           <th scope="col" jhiSortBy="numRestaurant"><span>Num </span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="dateOuverture"><span>Heure Ouverture </span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="dateFermiture"><span>Heure Fermiture </span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"><span>Responsable</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -42,6 +43,11 @@
           <td>{{ restaurant.numRestaurant }}</td>
           <td>{{ restaurant.dateOuverture | formatMediumTime }}</td>
           <td>{{ restaurant.dateFermiture | formatMediumTime }}</td>
+          <td>
+            <div *ngIf="restaurant.responsableRestaurant">
+              <a [routerLink]="['/restaurant', restaurant.responsableRestaurant?.id, 'view']">{{ restaurant.responsableRestaurant?.nomResponsable }}</a>
+            </div>
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <button

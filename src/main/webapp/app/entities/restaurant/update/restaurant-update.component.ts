@@ -8,6 +8,8 @@ import * as dayjs from 'dayjs';
 
 import { IRestaurant } from '../restaurant.model';
 import { RestaurantService } from '../service/restaurant.service';
+import { ResponsableRestaurantService } from 'app/entities/responsable-restaurant/service/responsable-restaurant.service';
+import { IResponsableRestaurant } from 'app/entities/responsable-restaurant/responsable-restaurant.model';
 
 @Component({
   selector: 'jhi-restaurant-update',
@@ -18,12 +20,19 @@ export class RestaurantUpdateComponent implements OnInit {
   heureO!: string;
   heureF!: string;
   restaurant: IRestaurant = {};
+  responsables: IResponsableRestaurant[] = [];
 
-  constructor(protected restaurantService: RestaurantService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected responsableRestaurantService: ResponsableRestaurantService,
+    protected restaurantService: RestaurantService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ restaurant }) => {
       this.restaurant = restaurant;
+      this.loadAllResponsables();
       if (!restaurant.id) {
         this.heureO = dayjs(new Date()).format('HH:mm');
         this.heureF = dayjs(new Date()).format('HH:mm');
@@ -32,6 +41,14 @@ export class RestaurantUpdateComponent implements OnInit {
         this.heureF = dayjs(this.restaurant.dateFermiture).format('HH:mm');
       }
     });
+  }
+
+  loadAllResponsables(): void {
+    this.responsableRestaurantService
+      .query({
+        size: 100
+      })
+      .subscribe((resResp: HttpResponse<IResponsableRestaurant[]>) => this.responsables = resResp.body!);
   }
 
   previousState(): void {

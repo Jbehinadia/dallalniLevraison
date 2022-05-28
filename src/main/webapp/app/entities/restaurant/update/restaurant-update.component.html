@@ -38,6 +38,14 @@
         </div>
       </div>
 
+      <div class="row mb-3">
+        <label class="form-label" for="field_responsable">Responsable</label>
+        <select class="form-control" id="field_responsable" name="responsable" [(ngModel)]="restaurant.responsableRestaurant">
+          <option [ngValue]="null"></option>
+          <option [ngValue]="responsable" *ngFor="let responsable of responsables;">{{ responsable.nomResponsable }}</option>
+        </select>
+      </div>
+
       <div>
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>

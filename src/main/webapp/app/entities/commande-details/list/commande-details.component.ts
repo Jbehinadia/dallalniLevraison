@@ -9,10 +9,19 @@ import { ICommandeDetails } from '../commande-details.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { CommandeDetailsService } from '../service/commande-details.service';
 import { CommandeDetailsDeleteDialogComponent } from '../delete/commande-details-delete-dialog.component';
-import Swal from 'sweetalert2';
+import Swals2 from 'sweetalert2';
 import { CommandeService } from 'app/entities/commande/service/commande.service';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { ICommande } from 'app/entities/commande/commande.model';
+import { PlatService } from 'app/entities/plat/service/plat.service';
+import { MenuService } from 'app/entities/menu/service/menu.service';
+import { IPlat } from 'app/entities/plat/plat.model';
+import { IMenu } from 'app/entities/menu/menu.model';
+import { IRestaurant } from 'app/entities/restaurant/restaurant.model';
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { ResponsableRestaurantService } from 'app/entities/responsable-restaurant/service/responsable-restaurant.service';
+import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
 
 @Component({
   selector: 'jhi-commande-details',
@@ -27,11 +36,18 @@ export class CommandeDetailsComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  restau: IRestaurant = {};
 
   constructor(
+    protected restaurantService: RestaurantService,
+    protected responsableRestaurantService: ResponsableRestaurantService,
     protected commandeDetailsService: CommandeDetailsService,
     protected commandeService: CommandeService,
+    protected restauraService: CommandeService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
+    protected platService: PlatService,
+    protected menuService: MenuService,
     protected router: Router,
     protected modalService: NgbModal
   ) {}
@@ -42,7 +58,7 @@ export class CommandeDetailsComponent implements OnInit {
 
     this.commandeDetailsService
       .query({
-        'etat.in': ['demande', 'prepare'],
+        'etat.equals': 'demande',
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -60,7 +76,19 @@ export class CommandeDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.handleNavigation();
+    this.accountService.getAuthenticationState().subscribe(account => {
+      this.getRestaurant(account!);
+    });
+  }
+
+  getRestaurant(account: Account): void {
+      this.restaurantService
+      .query({
+        'responsableRestaurantId.equals': account.responsable!
+      }).subscribe((resRestau: HttpResponse<IRestaurant[]>) => {
+        this.restau = resRestau.body![0];
+        this.handleNavigation();
+      });
   }
 
   trackId(_index: number, item: ICommandeDetails): number {
@@ -68,30 +96,14 @@ export class CommandeDetailsComponent implements OnInit {
   }
 
   modifierEtatCmd(cmd: ICommandeDetails): void {
-    Swal.fire({
-      title: "Modifier l'etat du commande",
-      html:
-        '  <strong></strong> ... <br/><br/>' +
-        '<button id="prepare" class="btn btn-warning text-white">preparée</button><br /><br />' +
-        '',
-      onBeforeOpen: () => {
-        const content = Swal.getContent();
-        const $ = content.querySelector.bind(content);
-
-        const prepare = $('#prepare');
-
-        Swal.showLoading();
-
-        function toggleButtons(): void {
-          Swal.close();
-        }
-
-        prepare!.addEventListener('click', () => {
-          cmd.etat = 'prepare';
-          this.commandeDetailsService.update(cmd).subscribe();
-          toggleButtons();
-        });
-      },
+    Swals2.fire({
+      title: "vous êtes certaine?",
+      html: 'vous terminez cette commande!',
+    }).then(res => {
+      if (res.value) {
+        cmd.etat = 'prepare';
+        this.commandeDetailsService.update(cmd).subscribe(() => this.loadPage());
+      }
     });
   }
 
@@ -141,11 +153,22 @@ export class CommandeDetailsComponent implements OnInit {
         },
       });
     }
-    this.commandeDetails = data ?? [];
-    this.commandeDetails.forEach(element => {
-      this.commandeService.find(element.commande!.id!).pipe(map(res => res.body!)).subscribe((resCmd: ICommande) => 
-        element.livreur = resCmd.livreur!
+    this.commandeDetails = [];
+    data!.forEach(element => {
+      this.platService.find(element.plat!.id!).pipe(
+        map((res: HttpResponse<IPlat>) => res.body!),
+        mergeMap((resPlat: IPlat) => 
+          this.menuService.find(resPlat.menu!.id!).pipe(map(res => res.body!))
         )
+      ).subscribe((resMenu: IMenu) => {
+        if(resMenu.restaurant && resMenu.restaurant.id === this.restau.id) {
+          element.Restau = resMenu.restaurant!;
+          this.commandeDetails!.push(element);
+          this.commandeService.find(element.commande!.id!).pipe(map(res => res.body!)).subscribe((resCmd: ICommande) => 
+            element.livreur = resCmd.livreur!
+          )
+        }
+      })
     });
     this.ngbPaginationPage = this.page;
   }

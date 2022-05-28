@@ -1,6 +1,6 @@
 <div>
   <h2 id="page-heading" data-cy="CommandeDetailsHeading">
-    <span>Mes Commande</span>
+    <span>Mes Commande en cours</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2 text-white" (click)="loadPage()" [disabled]="isLoading">
@@ -31,6 +31,9 @@
           <td>
             <div *ngIf="commandeDetails.plat">
               <a [routerLink]="['/plat', commandeDetails.plat?.id, 'view']">{{ commandeDetails.plat?.nomPlat }}</a>
+            </div><br />
+            <div *ngIf="commandeDetails.Restau">
+              <span class="badge badge-pill badge-secondary text-white" [routerLink]="['/restaurant', commandeDetails.Restau?.id, 'view']">{{ commandeDetails.Restau?.nomRestaurant }}</span>
             </div>
           </td>
           <td>
@@ -51,9 +54,6 @@
           <td>
             <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'demande'" class="btn btn-secondary text-white">
               demandée
-            </button>
-            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'prepare'" class="btn btn-warning text-white">
-              preparée
             </button>
           </td>
         </tr>

@@ -57,21 +57,6 @@
             formControlName="numResponsable"
           />
         </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_restaurant">Restaurant</label>
-          <select class="form-control" id="field_restaurant" data-cy="restaurant" name="restaurant" formControlName="restaurant">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                restaurantOption.id === editForm.get('restaurant')!.value?.id ? editForm.get('restaurant')!.value : restaurantOption
-              "
-              *ngFor="let restaurantOption of restaurantsCollection; trackBy: trackRestaurantById"
-            >
-              {{ restaurantOption.id }}
-            </option>
-          </select>
-        </div>
       </div>
 
       <div>

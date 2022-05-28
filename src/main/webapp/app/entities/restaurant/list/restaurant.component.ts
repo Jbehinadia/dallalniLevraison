@@ -9,6 +9,7 @@ import { IRestaurant } from '../restaurant.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { RestaurantService } from '../service/restaurant.service';
 import { RestaurantDeleteDialogComponent } from '../delete/restaurant-delete-dialog.component';
+import { ResponsableRestaurantService } from 'app/entities/responsable-restaurant/service/responsable-restaurant.service';
 
 @Component({
   selector: 'jhi-restaurant',
@@ -25,6 +26,7 @@ export class RestaurantComponent implements OnInit {
   ngbPaginationPage = 1;
 
   constructor(
+    protected responsableRestaurantService: ResponsableRestaurantService,
     protected restaurantService: RestaurantService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -108,6 +110,11 @@ export class RestaurantComponent implements OnInit {
       });
     }
     this.restaurants = data ?? [];
+    this.restaurants.forEach(restau => {
+      this.responsableRestaurantService.find(restau.responsableRestaurant!.id!).subscribe(resResp =>
+        restau.responsableRestaurant = resResp.body!
+      )      
+    });
     this.ngbPaginationPage = this.page;
   }
 

@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { ICommandeDetails } from 'app/entities/commande-details/commande-details.model';
 import { CommandeDetailsService } from 'app/entities/commande-details/service/commande-details.service';
 import { ICommande } from '../../commande.model';
-import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
 import { PlatService } from 'app/entities/plat/service/plat.service';
 import { MenuService } from 'app/entities/menu/service/menu.service';
 import { IPlat } from 'app/entities/plat/plat.model';
@@ -27,7 +26,6 @@ export class listDetailsCommandeComponent implements OnInit {
 
   constructor(
     protected commandeDetailsService: CommandeDetailsService,
-    protected restaurantService: RestaurantService,
     protected platService: PlatService,
     protected menuService: MenuService,
     protected activatedRoute: ActivatedRoute,

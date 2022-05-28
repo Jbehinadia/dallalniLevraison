@@ -43,7 +43,7 @@
           <td>{{ responsableRestaurant.numResponsable }}</td>
           <td>
             <div *ngIf="responsableRestaurant.restaurant">
-              <a [routerLink]="['/restaurant', responsableRestaurant.restaurant?.id, 'view']">{{ responsableRestaurant.restaurant?.id }}</a>
+              <a [routerLink]="['/restaurant', responsableRestaurant.restaurant?.id, 'view']">{{ responsableRestaurant.restaurant?.nomRestaurant }}</a>
             </div>
           </td>
           <td class="text-right">

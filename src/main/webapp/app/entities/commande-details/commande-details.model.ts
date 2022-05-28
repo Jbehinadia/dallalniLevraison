@@ -11,8 +11,8 @@ export interface ICommandeDetails {
   commande?: ICommande | null;
   plat?: IPlat | null;
 
-  Restau?: IRestaurant; //local
-  livreur?: ILivreur; //local
+  Restau?: IRestaurant; // local
+  livreur?: ILivreur; // local
 }
 
 export class CommandeDetails implements ICommandeDetails {
