@@ -99,6 +99,9 @@ export class CommandeDetailsComponent implements OnInit {
     Swals2.fire({
       title: "vous êtes certaine?",
       html: 'vous terminez cette commande!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ff8200',
     }).then(res => {
       if (res.value) {
         cmd.etat = 'prepare';
