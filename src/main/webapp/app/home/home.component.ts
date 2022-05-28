@@ -35,13 +35,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   client: IClient | null = null;
   totalCommande = 0;
   typePlats?: ITypePlat[] = [];
-  originPlats?: IPlat[] = [];
   Plats?: IPlat[] = [];
   linesCmd?: ICommandeDetails[] = [];
   nbrCommandes = 0;
   modalRefSignIn!: any;
   modalRef!: any;
   account!: Account;
+  typeID!: number;
+  platName = '';
 
   private readonly destroy$ = new Subject<void>();
 
@@ -84,11 +85,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getAllPlats(): void {
-    this.originPlats = [];
     this.Plats = [];
-    this.platService.query({ size: 1000 }).subscribe((resPlats: HttpResponse<IPlat[]>) => {
-      this.originPlats = resPlats.body!;
-      this.Plats = this.originPlats;
+    let query = {};
+    if (this.typeID) {
+      query = { ...query, ...{ 'typePlatId.equals': this.typeID } };
+    }
+    if (this.platName) {
+      query = { ...query, ...{ 'nomPlat.contains': this.platName } };
+    }
+
+    this.platService.query({ ...query , size: 1000 }).subscribe((resPlats: HttpResponse<IPlat[]>) => {
+      this.Plats = resPlats.body!;
       this.Plats.forEach(plat => {
         if (plat.typePlat!.id) {
           this.menuService.find(plat.menu!.id!).subscribe((resMenu: HttpResponse<IMenu>) => {
@@ -121,10 +128,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   filterPlatByType(typeID: number): void {
-    this.Plats = this.originPlats;
-    if (typeID) {
-      this.Plats = this.Plats?.filter(plat => plat.typePlat?.id === typeID);
-    }
+    this.typeID = typeID;
+    this.getAllPlats();
   }
 
   addLineCmd(plat: IPlat): void {

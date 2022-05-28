@@ -20,7 +20,7 @@
         <div class="section-title">catégories&nbsp;🍔</div>
         <div class="search-bar">
           <div class="input-group" style="flex-wrap: nowrap">
-            <button class="btn">
+            <button class="btn" (click)="getAllPlats()">
               <svg
                 t="1585652817188"
                 class="search"
@@ -37,7 +37,7 @@
                 ></path>
               </svg>
             </button>
-            <input type="search" class="form-control" name="search" placeholder="Recherche" />
+            <input type="search" class="form-control" [(ngModel)]="platName" name="search" placeholder="Recherche" (keydown.enter)="getAllPlats()" />
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@
       </div>
     </section>
     <section class="section">
-      <ul class="restaurant-list">
+      <ul class="restaurant-list" *ngIf="Plats!.length">
         <li class="restaurant-list item" *ngFor="let plat of Plats" (click)="addLineCmd(plat)">
           <a href="#">
             <div class="restaurant-image" [style.backgroundImage]="'url(' + plat.imagePath + ')'"></div>
@@ -144,6 +144,10 @@
           </div>
         </li>
       </ul>
+      <div class="alert alert-warning w-100" id="no-result" *ngIf="Plats?.length === 0">
+        <span>Aucun plat trouvé</span>
+      </div>
+    
     </section>
   </div>
   <div class="col-md-4">
