@@ -22,6 +22,7 @@
           <th scope="col" jhiSortBy="prix"><span>Prix</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="prix"><span>Quantité</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="prix"><span>Net</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"><span>Livreur</span></th>
           <th scope="col" jhiSortBy="etat"><span>Etat</span> <fa-icon icon="sort"></fa-icon></th>
         </tr>
       </thead>
@@ -41,37 +42,18 @@
           <td>
             <span class="text-success" style="font-weight: 600">{{ commandeDetails.prix! * commandeDetails.qte! }}DT</span>
           </td>
+          <td>
+            <div *ngIf="commandeDetails.livreur">
+              <a [routerLink]="['/livreur', commandeDetails.livreur?.id, 'view']">{{ commandeDetails.livreur?.nomLivreur }}</a>
+            </div>
+          </td>
 
           <td>
-            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'reprise'" class="btn btn-info text-white">
-              reprise
-            </button>
-            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'annule'" class="btn btn-danger text-white">
-              annulée
-            </button>
-            <button
-              (click)="modifierEtatCmd(commandeDetails)"
-              *ngIf="commandeDetails.etat === 'accepte'"
-              class="btn btn-success text-white"
-            >
-              acceptée
-            </button>
-            <button
-              (click)="modifierEtatCmd(commandeDetails)"
-              *ngIf="commandeDetails.etat === 'demande'"
-              class="btn btn-secondary text-white"
-            >
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'demande'" class="btn btn-secondary text-white">
               demandée
             </button>
-            <button
-              (click)="modifierEtatCmd(commandeDetails)"
-              *ngIf="commandeDetails.etat === 'prepare'"
-              class="btn btn-warning text-white"
-            >
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'prepare'" class="btn btn-warning text-white">
               preparée
-            </button>
-            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'livre'" class="btn btn-success text-white">
-              livrée
             </button>
           </td>
         </tr>

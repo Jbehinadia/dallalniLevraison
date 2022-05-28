@@ -10,6 +10,9 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants
 import { CommandeDetailsService } from '../service/commande-details.service';
 import { CommandeDetailsDeleteDialogComponent } from '../delete/commande-details-delete-dialog.component';
 import Swal from 'sweetalert2';
+import { CommandeService } from 'app/entities/commande/service/commande.service';
+import { map } from 'rxjs/operators';
+import { ICommande } from 'app/entities/commande/commande.model';
 
 @Component({
   selector: 'jhi-commande-details',
@@ -27,6 +30,7 @@ export class CommandeDetailsComponent implements OnInit {
 
   constructor(
     protected commandeDetailsService: CommandeDetailsService,
+    protected commandeService: CommandeService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal
@@ -38,6 +42,7 @@ export class CommandeDetailsComponent implements OnInit {
 
     this.commandeDetailsService
       .query({
+        'etat.in': ['demande', 'prepare'],
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -67,23 +72,13 @@ export class CommandeDetailsComponent implements OnInit {
       title: "Modifier l'etat du commande",
       html:
         '  <strong></strong> ... <br/><br/>' +
-        '<button id="reprise" class="btn btn-info text-white">reprise</button><br /><br />' +
-        '<button id="annule" class="btn btn-danger text-white">annulée</button><br /><br />' +
-        '<button id="accepte" class="btn btn-success text-white">acceptée</button><br /><br />' +
-        '<button id="demande" class="btn btn-secondary text-white">demandée</button><br /><br />' +
         '<button id="prepare" class="btn btn-warning text-white">preparée</button><br /><br />' +
-        '<button id="livre" class="btn btn-success text-white">livrée</button><br /><br />' +
         '',
       onBeforeOpen: () => {
         const content = Swal.getContent();
         const $ = content.querySelector.bind(content);
 
-        const reprise = $('#reprise');
-        const annule = $('#annule');
-        const accepte = $('#accepte');
-        const demande = $('#demande');
         const prepare = $('#prepare');
-        const livre = $('#livre');
 
         Swal.showLoading();
 
@@ -91,38 +86,8 @@ export class CommandeDetailsComponent implements OnInit {
           Swal.close();
         }
 
-        reprise!.addEventListener('click', () => {
-          cmd.etat = 'reprise';
-          this.commandeDetailsService.update(cmd).subscribe();
-          toggleButtons();
-        });
-
-        annule!.addEventListener('click', () => {
-          cmd.etat = 'annule';
-          this.commandeDetailsService.update(cmd).subscribe();
-          toggleButtons();
-        });
-
-        accepte!.addEventListener('click', () => {
-          cmd.etat = 'accepte';
-          this.commandeDetailsService.update(cmd).subscribe();
-          toggleButtons();
-        });
-
-        demande!.addEventListener('click', () => {
-          cmd.etat = 'demande';
-          this.commandeDetailsService.update(cmd).subscribe();
-          toggleButtons();
-        });
-
         prepare!.addEventListener('click', () => {
           cmd.etat = 'prepare';
-          this.commandeDetailsService.update(cmd).subscribe();
-          toggleButtons();
-        });
-
-        livre!.addEventListener('click', () => {
-          cmd.etat = 'livre';
           this.commandeDetailsService.update(cmd).subscribe();
           toggleButtons();
         });
@@ -177,6 +142,11 @@ export class CommandeDetailsComponent implements OnInit {
       });
     }
     this.commandeDetails = data ?? [];
+    this.commandeDetails.forEach(element => {
+      this.commandeService.find(element.commande!.id!).pipe(map(res => res.body!)).subscribe((resCmd: ICommande) => 
+        element.livreur = resCmd.livreur!
+        )
+    });
     this.ngbPaginationPage = this.page;
   }
 
