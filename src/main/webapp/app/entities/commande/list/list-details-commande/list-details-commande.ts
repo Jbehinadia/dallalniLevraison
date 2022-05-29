@@ -12,6 +12,7 @@ import { MenuService } from 'app/entities/menu/service/menu.service';
 import { IPlat } from 'app/entities/plat/plat.model';
 import { map, mergeMap } from 'rxjs/operators';
 import { IMenu } from 'app/entities/menu/menu.model';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-list-details-commande',
@@ -23,17 +24,22 @@ export class listDetailsCommandeComponent implements OnInit {
   commande!: ICommande;
   parent!: any;
   disableRoleEdit?: boolean;
+  siResto = false;
+  siLivreur = false;
 
   constructor(
     protected commandeDetailsService: CommandeDetailsService,
     protected platService: PlatService,
     protected menuService: MenuService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
     protected router: Router,
     protected modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
+    this.siResto = this.accountService.hasAnyAuthority(['ROLE_Resto']);
+    this.siLivreur = this.accountService.hasAnyAuthority(['ROLE_Livreur']);
     this.loadPage();
   }
 
@@ -62,58 +68,16 @@ export class listDetailsCommandeComponent implements OnInit {
     if(!this.disableRoleEdit) {
       Swal.fire({
         title: "Modifier l'etat du commande",
-        html:
-          '  <strong></strong> ... <br/><br/>' +
-          '<button id="envoyée" class="btn btn-info text-white">envoyée</button><br /><br />' +
-          '<button id="annule" class="btn btn-danger text-white">annulée</button><br /><br />' +
-          '<button id="accepte" class="btn btn-success text-white">acceptée</button><br /><br />' +
-          '<button id="demande" class="btn btn-secondary text-white">demandée</button><br /><br />' +
-          '<button id="prepare" class="btn btn-warning text-white">preparée</button><br /><br />' +
-          '<button id="livre" class="btn btn-success text-white">livrée</button><br /><br />' +
-          '',
+        html:'<button id="dateLivraison" class="btn btn-success text-white"><br />',
         onBeforeOpen: () => {
           const content = Swal.getContent();
           const $ = content.querySelector.bind(content);
 
-          const envoyée = $('#envoyée');
-          const annule = $('#annule');
-          const accepte = $('#accepte');
           const demande = $('#demande');
-          const prepare = $('#prepare');
           const livre = $('#livre');
-
-          Swal.showLoading();
-
-          function toggleButtons(): void {
-            Swal.close();
-          }
-
-          envoyée!.addEventListener('click', () => {
-            cmd.etat = 'envoyée';
-            this.commandeDetailsService.update(cmd).subscribe();
-            toggleButtons();
-          });
-
-          annule!.addEventListener('click', () => {
-            cmd.etat = 'annule';
-            this.commandeDetailsService.update(cmd).subscribe();
-            toggleButtons();
-          });
-
-          accepte!.addEventListener('click', () => {
-            cmd.etat = 'accepte';
-            this.commandeDetailsService.update(cmd).subscribe();
-            toggleButtons();
-          });
 
           demande!.addEventListener('click', () => {
             cmd.etat = 'demande';
-            this.commandeDetailsService.update(cmd).subscribe();
-            toggleButtons();
-          });
-
-          prepare!.addEventListener('click', () => {
-            cmd.etat = 'prepare';
             this.commandeDetailsService.update(cmd).subscribe();
             toggleButtons();
           });
@@ -123,6 +87,12 @@ export class listDetailsCommandeComponent implements OnInit {
             this.commandeDetailsService.update(cmd).subscribe();
             toggleButtons();
           });
+
+          Swal.showLoading();
+
+          function toggleButtons(): void {
+            Swal.close();
+          }
         },
       });
     }

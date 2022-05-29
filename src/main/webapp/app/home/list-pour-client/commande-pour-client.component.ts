@@ -20,6 +20,7 @@ export class CommandePourClientComponent implements OnInit {
   isLoading = false;
   page?: number;
   modalRef: any;
+  Swals2: any;
 
   constructor(protected clientService: ClientService, protected commandeService: CommandeService, protected modalService: NgbModal) {}
 
@@ -48,5 +49,19 @@ export class CommandePourClientComponent implements OnInit {
     this.modalRef.componentInstance.parent = this;
     this.modalRef.componentInstance.commande = commande!;
     this.modalRef.componentInstance.disableRoleEdit = true;
+  }
+  editDate(cmd: ICommande): void {
+    this.Swals2.fire({
+      title: 'Modifier le Prix Livraison',
+      input: 'number',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      showCancelButton: true,
+    }).then((res: { value: any; }) => {
+      if (res.value) {
+        cmd.prixLivreson = Number(res.value);
+        this.commandeService.update(cmd).subscribe();
+      }
+    });
   }
 }

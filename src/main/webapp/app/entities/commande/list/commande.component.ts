@@ -17,6 +17,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { ClientService } from 'app/entities/client/service/client.service';
 import { CommandePourlivreurComponent } from './list-pour-livreur/commande-pour-livreur.component';
 import { listDetailsCommandeComponent } from './list-details-commande/list-details-commande';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'jhi-commande',
@@ -33,6 +34,7 @@ export class CommandeComponent implements OnInit {
   ngbPaginationPage = 1;
   livreur: ILivreur = {};
   modalRef: any;
+  siLivreur = false;
 
   constructor(
     protected clientService: ClientService,
@@ -46,6 +48,7 @@ export class CommandeComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.getAuthenticationState().subscribe(account => {
+      this.siLivreur = this.accountService.hasAnyAuthority(['ROLE_Livreur']);
       this.getLivreur(account!);
     });
   }
@@ -122,13 +125,44 @@ export class CommandeComponent implements OnInit {
     });
   }
 
+  editDateLivraison(cmd: ICommande): void {
+    Swal.fire({
+      title: "Modifier l'etat du commande",
+      html:
+        `<input type="datetime-local" class="form-control" id="date"
+          formControlName="dateLivraison" placeholder="YYYY-MM-DD HH:mm"
+        />` +
+        '<button id="changer" class="btn btn-success text-white">changer</button><br /><br />' +
+        '',
+      onBeforeOpen: () => {
+        const content = Swal.getContent();
+        const $ = content.querySelector.bind(content);
+
+        const date = $('#date');
+        const changer = $('#changer');
+
+        Swal.showLoading();
+
+        function toggleButtons(): void {
+          Swal.close();
+        }
+
+        changer!.addEventListener('click', () => {
+          cmd.dateSortie = dayjs((document.getElementById('date') as HTMLInputElement).value);
+          this.commandeService.update(cmd).subscribe(() => this.loadPage());
+          toggleButtons();
+        });
+      },
+    });
+  }
+
   modifierEtatCmd(cmd: ICommande): void {
     Swal.fire({
       title: "Modifier l'etat du commande",
       html:
         '  <strong></strong> ... <br/><br/>' +
         '<button id="annule" class="btn btn-danger text-white">annulée</button><br /><br />' +
-        '<button id="demande" class="btn btn-secondary text-white">demandée</button><br /><br />' +
+        '<button id="demande" class="btn btn-secondary text-white">En cours de livraison</button><br /><br />' +
         '<button id="livre" class="btn btn-success text-white">livrée</button><br /><br />' +
         '',
       onBeforeOpen: () => {
@@ -137,7 +171,6 @@ export class CommandeComponent implements OnInit {
 
         const annule = $('#annule');
         const demande = $('#demande');
-        const prepare = $('#prepare');
         const livre = $('#livre');
 
         Swal.showLoading();

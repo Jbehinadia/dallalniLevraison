@@ -3,12 +3,11 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IResponsableRestaurant, ResponsableRestaurant } from '../responsable-restaurant.model';
 import { ResponsableRestaurantService } from '../service/responsable-restaurant.service';
 import { IRestaurant } from 'app/entities/restaurant/restaurant.model';
-import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
 
 @Component({
   selector: 'jhi-responsable-restaurant-update',

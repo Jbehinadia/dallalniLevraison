@@ -64,7 +64,8 @@
             >
               demandée
             </button>
-            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'prepare'" class="btn btn-warning text-white">
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'prepare'"class="btn btn-warning text-white"
+            >
               preparée
             </button>
             <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'livre'" class="btn btn-success text-white">

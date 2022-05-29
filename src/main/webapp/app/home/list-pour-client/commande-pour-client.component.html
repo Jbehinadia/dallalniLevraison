@@ -30,7 +30,8 @@
             <td>{{ i + 1 }}</td>
             <td>{{ commande.adresseCommande }}</td>
             <td>{{ commande.dateCommande | formatMediumDatetime }}</td>
-            <td>{{ commande.dateSortie | formatMediumDatetime }}</td>
+            <td class="text-info">
+              <fa-icon icon="pencil-alt" (click)="editDate(commande)"></fa-icon>{{ commande.dateSortie | formatMediumDatetime }}</td>
             <td style="font-weight: 600">{{ commande.prixTotal }} DT</td>
             <td class="text-info">{{ commande.prixLivreson }} DT</td>
             <td class="text-success" style="font-weight: 600">{{ commande.prixTotal! + commande.prixLivreson! }} DT</td>
@@ -39,7 +40,7 @@
               <button *ngIf="commande.etat === 'envoyée'" class="btn btn-info text-white">Envoyée</button>
               <button *ngIf="commande.etat === 'annule'" class="btn btn-danger text-white">annulée</button>
               <button *ngIf="commande.etat === 'accepte'" class="btn btn-success text-white">acceptée</button>
-              <button *ngIf="commande.etat === 'demande'" class="btn btn-secondary text-white">demandée</button>
+              <button *ngIf="commande.etat === 'demande'" class="btn btn-secondary text-white">En cours de livraison</button>
               <button *ngIf="commande.etat === 'prepare'" class="btn btn-warning text-white">preparée</button>
               <button *ngIf="commande.etat === 'livre'" class="btn btn-success text-white">livrée</button>
             </td>
