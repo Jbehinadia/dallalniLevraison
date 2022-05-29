@@ -192,7 +192,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             const commande: ICommande = {};
             commande.client = this.client;
             commande.adresseCommande = this.client!.adresseClient;
-            commande.etat = 'reprise';
+            commande.etat = 'envoyée';
             commande.dateCommande = dayjs(new Date());
             commande.prixTotal = this.totalCommande;
             commande.prixLivreson = 3;
@@ -204,12 +204,12 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.nbrCommandes += 1;
                 this.linesCmd!.forEach(lineC => {
                   lineC.commande = resCmd!;
-                  lineC.etat = 'reprise';
+                  lineC.etat = 'envoyée';
                   this.commandeDetailsService.create(lineC).subscribe();
                 });
                 Swals2.fire({
-                  title: 'Commande Reprise',
-                  html: 'Commande Reprise avec succès',
+                  title: 'Commande Envoyée',
+                  html: 'Commande envoyée avec succès merci pour visiter DELLELNI',
                   type: 'success',
                 }).then(() => {
                   this.linesCmd = [];

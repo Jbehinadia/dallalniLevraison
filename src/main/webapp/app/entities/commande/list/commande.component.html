@@ -23,6 +23,7 @@
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
           <th scope="col" jhiSortBy="client.id"><span>Client</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="numClient"><span>NUM Client</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="adresseCommande"><span>Adresse </span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="dateCommande"><span>Date </span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="prixTotal"><span>Prix Total</span> <fa-icon icon="sort"></fa-icon></th>
@@ -34,11 +35,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let commande of commandes; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <div *ngIf="commande.client">
-              <a [routerLink]="['/client', commande.client?.id, 'view']">{{ commande.client?.nomClient }}</a>
-            </div>
-          </td>
+          <td>{{ commande.client?.nomClient }}</td>
+          <td>{{ commande.client?.numClient }}</td>
           <td>{{ commande.adresseCommande }}</td>
           <td>{{ commande.dateCommande | formatMediumDatetime }}</td>
           <td style="font-weight: 600">{{ commande.prixTotal }} DT</td>
@@ -55,9 +53,7 @@
             <button (click)="modifierEtatCmd(commande)" *ngIf="commande.etat === 'demande'" class="btn btn-secondary text-white">
               demandée
             </button>
-            <button (click)="modifierEtatCmd(commande)" *ngIf="commande.etat === 'prepare'" class="btn btn-warning text-white">
-              preparée
-            </button>
+
           </td>
 
           <td class="text-right">
@@ -69,9 +65,6 @@
                 (click)="listCommande(commande)"
               >
                 <fa-icon icon="list"></fa-icon>
-              </button>
-              <button type="submit" (click)="delete(commande)" class="btn btn-danger btn-sm text-white" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
               </button> 
             </div>
           </td>

@@ -129,7 +129,6 @@ export class CommandeComponent implements OnInit {
         '  <strong></strong> ... <br/><br/>' +
         '<button id="annule" class="btn btn-danger text-white">annulée</button><br /><br />' +
         '<button id="demande" class="btn btn-secondary text-white">demandée</button><br /><br />' +
-        '<button id="prepare" class="btn btn-warning text-white">preparée</button><br /><br />' +
         '<button id="livre" class="btn btn-success text-white">livrée</button><br /><br />' +
         '',
       onBeforeOpen: () => {
@@ -159,11 +158,7 @@ export class CommandeComponent implements OnInit {
           toggleButtons();
         });
 
-        prepare!.addEventListener('click', () => {
-          cmd.etat = 'prepare';
-          this.commandeService.update(cmd).subscribe(() => this.loadPage());
-          toggleButtons();
-        });
+       
 
         livre!.addEventListener('click', () => {
           cmd.etat = 'livre';

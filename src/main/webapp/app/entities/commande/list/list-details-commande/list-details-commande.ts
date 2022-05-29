@@ -64,7 +64,7 @@ export class listDetailsCommandeComponent implements OnInit {
         title: "Modifier l'etat du commande",
         html:
           '  <strong></strong> ... <br/><br/>' +
-          '<button id="reprise" class="btn btn-info text-white">reprise</button><br /><br />' +
+          '<button id="envoyée" class="btn btn-info text-white">envoyée</button><br /><br />' +
           '<button id="annule" class="btn btn-danger text-white">annulée</button><br /><br />' +
           '<button id="accepte" class="btn btn-success text-white">acceptée</button><br /><br />' +
           '<button id="demande" class="btn btn-secondary text-white">demandée</button><br /><br />' +
@@ -75,7 +75,7 @@ export class listDetailsCommandeComponent implements OnInit {
           const content = Swal.getContent();
           const $ = content.querySelector.bind(content);
 
-          const reprise = $('#reprise');
+          const envoyée = $('#envoyée');
           const annule = $('#annule');
           const accepte = $('#accepte');
           const demande = $('#demande');
@@ -88,8 +88,8 @@ export class listDetailsCommandeComponent implements OnInit {
             Swal.close();
           }
 
-          reprise!.addEventListener('click', () => {
-            cmd.etat = 'reprise';
+          envoyée!.addEventListener('click', () => {
+            cmd.etat = 'envoyée';
             this.commandeDetailsService.update(cmd).subscribe();
             toggleButtons();
           });

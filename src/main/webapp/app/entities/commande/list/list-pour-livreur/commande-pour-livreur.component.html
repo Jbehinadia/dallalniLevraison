@@ -36,7 +36,7 @@
             <td class="text-success" style="font-weight: 600">{{ commande.prixTotal! + commande.prixLivreson! }} DT</td>
 
             <td>
-              <button (click)="modifierEtatCmd(commande)" *ngIf="commande.etat === 'reprise'" class="btn btn-info text-white">reprise</button>
+              <button (click)="modifierEtatCmd(commande)" *ngIf="commande.etat === 'envoyée'" class="btn btn-info text-white">envoyée</button>
               <button (click)="modifierEtatCmd(commande)" *ngIf="commande.etat === 'annule'" class="btn btn-danger text-white">annulée</button>
             </td>
 

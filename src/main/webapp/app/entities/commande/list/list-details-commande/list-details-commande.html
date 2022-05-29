@@ -44,8 +44,8 @@
           </td>
 
           <td>
-            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'reprise'" class="btn btn-info text-white">
-              reprise
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'envoyée'" class="btn btn-info text-white">
+              envoyée
             </button>
             <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'annule'" class="btn btn-danger text-white">
               annulée
@@ -64,11 +64,7 @@
             >
               demandée
             </button>
-            <button
-              (click)="modifierEtatCmd(commandeDetails)"
-              *ngIf="commandeDetails.etat === 'prepare'"
-              class="btn btn-warning text-white"
-            >
+            <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'prepare'" class="btn btn-warning text-white">
               preparée
             </button>
             <button (click)="modifierEtatCmd(commandeDetails)" *ngIf="commandeDetails.etat === 'livre'" class="btn btn-success text-white">
