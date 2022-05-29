@@ -19,7 +19,7 @@
         <fa-icon icon="arrow-left"></fa-icon>
       </button>
 
-      <button type="button" [routerLink]="['/type-plat', typePlat.id, 'edit']" class="btn btn-primary text-white">
+      <button type="button" [routerLink]="['/type-plat', typePlat.id, 'edit']" class="btn btn-primary text-white" *jhiHasAnyAuthority="'ROLE_Resto' || 'ROLE_ADMIN'">
         <fa-icon icon="pencil-alt"></fa-icon>
       </button>
     </div>

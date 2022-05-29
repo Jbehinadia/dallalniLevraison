@@ -33,7 +33,7 @@
         <fa-icon icon="arrow-left"></fa-icon>
       </button>
 
-      <button type="button" [routerLink]="['/restaurant', restaurant.id, 'edit']" class="btn btn-primary text-white">
+      <button type="button" [routerLink]="['/restaurant', restaurant.id, 'edit']" class="btn btn-primary text-white" *jhiHasAnyAuthority="'ROLE_Resto'">
         <fa-icon icon="pencil-alt"></fa-icon>
       </button>
     </div>

@@ -22,6 +22,7 @@ import * as dayjs from 'dayjs';
 @Component({
   selector: 'jhi-commande',
   templateUrl: './commande.component.html',
+  styleUrls: ['./style.scss']
 })
 export class CommandeComponent implements OnInit {
   commandes?: ICommande[];
@@ -138,10 +139,7 @@ export class CommandeComponent implements OnInit {
         const content = Swal.getContent();
         const $ = content.querySelector.bind(content);
 
-        const date = $('#date');
         const changer = $('#changer');
-
-        Swal.showLoading();
 
         function toggleButtons(): void {
           Swal.close();

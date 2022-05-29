@@ -8,6 +8,8 @@ import { CommandeService } from '../../entities/commande/service/commande.servic
 import { ClientService } from 'app/entities/client/service/client.service';
 import { IClient } from 'app/entities/client/client.model';
 import { listDetailsCommandeComponent } from 'app/entities/commande/list/list-details-commande/list-details-commande';
+import Swal from 'sweetalert2';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'jhi-commande-pour-client',
@@ -50,18 +52,33 @@ export class CommandePourClientComponent implements OnInit {
     this.modalRef.componentInstance.commande = commande!;
     this.modalRef.componentInstance.disableRoleEdit = true;
   }
-  editDate(cmd: ICommande): void {
-    this.Swals2.fire({
-      title: 'Modifier le Prix Livraison',
-      input: 'number',
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      showCancelButton: true,
-    }).then((res: { value: any; }) => {
-      if (res.value) {
-        cmd.prixLivreson = Number(res.value);
-        this.commandeService.update(cmd).subscribe();
-      }
+
+  editDateLivraison(cmd: ICommande): void {
+    Swal.fire({
+      title: "Modifier l'etat du commande",
+      html:
+        `<input type="datetime-local" class="form-control" id="date"
+          formControlName="dateLivraison" placeholder="YYYY-MM-DD HH:mm"
+        />` +
+        '<button id="changer" class="btn btn-success text-white">changer</button><br /><br />' +
+        '',
+        showConfirmButton: false,
+      onBeforeOpen: () => {
+        const content = Swal.getContent();
+        const $ = content.querySelector.bind(content);
+
+        const changer = $('#changer');
+
+        function toggleButtons(): void {
+          Swal.close();
+        }
+
+        changer!.addEventListener('click', () => {
+          cmd.dateSortie = dayjs((document.getElementById('date') as HTMLInputElement).value);
+          this.commandeService.update(cmd).subscribe(() => this.loadAll());
+          toggleButtons();
+        });
+      },
     });
   }
 }

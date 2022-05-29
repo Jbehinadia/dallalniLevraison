@@ -31,7 +31,7 @@
             <td>{{ commande.adresseCommande }}</td>
             <td>{{ commande.dateCommande | formatMediumDatetime }}</td>
             <td class="text-info">
-              <fa-icon icon="pencil-alt" (click)="editDate(commande)"></fa-icon>{{ commande.dateSortie | formatMediumDatetime }}</td>
+              <fa-icon icon="pencil-alt" (click)="editDateLivraison(commande)"></fa-icon>{{ commande.dateSortie | formatMediumDatetime }}</td>
             <td style="font-weight: 600">{{ commande.prixTotal }} DT</td>
             <td class="text-info">{{ commande.prixLivreson }} DT</td>
             <td class="text-success" style="font-weight: 600">{{ commande.prixTotal! + commande.prixLivreson! }} DT</td>
