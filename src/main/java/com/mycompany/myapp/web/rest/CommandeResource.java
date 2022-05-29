@@ -65,7 +65,7 @@ public class CommandeResource {
     public ResponseEntity<CommandeDTO> createCommande(@RequestBody CommandeDTO commandeDTO) throws URISyntaxException {
         log.debug("REST request to save Commande : {}", commandeDTO);
         if (commandeDTO.getId() != null) {
-            throw new BadRequestAlertException("A new commande cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("Une nouvelle commande ne peut pas déjà avoir d’ID", ENTITY_NAME, "idexists");
         }
         CommandeDTO result = commandeService.save(commandeDTO);
         return ResponseEntity
@@ -91,14 +91,14 @@ public class CommandeResource {
     ) throws URISyntaxException {
         log.debug("REST request to update Commande : {}, {}", id, commandeDTO);
         if (commandeDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("IDnon valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, commandeDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!commandeRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         CommandeDTO result = commandeService.save(commandeDTO);
@@ -126,14 +126,14 @@ public class CommandeResource {
     ) throws URISyntaxException {
         log.debug("REST request to partial update Commande partially : {}, {}", id, commandeDTO);
         if (commandeDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, commandeDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valided");
         }
 
         if (!commandeRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         Optional<CommandeDTO> result = commandeService.partialUpdate(commandeDTO);

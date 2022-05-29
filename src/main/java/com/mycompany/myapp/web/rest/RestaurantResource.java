@@ -65,7 +65,7 @@ public class RestaurantResource {
     public ResponseEntity<RestaurantDTO> createRestaurant(@RequestBody RestaurantDTO restaurantDTO) throws URISyntaxException {
         log.debug("REST request to save Restaurant : {}", restaurantDTO);
         if (restaurantDTO.getId() != null) {
-            throw new BadRequestAlertException("A new restaurant cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("Un nouveau restaurant ne peut pas déjà avoir un ID", ENTITY_NAME, "idexists");
         }
         RestaurantDTO result = restaurantService.save(restaurantDTO);
         return ResponseEntity
@@ -91,14 +91,14 @@ public class RestaurantResource {
     ) throws URISyntaxException {
         log.debug("REST request to update Restaurant : {}, {}", id, restaurantDTO);
         if (restaurantDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, restaurantDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!restaurantRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         RestaurantDTO result = restaurantService.save(restaurantDTO);
@@ -126,14 +126,14 @@ public class RestaurantResource {
     ) throws URISyntaxException {
         log.debug("REST request to partial update Restaurant partially : {}, {}", id, restaurantDTO);
         if (restaurantDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, restaurantDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!restaurantRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         Optional<RestaurantDTO> result = restaurantService.partialUpdate(restaurantDTO);

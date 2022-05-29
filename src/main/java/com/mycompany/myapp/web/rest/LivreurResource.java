@@ -61,7 +61,7 @@ public class LivreurResource {
     public ResponseEntity<LivreurDTO> createLivreur(@RequestBody LivreurDTO livreurDTO) throws URISyntaxException {
         log.debug("REST request to save Livreur : {}", livreurDTO);
         if (livreurDTO.getId() != null) {
-            throw new BadRequestAlertException("A new livreur cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("Un nouveau livreur ne peut pas déjà avoir un ID", ENTITY_NAME, "idexists");
         }
         LivreurDTO result = livreurService.save(livreurDTO);
         return ResponseEntity
@@ -87,14 +87,14 @@ public class LivreurResource {
     ) throws URISyntaxException {
         log.debug("REST request to update Livreur : {}, {}", id, livreurDTO);
         if (livreurDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, livreurDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!livreurRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         LivreurDTO result = livreurService.save(livreurDTO);
@@ -122,14 +122,14 @@ public class LivreurResource {
     ) throws URISyntaxException {
         log.debug("REST request to partial update Livreur partially : {}, {}", id, livreurDTO);
         if (livreurDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, livreurDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!livreurRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est non valide");
         }
 
         Optional<LivreurDTO> result = livreurService.partialUpdate(livreurDTO);

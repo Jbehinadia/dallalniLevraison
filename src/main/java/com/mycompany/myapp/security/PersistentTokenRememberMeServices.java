@@ -99,7 +99,7 @@ public class PersistentTokenRememberMeServices extends AbstractRememberMeService
                     persistentTokenRepository.saveAndFlush(token);
                 } catch (DataAccessException e) {
                     log.error("Failed to update token: ", e);
-                    throw new RememberMeAuthenticationException("Autologin failed due to data access problem", e);
+                    throw new RememberMeAuthenticationException("Échec de la connexion automatique en raison d’un problème d’accès aux données", e);
                 }
                 addCookie(token, request, response);
                 upgradedTokenCache.put(cookieTokens[0], new UpgradedRememberMeToken(cookieTokens, login));
@@ -125,7 +125,7 @@ public class PersistentTokenRememberMeServices extends AbstractRememberMeService
                 t.setUserAgent(request.getHeader("User-Agent"));
                 return t;
             })
-            .orElseThrow(() -> new UsernameNotFoundException("User " + login + " was not found in the database"));
+            .orElseThrow(() -> new UsernameNotFoundException("User " + login + " n’a pas été trouvé dans la base de données"));
         try {
             persistentTokenRepository.saveAndFlush(token);
             addCookie(token, request, response);
@@ -175,7 +175,7 @@ public class PersistentTokenRememberMeServices extends AbstractRememberMeService
         Optional<PersistentToken> optionalToken = persistentTokenRepository.findById(presentedSeries);
         if (!optionalToken.isPresent()) {
             // No series match, so we can't authenticate using this cookie
-            throw new RememberMeAuthenticationException("No persistent token found for series id: " + presentedSeries);
+            throw new RememberMeAuthenticationException("Aucun jeton persistant trouvé pour l’ID de série : " + presentedSeries);
         }
         PersistentToken token = optionalToken.get();
         // We have a match for this user/series combination
@@ -183,11 +183,11 @@ public class PersistentTokenRememberMeServices extends AbstractRememberMeService
         if (!presentedToken.equals(token.getTokenValue())) {
             // Token doesn't match series value. Delete this session and throw an exception.
             persistentTokenRepository.deleteById(token.getSeries());
-            throw new CookieTheftException("Invalid remember-me token (Series/token) mismatch. Implies previous " + "cookie theft attack.");
+            throw new CookieTheftException("Mémoire invalide token (Series/token) non valid. Implique précédent " + "cookie theft attack.");
         }
         if (token.getTokenDate().plusDays(TOKEN_VALIDITY_DAYS).isBefore(LocalDate.now())) {
             persistentTokenRepository.deleteById(token.getSeries());
-            throw new RememberMeAuthenticationException("Remember-me login has expired");
+            throw new RememberMeAuthenticationException("L’ouverture de session Se souvenir de moi a expiré");
         }
         return token;
     }

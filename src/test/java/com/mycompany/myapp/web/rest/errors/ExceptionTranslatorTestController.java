@@ -14,7 +14,7 @@ public class ExceptionTranslatorTestController {
 
     @GetMapping("/concurrency-failure")
     public void concurrencyFailure() {
-        throw new ConcurrencyFailureException("test concurrency failure");
+        throw new ConcurrencyFailureException("échec de simultanéité d’essai");
     }
 
     @PostMapping("/method-argument")
@@ -28,12 +28,12 @@ public class ExceptionTranslatorTestController {
 
     @GetMapping("/access-denied")
     public void accessdenied() {
-        throw new AccessDeniedException("test access denied!");
+        throw new AccessDeniedException("accès au test refusé!");
     }
 
     @GetMapping("/unauthorized")
     public void unauthorized() {
-        throw new BadCredentialsException("test authentication failed!");
+        throw new BadCredentialsException("échec de l’authentification du test!");
     }
 
     @GetMapping("/response-status")

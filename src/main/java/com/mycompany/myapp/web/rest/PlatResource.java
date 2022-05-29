@@ -61,7 +61,7 @@ public class PlatResource {
     public ResponseEntity<PlatDTO> createPlat(@RequestBody PlatDTO platDTO) throws URISyntaxException {
         log.debug("REST request to save Plat : {}", platDTO);
         if (platDTO.getId() != null) {
-            throw new BadRequestAlertException("A new plat cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("Une nouvelle plat ne peut pas déjà avoir une ID", ENTITY_NAME, "idexists");
         }
         PlatDTO result = platService.save(platDTO);
         return ResponseEntity
@@ -85,14 +85,14 @@ public class PlatResource {
         throws URISyntaxException {
         log.debug("REST request to update Plat : {}, {}", id, platDTO);
         if (platDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, platDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!platRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         PlatDTO result = platService.save(platDTO);
@@ -120,14 +120,14 @@ public class PlatResource {
     ) throws URISyntaxException {
         log.debug("REST request to partial update Plat partially : {}, {}", id, platDTO);
         if (platDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, platDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!platRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         Optional<PlatDTO> result = platService.partialUpdate(platDTO);

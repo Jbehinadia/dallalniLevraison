@@ -61,7 +61,7 @@ public class MenuResource {
     public ResponseEntity<MenuDTO> createMenu(@RequestBody MenuDTO menuDTO) throws URISyntaxException {
         log.debug("REST request to save Menu : {}", menuDTO);
         if (menuDTO.getId() != null) {
-            throw new BadRequestAlertException("A new menu cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("Un nouveau menu ne peut pas déjà avoir d’ID", ENTITY_NAME, "idexists");
         }
         MenuDTO result = menuService.save(menuDTO);
         return ResponseEntity
@@ -85,14 +85,14 @@ public class MenuResource {
         throws URISyntaxException {
         log.debug("REST request to update Menu : {}, {}", id, menuDTO);
         if (menuDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, menuDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!menuRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         MenuDTO result = menuService.save(menuDTO);
@@ -120,14 +120,14 @@ public class MenuResource {
     ) throws URISyntaxException {
         log.debug("REST request to partial update Menu partially : {}, {}", id, menuDTO);
         if (menuDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, menuDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!menuRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         Optional<MenuDTO> result = menuService.partialUpdate(menuDTO);

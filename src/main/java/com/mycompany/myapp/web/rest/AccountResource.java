@@ -87,7 +87,7 @@ public class AccountResource {
     public void activateAccount(@RequestParam(value = "key") String key) {
         Optional<User> user = userService.activateRegistration(key);
         if (!user.isPresent()) {
-            throw new AccountResourceException("No user was found for this activation key");
+            throw new AccountResourceException("Aucun utilisateur n’a été trouvé pour cette clé d’activation");
         }
     }
 
@@ -114,7 +114,7 @@ public class AccountResource {
         return userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
-            .orElseThrow(() -> new AccountResourceException("User could not be found"));
+            .orElseThrow(() -> new AccountResourceException("Impossible de trouver l’utilisateur"));
     }
 
     /**
@@ -128,14 +128,14 @@ public class AccountResource {
     public void saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
-            .orElseThrow(() -> new AccountResourceException("Current user login not found"));
+            .orElseThrow(() -> new AccountResourceException("Ouverture de session actuelle introuvable"));
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userLogin))) {
             throw new EmailAlreadyUsedException();
         }
         Optional<User> user = userRepository.findOneByLogin(userLogin);
         if (!user.isPresent()) {
-            throw new AccountResourceException("User could not be found");
+            throw new AccountResourceException("Impossible de trouver l’utilisateur");
         }
         userService.updateUser(
             userDTO.getFirstName(),
@@ -174,9 +174,9 @@ public class AccountResource {
         return persistentTokenRepository.findByUser(
             userRepository
                 .findOneByLogin(
-                    SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResourceException("Current user login not found"))
+                    SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResourceException("Ouverture de session actuelle introuvable"))
                 )
-                .orElseThrow(() -> new AccountResourceException("User could not be found"))
+                .orElseThrow(() -> new AccountResourceException("Impossible de trouver l’utilisateur"))
         );
     }
 
@@ -244,7 +244,7 @@ public class AccountResource {
         Optional<User> user = userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey());
 
         if (!user.isPresent()) {
-            throw new AccountResourceException("No user was found for this reset key");
+            throw new AccountResourceException("Aucun utilisateur n’a été trouvé pour cette touche de réinitialisation");
         }
     }
 

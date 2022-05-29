@@ -61,7 +61,7 @@ public class ClientResource {
     public ResponseEntity<ClientDTO> createClient(@RequestBody ClientDTO clientDTO) throws URISyntaxException {
         log.debug("REST request to save Client : {}", clientDTO);
         if (clientDTO.getId() != null) {
-            throw new BadRequestAlertException("A new client cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("Un nouveau client ne peut pas déjà avoir un ID", ENTITY_NAME, "idexists");
         }
         ClientDTO result = clientService.save(clientDTO);
         return ResponseEntity
@@ -87,14 +87,14 @@ public class ClientResource {
     ) throws URISyntaxException {
         log.debug("REST request to update Client : {}, {}", id, clientDTO);
         if (clientDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID  non valide", ENTITY_NAME, "Id nul");
         }
         if (!Objects.equals(id, clientDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID  non valide", ENTITY_NAME, "ID  non valide");
         }
 
         if (!clientRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         ClientDTO result = clientService.save(clientDTO);
@@ -122,14 +122,14 @@ public class ClientResource {
     ) throws URISyntaxException {
         log.debug("REST request to partial update Client partially : {}, {}", id, clientDTO);
         if (clientDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID nul");
         }
         if (!Objects.equals(id, clientDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            throw new BadRequestAlertException("ID non valide", ENTITY_NAME, "ID non valide");
         }
 
         if (!clientRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException("Entité non trouvée", ENTITY_NAME, "ID est introuvable");
         }
 
         Optional<ClientDTO> result = clientService.partialUpdate(clientDTO);
