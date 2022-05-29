@@ -52,6 +52,12 @@ export class CommandeDetailsComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
+  ngOnInit(): void {
+    this.accountService.getAuthenticationState().subscribe(account => {
+      this.getRestaurant(account!);
+    });
+  }
+
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
@@ -75,12 +81,6 @@ export class CommandeDetailsComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-    this.accountService.getAuthenticationState().subscribe(account => {
-      this.getRestaurant(account!);
-    });
-  }
-
   getRestaurant(account: Account): void {
       this.restaurantService
       .query({
@@ -88,7 +88,18 @@ export class CommandeDetailsComponent implements OnInit {
       }).subscribe((resRestau: HttpResponse<IRestaurant[]>) => {
         this.restau = resRestau.body![0];
         this.handleNavigation();
+        this.getMenu();
       });
+  }
+
+  getMenu(): void {
+    this.menuService
+    .query({
+      'restaurantId.equals': this.restau.id!,
+      sort: ['id,desc']
+    }).subscribe((resRestau: HttpResponse<IMenu[]>) => {
+      this.restau.actuelMenu = resRestau.body![0].nomMenu!;
+    });
   }
 
   trackId(_index: number, item: ICommandeDetails): number {

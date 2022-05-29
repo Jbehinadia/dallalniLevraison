@@ -9,6 +9,8 @@ import { IMenu, Menu } from '../menu.model';
 import { MenuService } from '../service/menu.service';
 import { IRestaurant } from 'app/entities/restaurant/restaurant.model';
 import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'jhi-menu-update',
@@ -24,11 +26,13 @@ export class MenuUpdateComponent implements OnInit {
     nomMenu: [],
     restaurant: [],
   });
+  restau: IRestaurant = {};
 
   constructor(
     protected menuService: MenuService,
     protected restaurantService: RestaurantService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
     protected fb: FormBuilder
   ) {}
 
@@ -36,6 +40,21 @@ export class MenuUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ menu }) => {
       this.updateForm(menu);
 
+      this.accountService.getAuthenticationState().subscribe(account => {
+        if(account!.responsable!) {
+          this.getRestau(account!);
+        } else {
+          this.loadRelationshipsOptions();
+        }
+      });
+    });
+  }
+  getRestau(account: Account): void {
+    this.restaurantService
+    .query({
+      'responsableRestaurantId.equals': account.responsable!
+    }).subscribe((resRestau: HttpResponse<IRestaurant[]>) => {
+      this.restau = resRestau.body![0];
       this.loadRelationshipsOptions();
     });
   }
@@ -91,8 +110,10 @@ export class MenuUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
+    let query = {}
+    if (this.restau.id) {query = { ...query, ...{ 'id.equals': this.restau.id } };}
     this.restaurantService
-      .query()
+      .query({...query})
       .pipe(map((res: HttpResponse<IRestaurant[]>) => res.body ?? []))
       .pipe(
         map((restaurants: IRestaurant[]) =>

@@ -9,6 +9,10 @@ import { IMenu } from '../menu.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { MenuService } from '../service/menu.service';
 import { MenuDeleteDialogComponent } from '../delete/menu-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
+import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
+import { Account } from 'app/core/auth/account.model';
+import { IRestaurant } from 'app/entities/restaurant/restaurant.model';
 
 @Component({
   selector: 'jhi-menu',
@@ -23,20 +27,45 @@ export class MenuComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  restau: IRestaurant = {};
 
   constructor(
     protected menuService: MenuService,
+    protected restaurantService: RestaurantService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
     protected router: Router,
     protected modalService: NgbModal
   ) {}
+
+  ngOnInit(): void {
+    this.accountService.getAuthenticationState().subscribe(account => {
+      if(account!.responsable!) {
+        this.getRestau(account!);
+      } else {
+        this.handleNavigation();
+      }
+    });
+  }
+  getRestau(account: Account): void {
+    this.restaurantService
+    .query({
+      'responsableRestaurantId.equals': account.responsable!
+    }).subscribe((resRestau: HttpResponse<IRestaurant[]>) => {
+      this.restau = resRestau.body![0];
+      this.handleNavigation();
+    });
+  }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
+    let query = {}
+    if (this.restau.id) {query = { ...query, ...{ 'restaurantId.equals': this.restau.id } };}
     this.menuService
       .query({
+        ...query,
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -51,10 +80,6 @@ export class MenuComponent implements OnInit {
           this.onError();
         },
       });
-  }
-
-  ngOnInit(): void {
-    this.handleNavigation();
   }
 
   trackId(_index: number, item: IMenu): number {

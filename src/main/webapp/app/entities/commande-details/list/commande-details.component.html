@@ -2,7 +2,18 @@
   <h2 id="page-heading" data-cy="CommandeDetailsHeading">
     <span>Mes Commande en cours</span>
 
-    <div class="d-flex justify-content-end">
+    <div class="text-right">
+
+      <button type="button" routerLink="/menu"
+        class="btn btn-success "> {{ restau!.actuelMenu }}
+        <fa-icon icon="plus"></fa-icon>
+      </button>
+      <button type="button" [routerLink]="['/restaurant', restau!.id, 'edit']"
+        class="btn btn-warning"> {{ restau!.nomRestaurant}}
+        <fa-icon icon="pencil-alt"></fa-icon>
+      </button>
+      <br />
+
       <button class="btn btn-info me-2 text-white" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
       </button>

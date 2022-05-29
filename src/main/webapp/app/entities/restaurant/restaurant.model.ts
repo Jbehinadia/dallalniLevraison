@@ -11,6 +11,8 @@ export interface IRestaurant {
   dateFermiture?: dayjs.Dayjs | null;
   commandes?: IMenu[] | null;
   responsableRestaurant?: ResponsableRestaurant | null;
+
+  actuelMenu?: string; //Local
 }
 
 export class Restaurant implements IRestaurant {

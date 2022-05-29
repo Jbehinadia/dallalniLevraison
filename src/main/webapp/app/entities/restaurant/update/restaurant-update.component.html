@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="row mb-3">
+      <div class="row mb-3" *jhiHasAnyAuthority="'ROLE_ADMIN'">
         <label class="form-label" for="field_responsable">Responsable</label>
         <select class="form-control" id="field_responsable" name="responsable" [(ngModel)]="restaurant.responsableRestaurant">
           <option [ngValue]="null"></option>
