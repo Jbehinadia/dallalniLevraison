@@ -13,9 +13,11 @@ import { DataUtils } from 'app/core/util/data-util.service';
 import { MenuService } from 'app/entities/menu/service/menu.service';
 import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
 import { IMenu } from 'app/entities/menu/menu.model';
-import { Restaurant } from 'app/entities/restaurant/restaurant.model';
+import { IRestaurant, Restaurant } from 'app/entities/restaurant/restaurant.model';
 import { TypePlatService } from 'app/entities/type-plat/service/type-plat.service';
 import { TypePlat } from 'app/entities/type-plat/type-plat.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'jhi-plat',
@@ -30,6 +32,7 @@ export class PlatComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  menu: IMenu = {};
 
   constructor(
     protected platService: PlatService,
@@ -38,16 +41,43 @@ export class PlatComponent implements OnInit {
     protected restaurantService: RestaurantService,
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
+    protected accountService: AccountService,
     protected router: Router,
     protected modalService: NgbModal
   ) {}
+
+  ngOnInit(): void {
+    this.accountService.getAuthenticationState().subscribe(account => {
+      if(account!.responsable!) {
+        this.getRestau(account!);
+      } else {
+        this.handleNavigation();
+      }
+    });
+  }
+  getRestau(account: Account): void {
+    this.restaurantService
+    .query({
+      'responsableRestaurantId.equals': account.responsable!
+    }).subscribe((resRestau: HttpResponse<IRestaurant[]>) => {
+      this.menuService
+      .query({'restaurantId.equals': resRestau.body![0]!.id!, sort: ['id,desc']})
+      .subscribe((resMenu: HttpResponse<IMenu[]>) => {
+        this.menu = resMenu.body![0];
+        this.handleNavigation();
+      })
+    });
+  }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
+    let query = {}
+    if (this.menu.id) {query = { ...query, ...{ 'menuId.equals': this.menu.id } };}
     this.platService
       .query({
+        ...query,
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -62,10 +92,6 @@ export class PlatComponent implements OnInit {
           this.onError();
         },
       });
-  }
-
-  ngOnInit(): void {
-    this.handleNavigation();
   }
 
   trackId(_index: number, item: IPlat): number {

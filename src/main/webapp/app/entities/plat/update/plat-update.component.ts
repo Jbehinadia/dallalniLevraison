@@ -15,7 +15,9 @@ import { MenuService } from 'app/entities/menu/service/menu.service';
 import { ITypePlat } from 'app/entities/type-plat/type-plat.model';
 import { TypePlatService } from 'app/entities/type-plat/service/type-plat.service';
 import { RestaurantService } from 'app/entities/restaurant/service/restaurant.service';
-import { Restaurant } from 'app/entities/restaurant/restaurant.model';
+import { IRestaurant, Restaurant } from 'app/entities/restaurant/restaurant.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'jhi-plat-update',
@@ -37,6 +39,7 @@ export class PlatUpdateComponent implements OnInit {
     menu: [],
     typePlat: [],
   });
+  menu: IMenu = {};
 
   constructor(
     protected dataUtils: DataUtils,
@@ -46,6 +49,7 @@ export class PlatUpdateComponent implements OnInit {
     protected restaurantService: RestaurantService,
     protected typePlatService: TypePlatService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
     protected fb: FormBuilder
   ) {}
 
@@ -53,7 +57,26 @@ export class PlatUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ plat }) => {
       this.updateForm(plat);
 
-      this.loadRelationshipsOptions();
+      this.accountService.getAuthenticationState().subscribe(account => {
+        if(account!.responsable!) {
+          this.getRestau(account!);
+        } else {
+          this.loadRelationshipsOptions();
+        }
+      });
+    });
+  }
+  getRestau(account: Account): void {
+    this.restaurantService
+    .query({
+      'responsableRestaurantId.equals': account.responsable!
+    }).subscribe((resRestau: HttpResponse<IRestaurant[]>) => {
+      this.menuService
+      .query({'restaurantId.equals': resRestau.body![0]!.id!, sort: ['id,desc']})
+      .subscribe((resMenu: HttpResponse<IMenu[]>) => {
+        this.menu = resMenu.body![0];
+        this.loadRelationshipsOptions();
+      })
     });
   }
 
@@ -143,8 +166,10 @@ export class PlatUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
+    let query = {}
+    if (this.menu.id) {query = { ...query, ...{ 'id.equals': this.menu.id } };}
     this.menuService
-      .query()
+      .query({...query})
       .pipe(map((res: HttpResponse<IMenu[]>) => res.body ?? []))
       .pipe(map((menus: IMenu[]) => this.menuService.addMenuToCollectionIfMissing(menus, this.editForm.get('menu')!.value)))
       .subscribe((menus: IMenu[]) => {
