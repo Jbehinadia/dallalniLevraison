@@ -135,6 +135,8 @@ export class CommandeComponent implements OnInit {
         />` +
         '<button id="changer" class="btn btn-success text-white">changer</button><br /><br />' +
         '',
+        showConfirmButton: false,
+
       onBeforeOpen: () => {
         const content = Swal.getContent();
         const $ = content.querySelector.bind(content);

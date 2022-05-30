@@ -68,7 +68,8 @@ export class listDetailsCommandeComponent implements OnInit {
     if(!this.disableRoleEdit) {
       Swal.fire({
         title: "Modifier l'etat du commande",
-        html:'<button id="dateLivraison" class="btn btn-success text-white"><br />',
+        html:'<button id="demande" class="btn btn-secondary text-white">demandée</button><br /><br />' + 
+        '<button id="livre" class="btn btn-success text-white">livrée</button><br />',
         onBeforeOpen: () => {
           const content = Swal.getContent();
           const $ = content.querySelector.bind(content);
